@@ -1,21 +1,63 @@
 @import "tailwindcss";
+@config "../tailwind.config.ts";
 
 :root {
-  --background: #ffffff;
+  --background: #F7F6ED;
   --foreground: #171717;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+@theme {
+  /* Vermalion color palette */
+  --color-vermalion-50: #FCEDE9;
+  --color-vermalion-100: #F6CCC0;
+  --color-vermalion-200: #F1AB98;
+  --color-vermalion-300: #EB8A6F;
+  --color-vermalion-400: #E35A34;
+  --color-vermalion-500: #E0491F;
+  --color-vermalion-600: #B83C19;
+  --color-vermalion-700: #902E14;
+  --color-vermalion-800: #67210E;
+  --color-vermalion-900: #3F1409;
+  --color-vermalion-950: #160703;
+
+  /* Offwhite color palette */
+  --color-offwhite-50: #F7F6ED;
+  --color-offwhite-100: #E8E3CA;
+  --color-offwhite-200: #DBD4AD;
+  --color-offwhite-300: #CDC38E;
+  --color-offwhite-400: #BFB26E;
+  --color-offwhite-500: #B1A14E;
+  --color-offwhite-600: #918440;
+  --color-offwhite-700: #716732;
+  --color-offwhite-800: #524A24;
+  --color-offwhite-900: #322D16;
+  --color-offwhite-950: #121008;
+
+  /* Spacing tokens */
+  --spacing-spacing-01: 0.125rem;
+  --spacing-spacing-02: 0.25rem;
+  --spacing-spacing-03: 0.5rem;
+  --spacing-spacing-04: 0.75rem;
+  --spacing-spacing-05: 1rem;
+  --spacing-spacing-06: 1.5rem;
+  --spacing-spacing-07: 2rem;
+  --spacing-spacing-08: 2.5rem;
+  --spacing-spacing-09: 3rem;
+  --spacing-spacing-10: 4rem;
+  --spacing-spacing-11: 5rem;
+  --spacing-spacing-12: 6rem;
+  --spacing-spacing-13: 10rem;
+
+  /* Font family */
+  --font-family-sans: var(--font-plex), sans-serif;
+  --font-family-plex: var(--font-plex), sans-serif;
 }
+
 
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
-    --foreground: #ededed;
+    --foreground: #F7F6ED;
   }
 }
 
