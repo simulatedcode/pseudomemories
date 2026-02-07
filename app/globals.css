@@ -34,23 +34,24 @@
   --color-offwhite-950: #121008;
 
   /* Spacing tokens */
-  --spacing-spacing-01: 0.125rem;
-  --spacing-spacing-02: 0.25rem;
-  --spacing-spacing-03: 0.5rem;
-  --spacing-spacing-04: 0.75rem;
-  --spacing-spacing-05: 1rem;
-  --spacing-spacing-06: 1.5rem;
-  --spacing-spacing-07: 2rem;
-  --spacing-spacing-08: 2.5rem;
-  --spacing-spacing-09: 3rem;
-  --spacing-spacing-10: 4rem;
-  --spacing-spacing-11: 5rem;
-  --spacing-spacing-12: 6rem;
-  --spacing-spacing-13: 10rem;
+  --spacing-spacing-01: 2px;
+  --spacing-spacing-02: 4px;
+  --spacing-spacing-03: 8px;
+  --spacing-spacing-04: 12px;
+  --spacing-spacing-05: 16px;
+  --spacing-spacing-06: 24px;
+  --spacing-spacing-07: 32px;
+  --spacing-spacing-08: 40px;
+  --spacing-spacing-09: 48px;
+  --spacing-spacing-10: 64px;
+  --spacing-spacing-11: 80px;
+  --spacing-spacing-12: 96px;
+  --spacing-spacing-13: 160px;
 
   /* Font family */
-  --font-family-sans: var(--font-plex), sans-serif;
-  --font-family-plex: var(--font-plex), sans-serif;
+  --font-family-sans: var(--font-electrolize), sans-serif;
+  --font-family-electrolize: var(--font-electrolize), sans-serif;
+  --font-family-doto: var(--font-doto), sans-serif;
 }
 
 
@@ -64,5 +65,7 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  height: auto;
+  width: 100dvw;
+  overflow-x: hidden;
 }
