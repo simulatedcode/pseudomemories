@@ -151,7 +151,7 @@ export const Footer = () => {
                                             onMouseLeave={() => setIsGithubHovered(false)}
                                         > Repositories:
                                             <Link
-                                                href="https://github.com/simulationcode"
+                                                href="https://github.com/simulatedcode"
                                                 target="_blank"
                                                 rel="noopener noreferrer"
                                             >
