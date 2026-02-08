@@ -10,7 +10,7 @@ export const Hero8Bit = () => {
     ];
 
     return (
-        <div className="fixed w-screen h-[500px] bottom-8 flex items-center justify-center overflow-hidden -mx-spacing-06 sm:-mx-spacing-08">
+        <div className="fixed z-5 w-screen h-[500px] bottom-8 flex items-center justify-center overflow-hidden -mx-spacing-06 sm:-mx-spacing-08">
             <motion.svg
                 viewBox="0 0 300 220"
                 preserveAspectRatio="none"
@@ -23,7 +23,7 @@ export const Hero8Bit = () => {
                 <motion.line
                     x1="0" y1="130" x2="300" y2="130"
                     strokeWidth="0.5"
-                    className="stroke-vermalion-500/5"
+                    className="stroke-cyan-800/8 mix-blend-difference"
                     initial={{ scaleX: 0 }}
                     animate={{ scaleX: 1 }}
                     transition={{ duration: 1.5, delay: 0.5 }}
@@ -35,7 +35,7 @@ export const Hero8Bit = () => {
                         key={`grid-${index}`}
                         x1="0" y1={line.y} x2="300" y2={line.y}
                         strokeWidth="0.5"
-                        className="stroke-vermalion-400"
+                        className="stroke-cyan-800 mix-blend-difference"
                         initial={{ scaleX: 0, opacity: 0 }}
                         animate={{ scaleX: 1, opacity: line.opacity }}
                         transition={{ duration: 1.5, delay: 0.8 + (index * 0.2) }}

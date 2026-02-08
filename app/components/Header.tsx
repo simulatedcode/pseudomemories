@@ -28,20 +28,20 @@ export const Header = () => {
                     className="cursor-default"
                 >
                     <span className="font-electrolize cursor-pointer text-caption uppercase tracking-tighter opacity-80">
-                        <Link href="/" className="cursor-pointer hover:text-vermalion-200">
+                        <Link href="/" className="cursor-pointer hover:text-vermelion-400">
                             <ScrambleText text="pseudo memories" delay={1} duration={1.2} trigger={hoveredItem === "Logo"} />
                         </Link>
                     </span>
                 </motion.div>
             </div>
 
-            <div className="fixed left-1/2 -translate-x-1/2 top-32 md:top-4 pointer-events-none text-center text-offwhite-100 z-40">
+            <div className="fixed left-spacing-06 top-16 md:top-4 md:left-1/2 md:-translate-x-1/2 pointer-events-none text-left md:text-center text-offwhite-100 z-40">
                 <motion.div
                     onMouseEnter={() => setHoveredItem("Location")}
                     onMouseLeave={() => setHoveredItem(null)}
                     className="cursor-default pointer-events-auto"
                 >
-                    <span className="font-doto text-caption uppercase tracking-[0.2em] opacity-80 sm:text-body">
+                    <span className="font-doto text-caption uppercase tracking-[0.2em] opacity-90 sm:text-body">
                         <ScrambleText text={locationString} delay={1.5} duration={1.5} trigger={hoveredItem === "Location"} />
                     </span>
                 </motion.div>

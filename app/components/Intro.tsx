@@ -37,7 +37,7 @@ export default function Intro() {
                         y: "-100%",
                         transition: { duration: 1.2, ease: [0.76, 0, 0.24, 1] }
                     }}
-                    className="fixed inset-0 z-9999 bg-vermalion-700/80 backdrop-blur-xl flex flex-col items-center justify-center text-offwhite-50 selection:bg-white/10"
+                    className="fixed inset-0 z-9999 bg-vermelion-700/80 backdrop-blur-xl flex flex-col items-center justify-center text-offwhite-50 selection:bg-white/10"
                 >
                     <div className="flex flex-col items-center gap-12 max-w-md w-full px-spacing-08">
                         {/* Upper Details */}

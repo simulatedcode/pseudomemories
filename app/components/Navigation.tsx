@@ -18,11 +18,11 @@ const MissionIcon = () => (
     </svg>
 );
 
-export const Navigation = () => {
+export const Navigation = ({ className }: { className?: string }) => {
     const [hoveredItem, setHoveredItem] = useState<string | null>(null);
 
     return (
-        <nav className="flex items-center gap-spacing-04 sm:gap-spacing-06 md:gap-spacing-08 lg:gap-spacing-10">
+        <nav className={`flex items-center gap-spacing-02 sm:gap-spacing-04 md:gap-spacing-06 lg:gap-spacing-8 ${className}`}>
             <motion.button
                 whileHover={{ scale: 1.05 }}
                 onMouseEnter={() => setHoveredItem("About")}

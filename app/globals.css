@@ -2,23 +2,36 @@
 @config "../tailwind.config.ts";
 
 :root {
-  --background: #902E14;
+  --background: #f4400f;
   --foreground: #F7F6ED;
 }
 
 @theme {
-  /* Vermalion color palette */
-  --color-vermalion-50: #FCEDE9;
-  --color-vermalion-100: #F6CCC0;
-  --color-vermalion-200: #F1AB98;
-  --color-vermalion-300: #EB8A6F;
-  --color-vermalion-400: #E35A34;
-  --color-vermalion-500: #E0491F;
-  --color-vermalion-600: #B83C19;
-  --color-vermalion-700: #902E14;
-  --color-vermalion-800: #67210E;
-  --color-vermalion-900: #3F1409;
-  --color-vermalion-950: #160703;
+  /* Vermelion color palette */
+  --color-vermelion-50: #FDECE7;
+  --color-vermelion-100: #FBCBBC;
+  --color-vermelion-200: #F8A991;
+  --color-vermelion-300: #F58766;
+  --color-vermelion-400: #F2653A;
+  --color-vermelion-500: #F0440F;
+  --color-vermelion-600: #BF360C;
+  --color-vermelion-700: #992B0A;
+  --color-vermelion-800: #6E1F07;
+  --color-vermelion-900: #431304;
+  --color-vermelion-950: #180702;
+
+  /* Cyan color palette */
+  --color-cyan-50: #E7F8FD;
+  --color-cyan-100: #BCECFB;
+  --color-cyan-200: #91E0F8;
+  --color-cyan-300: #66D4F5;
+  --color-cyan-400: #3AC8F2;
+  --color-cyan-500: #0FBBF0;
+  --color-cyan-600: #0C95BF;
+  --color-cyan-700: #0A7899;
+  --color-cyan-800: #07566E;
+  --color-cyan-900: #043443;
+  --color-cyan-950: #021318;
 
   /* Offwhite color palette */
   --color-offwhite-50: #F7F6ED;
@@ -57,7 +70,7 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #902E14;
+    --background: #f4400f;
     --foreground: #F7F6ED;
   }
 }

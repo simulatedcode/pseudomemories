@@ -17,18 +17,28 @@ function CharacterSprite() {
         return img.width / img.height;
     }, [texture]);
 
-    // Character scale relative to viewport height (45vh equivalent)
-    const characterHeight = viewport.height * 1.34;
+    // Responsive scale
+    const isMobile = size.width < 768;
+    const heightMultiplier = isMobile ? 1.15 : 1.34;
+
+    // Character scale
+    const characterHeight = viewport.height * heightMultiplier;
     const characterWidth = characterHeight * aspect;
 
-    // Horizon line is at ~236px from bottom
-    // Convert 236px to viewport units
-    const horizonOffset = (-348 / size.height) * viewport.height;
+    // Horizon line is calculated from Hero8Bit
+    // Hero8Bit container is 500px height, bottom 32px (bottom-8)
+    // The line y1=130 in viewBox 0 0 300 220
+    // Visual height inside container = (220-130)/220 * 500 = ~204.5px
+    // Total from bottom = 204.5 + 32 = ~236.5px
+    const horizonPx = 186.5;
 
-    // Position feet at horizon line
-    // feet Y = -viewport.height/2 + horizonOffset
-    // center Y = feet Y + characterHeight/2
-    const positionY = -viewport.height / 2 + horizonOffset + characterHeight / 2;
+    // Calculate Feet Y position in Viewport units
+    // -viewport.height/2 is the bottom edge
+    // (horizonPx / size.height) * viewport.height converts pixels to viewport units
+    const feetY = -viewport.height / 1 + (horizonPx / size.height) * viewport.height;
+
+    // Center Y position
+    const positionY = feetY + characterHeight / 2;
 
     return (
         <group>

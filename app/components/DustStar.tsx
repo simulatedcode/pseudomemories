@@ -13,6 +13,7 @@ const STAR_VERTEX_SHADER = `
   uniform float uTime;
   uniform float uDriftIntensity;
   uniform float uTwinkleSpeed;
+  uniform float uTwinkleSharpness;
 
   attribute float aSize;
   attribute float aSpeed;
@@ -27,11 +28,12 @@ const STAR_VERTEX_SHADER = `
 
     // GPU Drift
     vec3 updatedPosition = position;
-    updatedPosition.x += sin(uTime * s * 0.2 + o) * uDriftIntensity;
-    updatedPosition.y += cos(uTime * s * 0.2 + o) * uDriftIntensity;
+    updatedPosition.x += sin(uTime * s * 0.5 + o) * uDriftIntensity;
+    updatedPosition.y += cos(uTime * s * 0.5 + o) * uDriftIntensity;
 
     // GPU Twinkle
-    float sparkle = pow(0.5 + sin(uTime * (s * uTwinkleSpeed) + o) * 0.5, 8.0);
+    float sineWave = sin(uTime * (s * uTwinkleSpeed) + o);
+    float sparkle = pow(sineWave * 0.5 + 0.5, uTwinkleSharpness); // Normalize to 0-1 range before pow
     vAlpha = aBrightness * sparkle;
 
     vec4 mvPosition = modelViewMatrix * vec4(updatedPosition, 1.0);
@@ -43,38 +45,44 @@ const STAR_VERTEX_SHADER = `
 
 const STAR_FRAGMENT_SHADER = `
   uniform sampler2D pointTexture;
+  uniform vec3 uColor;
   varying float vAlpha;
   void main() {
     vec4 tex = texture2D(pointTexture, gl_PointCoord);
     // Lenis-style refinement: multiply by alpha and ensure soft edges
-    gl_FragColor = vec4(1.0, 1.0, 1.0, vAlpha * tex.a);
+    gl_FragColor = vec4(uColor, vAlpha * tex.a);
   }
 `;
 
 function StarLayer({
     count,
-    radius = 1.5, // Increased default radius to push stars away from camera
-    size = 0.8,   // Adjusted default size
+    radius = 1.5,
+    size = 0.8,
     baseBrightness = 0.1,
     twinkleSpeed = 8.0,
     driftIntensity = 1.2,
     depth = 1,
+    movementSpeed = 0.5, // Factor for cursor-following parallax
+    twinkleSharpness = 8.0, // Control curve of twinkle
+    color = "#F6CCC0", // Default white
 }: any) {
     const matRef = useRef<THREE.ShaderMaterial>(null);
     const pointsRef = useRef<THREE.Points>(null);
     const { mouse } = useThree();
     const mousePos = useRef({ x: 0, y: 0 });
 
+    const colorUniform = useMemo(() => new THREE.Color(color), [color]);
+
     const starTexture = useMemo(() => {
         const canvas = document.createElement("canvas");
-        canvas.width = 128; // Increased resolution for smoother stars
+        canvas.width = 128;
         canvas.height = 128;
         const ctx = canvas.getContext("2d");
         if (ctx) {
             const gradient = ctx.createRadialGradient(64, 64, 0, 64, 64, 64);
             gradient.addColorStop(0, "rgba(255, 255, 255, 1)");
             gradient.addColorStop(0.05, "rgba(255, 255, 255, 0.8)");
-            gradient.addColorStop(0.1, "rgba(255, 255, 255, 0.08)"); // Fades to zero much faster
+            gradient.addColorStop(0.1, "rgba(255, 255, 255, 0.0)");
             gradient.addColorStop(1, "rgba(255, 255, 255, 0)");
             ctx.fillStyle = gradient;
             ctx.fillRect(0, 0, 128, 128);
@@ -99,7 +107,7 @@ function StarLayer({
             pos[idx + 1] = r * Math.sin(phi) * Math.sin(theta) * depth;
             pos[idx + 2] = r * Math.cos(phi) * depth;
 
-            spd[i] = 0.5 + Math.random() * 0.5;
+            spd[i] = 0.5 + Math.random() * 0.8; // Wider range for more variation
             off[i] = Math.random() * Math.PI * 2;
             sz[i] = size * (0.8 + Math.random() * 0.4);
             bri[i] = baseBrightness;
@@ -114,10 +122,19 @@ function StarLayer({
         }
 
         if (pointsRef.current) {
-            mousePos.current.x = THREE.MathUtils.lerp(mousePos.current.x, mouse.x * 0.05, 0.1);
-            mousePos.current.y = THREE.MathUtils.lerp(mousePos.current.y, mouse.y * 0.05, 0.1);
+            // Parallax movement: inverse direction to mouse for depth feel
+            // Multiplier determines "distance" feel
+            const targetX = -mouse.x * movementSpeed;
+            const targetY = -mouse.y * movementSpeed;
+
+            mousePos.current.x = THREE.MathUtils.lerp(mousePos.current.x, targetX, 0.1);
+            mousePos.current.y = THREE.MathUtils.lerp(mousePos.current.y, targetY, 0.1);
+
             pointsRef.current.position.x = mousePos.current.x;
             pointsRef.current.position.y = mousePos.current.y;
+
+            // Subtle rotation based on mouse x for more dynamic feel
+            pointsRef.current.rotation.y = THREE.MathUtils.lerp(pointsRef.current.rotation.y, mouse.x * 0.05, 0.05);
         }
     });
 
@@ -154,7 +171,9 @@ function StarLayer({
                     pointTexture: { value: starTexture },
                     uTime: { value: 0 },
                     uDriftIntensity: { value: driftIntensity },
-                    uTwinkleSpeed: { value: twinkleSpeed }
+                    uTwinkleSpeed: { value: twinkleSpeed },
+                    uTwinkleSharpness: { value: twinkleSharpness },
+                    uColor: { value: colorUniform }
                 }}
                 vertexShader={STAR_VERTEX_SHADER}
                 fragmentShader={STAR_FRAGMENT_SHADER}
@@ -184,7 +203,15 @@ const SkyRotation = ({ latitude, lst, children }: { latitude: number, lst: numbe
     return <group ref={groupRef}>{children}</group>;
 };
 
-const DustStar = () => {
+const DustStar = ({
+    twinkleSpeed,
+    twinkleSharpness,
+    color
+}: {
+    twinkleSpeed?: number;
+    twinkleSharpness?: number;
+    color?: string;
+}) => {
     const { latitude, longitude } = useGeo();
     const lst = useSkyTime(longitude);
 
@@ -197,6 +224,9 @@ const DustStar = () => {
             }}
         >
             <Canvas
+                frameloop="always"
+                eventSource={typeof document !== 'undefined' ? document.body : undefined}
+                className="pointer-events-none"
                 camera={{ position: [0, 0, 0], fov: 75, near: 0.1, far: 1000 }}
                 gl={{
                     alpha: true,
@@ -209,37 +239,46 @@ const DustStar = () => {
             >
                 <Suspense fallback={null}>
                     <SkyRotation latitude={latitude} lst={lst}>
-                        {/* Layer 1: Tiny, deep background dust */}
+                        {/* Layer 1: Tiny, deep background dust - Firefly Pulse */}
                         <StarLayer
                             count={3000}
                             radius={0.5}
                             size={0.4}
-                            baseBrightness={0.8}
-                            driftIntensity={2.5} // Increased drift for firefly wandering effect
-                            depth={1.5}
-                            twinkleSpeed={1.2} // Slower, more organic firefly pulse
+                            baseBrightness={1.2}
+                            driftIntensity={2.5}
+                            depth={1.6}
+                            twinkleSpeed={twinkleSpeed ?? 0.8}
+                            twinkleSharpness={twinkleSharpness ?? 1.5}
+                            movementSpeed={0.05}
+                            color={color}
                         />
 
-                        {/* Layer 2: Main sparkling stars */}
+                        {/* Layer 2: Main sparkling stars - Medium movement */}
                         <StarLayer
                             count={1500}
                             radius={1.5}
                             size={0.6}
                             baseBrightness={0.6}
-                            driftIntensity={0.15} // Increased for "motion on" effect
+                            driftIntensity={0.15}
                             depth={1.2}
-                            twinkleSpeed={1.0} // Fast, bright twinkling
+                            twinkleSpeed={twinkleSpeed ?? 1.0}
+                            twinkleSharpness={twinkleSharpness ?? 8.0}
+                            movementSpeed={0.15}
+                            color={color}
                         />
 
-                        {/* Layer 3: Occasional bright hero stars */}
+                        {/* Layer 3: Occasional bright hero stars - Fastest movement (Foreground) */}
                         <StarLayer
                             count={500}
-                            radius={3.0}
+                            radius={1.8}
                             size={0.8}
                             baseBrightness={1.0}
                             driftIntensity={0.08}
-                            depth={1.0}
-                            twinkleSpeed={12.0} // Slow motion sparkle
+                            depth={1.4}
+                            twinkleSpeed={twinkleSpeed ?? 8.0}
+                            twinkleSharpness={twinkleSharpness ?? 12.0}
+                            movementSpeed={0.05}
+                            color={color}
                         />
                     </SkyRotation>
                 </Suspense>

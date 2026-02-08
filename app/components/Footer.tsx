@@ -63,11 +63,11 @@ export const Footer = () => {
                             transition={{ duration: 0.2, delay: 0.4, ease: "easeOut" }} // Added delay and increased duration for a smoother entrance
                             whileHover={{ scale: 1.0 }}
                             whileTap={{ scale: 0.98 }}
-                            className="bg-black/60 backdrop-blur-md border-2 border-white/10 rounded-md px-3 py-1.5 cursor-pointer group"
+                            className="bg-black/50 backdrop-blur-md border-2 border-white/10 rounded-md px-3 py-1.5 cursor-pointer group"
                         >
                             <span className="font-doto text-micro uppercase tracking-widest opacity-80 group-hover:opacity-100 transition-opacity">
                                 <ScrambleText
-                                    text={`© 2018 - ${new Date().getFullYear()}`}
+                                    text={`© 2020 - ${new Date().getFullYear()}`}
                                     delay={0}
                                     duration={0.6}
                                     trigger={isCopyrightHovered}
@@ -81,7 +81,7 @@ export const Footer = () => {
                             animate={{ opacity: 1, scale: 1, y: 0 }}
                             exit={{ opacity: 0, scale: 1, y: 10 }}
                             transition={{ duration: 0.3, ease: "easeOut" }} // Reset scale to 1, easeOut preference
-                            className="w-[90vw] sm:w-[400px] rounded-xl border-2 border-white/15 bg-black/60 backdrop-blur-md p-5 overflow-hidden origin-bottom sm:origin-bottom-right"
+                            className="w-[90vw] sm:w-[400px] rounded-xl border-2 border-white/15 bg-black/50 backdrop-blur-md p-5 overflow-hidden origin-bottom sm:origin-bottom-right"
                         >
                             <div className="flex flex-col gap-6">
                                 {/* Header */}
@@ -90,7 +90,7 @@ export const Footer = () => {
                                         <h3 className="font-electrolize text-caption uppercase tracking-tighter opacity-80">
                                             Technical Specifications
                                         </h3>
-                                        <p className="font-doto text-[10px] uppercase tracking-widest opacity-60">
+                                        <p className="font-doto text-[10px] uppercase tracking-widest opacity-70">
                                             Build Rev. {new Date().getFullYear()}.02.07 // System Active
                                         </p>
                                     </div>
@@ -104,7 +104,7 @@ export const Footer = () => {
                                             className="p-2 hover:bg-white/10 rounded-full transition-colors group"
                                             aria-label="Close footer"
                                         >
-                                            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" className="opacity-60 group-hover:opacity-100 transition-opacity">
+                                            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" className="opacity-70 group-hover:opacity-100 transition-opacity">
                                                 <path d="M1 1L11 11M1 11L11 1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
                                             </svg>
                                         </button>
@@ -139,12 +139,12 @@ export const Footer = () => {
                                 {/* Bottom */}
                                 <div className="flex flex-col pt-4 gap-4 border-t border-white/5">
                                     <div className="flex flex-wrap gap-spacing-06">
-                                        <span className="font-doto text-micro uppercase tracking-widest opacity-50">
-                                            © 2018 - {new Date().getFullYear()}
+                                        <span className="font-doto text-micro uppercase tracking-widest opacity-70">
+                                            © 2020 - {new Date().getFullYear()}
                                         </span>
 
                                         <span
-                                            className="font-doto text-micro uppercase tracking-widest opacity-50 hover:opacity-100 transition"
+                                            className="font-doto text-micro uppercase tracking-widest opacity-70 hover:opacity-100 transition"
                                             onMouseEnter={() => setIsGithubHovered(true)}
                                             onMouseLeave={() => setIsGithubHovered(false)}
                                         > Repositories:
@@ -163,7 +163,7 @@ export const Footer = () => {
                                         </span>
                                     </div>
 
-                                    <div className="font-doto text-micro uppercase tracking-widest opacity-50">
+                                    <div className="font-doto text-micro uppercase tracking-widest opacity-70">
                                         <ScrambleText text="All circuits busy" delay={0.1} duration={2} />
                                     </div>
                                 </div>
