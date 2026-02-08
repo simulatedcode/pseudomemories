@@ -65,7 +65,7 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  height: auto;
+  height: 100dvh;
   width: 100dvw;
   overflow-x: hidden;
 }

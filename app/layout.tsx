@@ -51,6 +51,9 @@ export default function RootLayout({
             <Footer />
           </SmoothScroll>
         </GeoProvider>
+
+        {/* Global Dynamic Texture/Grain overlay */}
+        <div className="fixed inset-0 pointer-events-none opacity-[0.2] z-100 bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
       </body>
     </html>
   );
