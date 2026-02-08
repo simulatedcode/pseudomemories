@@ -54,17 +54,16 @@ export const Footer = () => {
                     {!isOpen ? (
                         <motion.button
                             key="footer-closed"
-                            layoutId="footer-container"
                             onClick={() => setIsOpen(true)}
                             onMouseEnter={() => setIsCopyrightHovered(true)}
                             onMouseLeave={() => setIsCopyrightHovered(false)}
-                            initial={{ opacity: 0, scale: 0.95 }}
-                            animate={{ opacity: 1, scale: 1 }}
-                            exit={{ opacity: 0, scale: 0.95 }}
-                            transition={{ duration: 0.2 }}
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: 10 }}
+                            transition={{ duration: 0.2, delay: 0.4, ease: "easeOut" }} // Added delay and increased duration for a smoother entrance
                             whileHover={{ scale: 1.0 }}
                             whileTap={{ scale: 0.98 }}
-                            className="bg-black/60 backdrop-blur-md border-2 border-white/10 rounded-md px-3 py-1.5 shadow-md shadow-black/40 cursor-pointer group"
+                            className="bg-black/60 backdrop-blur-md border-2 border-white/10 rounded-md px-3 py-1.5 cursor-pointer group"
                         >
                             <span className="font-doto text-micro uppercase tracking-widest opacity-80 group-hover:opacity-100 transition-opacity">
                                 <ScrambleText
@@ -78,12 +77,11 @@ export const Footer = () => {
                     ) : (
                         <motion.div
                             key="footer-open"
-                            layoutId="footer-container"
-                            initial={{ opacity: 0, scale: 0.95, y: 10 }}
+                            initial={{ opacity: 0, scale: 1, y: 10 }}
                             animate={{ opacity: 1, scale: 1, y: 0 }}
-                            exit={{ opacity: 0, scale: 0.95, y: 10 }}
-                            transition={{ duration: 0.3, ease: "easeInOut" }}
-                            className="w-[90vw] sm:w-[400px] rounded-xl border-2 border-white/15 bg-black/60 backdrop-blur-md shadow-md shadow-black/50 p-5 overflow-hidden origin-bottom sm:origin-bottom-right"
+                            exit={{ opacity: 0, scale: 1, y: 10 }}
+                            transition={{ duration: 0.3, ease: "easeOut" }} // Reset scale to 1, easeOut preference
+                            className="w-[90vw] sm:w-[400px] rounded-xl border-2 border-white/15 bg-black/60 backdrop-blur-md p-5 overflow-hidden origin-bottom sm:origin-bottom-right"
                         >
                             <div className="flex flex-col gap-6">
                                 {/* Header */}
@@ -127,13 +125,13 @@ export const Footer = () => {
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <TechRow label="Framework" value="Next.js 15" delay={0.1} />
-                                            <TechRow label="Components" value="React 19" delay={0.2} />
-                                            <TechRow label="Graphics" value="GLSL Shaders" delay={0.3} />
-                                            <TechRow label="Motion" value="Framer Motion" delay={0.4} />
-                                            <TechRow label="Styling" value="Tailwind v4" delay={0.5} />
-                                            <TechRow label="Metadata" value="Geoloc API" delay={0.6} />
-                                            <TechRow label="Deploy" value="Firebase" delay={0.7} />
+                                            <TechRow label="Framework" value="Next.js 16" delay={0.1} />
+                                            <TechRow label="Interface" value="React 19" delay={0.2} />
+                                            <TechRow label="Rendering" value="Three.js / R3F" delay={0.3} />
+                                            <TechRow label="Graphics" value="GPU/GLSL Shaders" delay={0.4} />
+                                            <TechRow label="Motion" value="Framer Motion" delay={0.5} />
+                                            <TechRow label="Styling" value="Tailwind v4" delay={0.6} />
+                                            <TechRow label="Engine" value="GeoLoc / LST" delay={0.7} />
                                         </tbody>
                                     </table>
                                 </div>

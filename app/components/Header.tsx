@@ -1,8 +1,9 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { ScrambleText } from "./ScrambleText";
+import { useGeo } from "../context/GeoContext";
 
 const AboutIcon = () => (
     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="stroke-current">
@@ -20,40 +21,17 @@ const MissionIcon = () => (
 
 export const Header = () => {
     const [hoveredItem, setHoveredItem] = useState<string | null>(null);
-    const [location, setLocation] = useState<string>("LOCATING...");
+    const { latitude, longitude, error } = useGeo();
 
-    useEffect(() => {
-        if ("geolocation" in navigator) {
-            navigator.geolocation.getCurrentPosition(
-                (position) => {
-                    const { latitude, longitude } = position.coords;
-                    setLocation(`${latitude.toFixed(4)}°N ${longitude.toFixed(4)}°E`);
-                },
-                (error) => {
-                    console.error("Geolocation error:", error);
-                    switch (error.code) {
-                        case 1:
-                            setLocation("ACCESS DENIED");
-                            break;
-                        case 2:
-                            setLocation("SIGNAL LOST");
-                            break;
-                        case 3:
-                            setLocation("TIMED OUT");
-                            break;
-                        default:
-                            setLocation("DATA OFFLINE");
-                    }
-                },
-                { enableHighAccuracy: false, timeout: 5000, maximumAge: Infinity }
-            );
-        } else {
-            setLocation("NOT SUPPORTED");
-        }
-    }, []);
+    const locationString = error || `${latitude.toFixed(4)}°N ${longitude.toFixed(4)}°E`;
 
     return (
-        <header className="fixed top-0 left-0 w-full z-50 flex items-center justify-between px-spacing-06 sm:px-spacing-08 py-spacing-05 text-offwhite-100">
+        <motion.header
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 1.2, ease: "easeOut" }}
+            className="fixed top-0 left-0 w-full z-50 flex items-center justify-between px-spacing-06 sm:px-spacing-08 py-spacing-05 text-offwhite-100"
+        >
             <div className="flex items-center">
                 <motion.div
                     onMouseEnter={() => setHoveredItem("Logo")}
@@ -61,7 +39,7 @@ export const Header = () => {
                     className="cursor-default"
                 >
                     <span className="font-electrolize cursor-pointer text-caption uppercase tracking-tighter opacity-80">
-                        <ScrambleText text="in a landscape" delay={1} duration={1.2} trigger={hoveredItem === "Logo"} />
+                        <ScrambleText text="pseudo memories" delay={1} duration={1.2} trigger={hoveredItem === "Logo"} />
                     </span>
                 </motion.div>
             </div>
@@ -73,7 +51,7 @@ export const Header = () => {
                     className="cursor-default"
                 >
                     <span className="font-doto text-caption uppercase tracking-[0.2em] opacity-80">
-                        <ScrambleText text={location} delay={1.5} duration={1.5} />
+                        <ScrambleText text={locationString} delay={1.5} duration={1.5} />
                     </span>
                 </motion.div>
             </div>
@@ -102,6 +80,6 @@ export const Header = () => {
                     </span>
                 </motion.button>
             </nav>
-        </header>
+        </motion.header>
     );
 };

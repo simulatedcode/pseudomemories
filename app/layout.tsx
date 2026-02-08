@@ -4,6 +4,7 @@ import SmoothScroll from "./components/SmoothScroll";
 import { Header } from "./components/Header";
 import { Footer } from "./components/Footer";
 import PageTransition from "./components/PageTransition";
+import Intro from "./components/Intro";
 import "./globals.css";
 
 const electrolize = Electrolize({
@@ -21,12 +22,14 @@ const doto = Doto({
 });
 
 export const metadata: Metadata = {
-  title: "in a landscape",
-  description: "in a landscape",
+  title: "pseudo memories",
+  description: "pseudo memories - memories of the past",
   icons: {
     icon: "/favicon.ico",
   },
 };
+
+import { GeoProvider } from "./context/GeoContext";
 
 export default function RootLayout({
   children,
@@ -38,13 +41,16 @@ export default function RootLayout({
       <body
         className={`${electrolize.variable} ${doto.variable} antialiased`}
       >
-        <SmoothScroll>
-          <Header />
-          <main className="relative w-auto mx-auto z-10 flex flex-col pt-spacing-10 px-spacing-06 sm:px-spacing-08 flex-1">
-            <PageTransition>{children}</PageTransition>
-          </main>
-          <Footer />
-        </SmoothScroll>
+        <GeoProvider>
+          <Intro />
+          <SmoothScroll>
+            <Header />
+            <main className="relative w-auto mx-auto z-10 flex flex-col pt-spacing-10 px-spacing-06 sm:px-spacing-08 flex-1">
+              <PageTransition>{children}</PageTransition>
+            </main>
+            <Footer />
+          </SmoothScroll>
+        </GeoProvider>
       </body>
     </html>
   );
