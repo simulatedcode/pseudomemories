@@ -4,7 +4,7 @@ import { useRef, Suspense, useMemo, useEffect, useState } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { Points, PointMaterial } from "@react-three/drei";
 import * as THREE from "three";
-import { useGeo } from "../context/GeoContext";
+import { useGeo } from "../context/GeoContextCore";
 import { useSkyTime } from "../hooks/useSkyTime";
 
 /* ================= STAR FIELD ================= */

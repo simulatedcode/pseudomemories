@@ -3,12 +3,12 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { ScrambleText } from "./ScrambleText";
-import { useGeo } from "../context/GeoContext";
+import { useGeo } from "../context/GeoContextCore";
 import Link from "next/link";
 
 import { Navigation } from "./Navigation";
 
-export const Header = () => {
+export function Header() {
     const [hoveredItem, setHoveredItem] = useState<string | null>(null);
     const { latitude, longitude, error } = useGeo();
 

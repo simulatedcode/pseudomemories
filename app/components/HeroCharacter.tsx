@@ -17,12 +17,25 @@ function CharacterSprite() {
         return img.width / img.height;
     }, [texture]);
 
-    // Responsive scale
+    // Responsive scale based on viewport
     const isMobile = size.width < 768;
-    const heightMultiplier = isMobile ? 1.15 : 1.34;
+    const isWideScreen = size.width > 1920;
 
-    // Character scale
-    const characterHeight = viewport.height * heightMultiplier;
+    // Use viewport width for wide screens, height for mobile
+    let characterHeight;
+    if (isMobile) {
+        // Mobile: scale by height
+        characterHeight = viewport.height * 1.15;
+    } else if (isWideScreen) {
+        // Wide screens: scale by width with max limit
+        const widthBasedHeight = (viewport.width * 6.20) / aspect;
+        characterHeight = Math.min(widthBasedHeight, viewport.height * 6.22);
+    } else {
+        // Desktop: balanced scaling
+        const widthBasedHeight = (viewport.width * 2.65) / aspect;
+        characterHeight = Math.min(widthBasedHeight, viewport.height * 1.34);
+    }
+
     const characterWidth = characterHeight * aspect;
 
     // Horizon line is calculated from Hero8Bit

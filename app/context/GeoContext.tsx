@@ -1,16 +1,9 @@
 "use client";
 
-import React, { createContext, useContext, useState, useEffect, ReactNode } from "react";
+import React, { useState, useEffect, ReactNode } from "react";
+import { GeoContext, GeoContextType } from "./GeoContextCore";
 
-interface GeoContextType {
-    latitude: number;
-    longitude: number;
-    error: string | null;
-}
-
-const GeoContext = createContext<GeoContextType | undefined>(undefined);
-
-export const GeoProvider = ({ children }: { children: ReactNode }) => {
+export function GeoProvider({ children }: { children: ReactNode }) {
     const [geo, setGeo] = useState<GeoContextType>({
         latitude: 0,
         longitude: 0,
@@ -48,12 +41,4 @@ export const GeoProvider = ({ children }: { children: ReactNode }) => {
             {children}
         </GeoContext.Provider>
     );
-};
-
-export const useGeo = () => {
-    const context = useContext(GeoContext);
-    if (context === undefined) {
-        throw new Error("useGeo must be used within a GeoProvider");
-    }
-    return context;
-};
+}

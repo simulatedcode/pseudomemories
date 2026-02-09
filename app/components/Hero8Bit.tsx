@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 
-export const Hero8Bit = () => {
+export function Hero8Bit() {
     const gridLines = [
         { y: 135, opacity: 0.1 },
         { y: 145, opacity: 0.2 },

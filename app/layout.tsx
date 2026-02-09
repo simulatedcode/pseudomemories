@@ -30,6 +30,7 @@ export const metadata: Metadata = {
 };
 
 import { GeoProvider } from "./context/GeoContext";
+import { AudioProvider } from "./context/AudioContext";
 
 export default function RootLayout({
   children,
@@ -41,20 +42,24 @@ export default function RootLayout({
       <body
         className={`${electrolize.variable} ${doto.variable} antialiased`}
       >
-        <GeoProvider>
-          <Intro />
-          <SmoothScroll>
-            <Header />
-            <main className="relative w-auto mx-auto z-10 flex flex-col pt-spacing-10 px-spacing-06 sm:px-spacing-08 flex-1">
-              <PageTransition>{children}</PageTransition>
-            </main>
-            <Footer />
-          </SmoothScroll>
-        </GeoProvider>
+
+        <AudioProvider>
+          <GeoProvider>
+            <Intro />
+            <SmoothScroll>
+              <Header />
+              <main className="relative w-auto mx-auto z-10 flex flex-col pt-spacing-10 px-spacing-06 sm:px-spacing-08 flex-1">
+                <PageTransition>{children}</PageTransition>
+              </main>
+              <Footer />
+            </SmoothScroll>
+          </GeoProvider>
+        </AudioProvider>
+
 
         {/* Global Dynamic Texture/Grain overlay */}
         <div className="fixed inset-0 pointer-events-none opacity-[0.2] z-100 bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
       </body>
-    </html>
+    </html >
   );
 }

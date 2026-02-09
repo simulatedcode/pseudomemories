@@ -13,14 +13,14 @@ interface ScrambleTextProps {
 
 const chars = "!@#$%^&*()_+-=[]{}|;:,.<>?0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 
-export const ScrambleText: React.FC<ScrambleTextProps> = ({
+export function ScrambleText({
     text,
     className = "",
     delay = 0,
     duration = 0.8,
     scrambleSpeed = 40,
     trigger,
-}) => {
+}: ScrambleTextProps) {
     const [displayText, setDisplayText] = useState("");
     const [isStarted, setIsStarted] = useState(false);
 

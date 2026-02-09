@@ -11,7 +11,7 @@ type TechRowProps = {
     delay?: number;
 };
 
-const TechRow = ({ label, value, delay = 0 }: TechRowProps) => {
+function TechRow({ label, value, delay = 0 }: TechRowProps) {
     const ref = useRef<HTMLTableRowElement | null>(null);
     const isInView = useInView(ref, { once: false, amount: 0.4 });
     const [isHovered, setIsHovered] = useState(false);
@@ -39,28 +39,34 @@ const TechRow = ({ label, value, delay = 0 }: TechRowProps) => {
             </td>
         </motion.tr>
     );
-};
+}
 
-export const Footer = () => {
+import { useAudio } from "../context/AudioContextCore";
+
+export function Footer() {
     const [isOpen, setIsOpen] = useState(false);
-    const [isGithubHovered, setIsGithubHovered] = useState(false);
 
+    const handleToggle = (open: boolean) => {
+        setIsOpen(open);
+    };
+
+    const [isGithubHovered, setIsGithubHovered] = useState(false);
     const [isCopyrightHovered, setIsCopyrightHovered] = useState(false);
 
     return (
-        <footer className="fixed bottom-spacing-04 left-0 right-0 sm:left-auto sm:right-spacing-06 z-50 flex flex-col items-center sm:items-end pointer-events-none">
+        <footer className="fixed bottom-0 right-0 p-spacing-04 sm:p-spacing-06 z-50 flex flex-col items-end pointer-events-none">
             <div className="pointer-events-auto">
                 <AnimatePresence mode="wait">
                     {!isOpen ? (
                         <motion.button
                             key="footer-closed"
-                            onClick={() => setIsOpen(true)}
+                            onClick={() => handleToggle(true)}
                             onMouseEnter={() => setIsCopyrightHovered(true)}
                             onMouseLeave={() => setIsCopyrightHovered(false)}
                             initial={{ opacity: 0, y: 10 }}
                             animate={{ opacity: 1, y: 0 }}
                             exit={{ opacity: 0, y: 10 }}
-                            transition={{ duration: 0.2, delay: 0.4, ease: "easeOut" }} // Added delay and increased duration for a smoother entrance
+                            transition={{ duration: 0.2, delay: 0.4, ease: "easeOut" }}
                             whileHover={{ scale: 1.0 }}
                             whileTap={{ scale: 0.98 }}
                             className="bg-black/50 backdrop-blur-md border-2 border-white/10 rounded-md px-3 py-1.5 cursor-pointer group"
@@ -80,7 +86,7 @@ export const Footer = () => {
                             initial={{ opacity: 0, scale: 1, y: 10 }}
                             animate={{ opacity: 1, scale: 1, y: 0 }}
                             exit={{ opacity: 0, scale: 1, y: 10 }}
-                            transition={{ duration: 0.3, ease: "easeOut" }} // Reset scale to 1, easeOut preference
+                            transition={{ duration: 0.3, ease: "easeOut" }}
                             className="w-[90vw] sm:w-[400px] rounded-xl border-2 border-white/15 bg-black/50 backdrop-blur-md p-5 overflow-hidden origin-bottom sm:origin-bottom-right"
                         >
                             <div className="flex flex-col gap-6">
@@ -99,7 +105,7 @@ export const Footer = () => {
                                         <button
                                             onClick={(e) => {
                                                 e.stopPropagation();
-                                                setIsOpen(false);
+                                                handleToggle(false);
                                             }}
                                             className="p-2 hover:bg-white/10 rounded-full transition-colors group"
                                             aria-label="Close footer"
@@ -174,4 +180,4 @@ export const Footer = () => {
             </div>
         </footer>
     );
-};
+}

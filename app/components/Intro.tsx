@@ -2,13 +2,16 @@
 
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { useGeo } from "../context/GeoContext";
+import { useGeo } from "../context/GeoContextCore";
+import { useAudio } from "../context/AudioContextCore";
 import { ScrambleText } from "./ScrambleText";
 
 export default function Intro() {
     const [progress, setProgress] = useState(0);
+    const [showChoice, setShowChoice] = useState(false);
     const [isVisible, setIsVisible] = useState(true);
     const { latitude, longitude, error } = useGeo();
+    const { setAudioEnabled, playAudio } = useAudio();
 
     useEffect(() => {
         const interval = setInterval(() => {
@@ -16,7 +19,7 @@ export default function Intro() {
                 const next = prev + Math.floor(Math.random() * 10) + 1;
                 if (next >= 100) {
                     clearInterval(interval);
-                    setTimeout(() => setIsVisible(false), 800);
+                    setTimeout(() => setShowChoice(true), 800);
                     return 100;
                 }
                 return next;
@@ -25,6 +28,11 @@ export default function Intro() {
 
         return () => clearInterval(interval);
     }, []);
+
+    const handleChoice = (withAudio: boolean) => {
+        setAudioEnabled(withAudio);
+        setTimeout(() => setIsVisible(false), 300);
+    };
 
     const locationString = error || `${latitude.toFixed(4)}°N ${longitude.toFixed(4)}°E`;
 
@@ -43,7 +51,7 @@ export default function Intro() {
                         {/* Upper Details */}
                         <div className="w-full flex justify-between font-doto text-[10px] tracking-widest opacity-40 uppercase">
                             <div className="flex flex-col gap-1">
-                                <span>Status: Booting</span>
+                                <span>Status: {showChoice ? "Ready" : "Booting"}</span>
                                 <span>Signal: {error ? "Offline" : "Locked"}</span>
                             </div>
                             <div className="text-right">
@@ -74,15 +82,46 @@ export default function Intro() {
                                 </span>
                             </div>
 
-                            {/* Loading Bar */}
-                            <div className="w-full h-0.5 bg-white/10 relative overflow-hidden">
+                            {/* Loading Bar or Choice Buttons */}
+                            {!showChoice ? (
+                                <div className="w-full h-0.5 bg-white/10 relative overflow-hidden">
+                                    <motion.div
+                                        className="absolute inset-0 bg-white/60"
+                                        initial={{ x: "-100%" }}
+                                        animate={{ x: `${progress - 100}%` }}
+                                        transition={{ ease: "linear" }}
+                                    />
+                                </div>
+                            ) : (
                                 <motion.div
-                                    className="absolute inset-0 bg-white/60"
-                                    initial={{ x: "-100%" }}
-                                    animate={{ x: `${progress - 100}%` }}
-                                    transition={{ ease: "linear" }}
-                                />
-                            </div>
+                                    initial={{ opacity: 0, y: 10 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ duration: 0.5 }}
+                                    className="w-full flex flex-col gap-3"
+                                >
+                                    <span className="font-electrolize text-[10px] uppercase tracking-[0.3em] opacity-60 text-center">
+                                        Audio Preference
+                                    </span>
+                                    <div className="flex gap-3">
+                                        <motion.button
+                                            onClick={() => handleChoice(true)}
+                                            whileHover={{ scale: 1.02 }}
+                                            whileTap={{ scale: 0.98 }}
+                                            className="flex-1 px-4 py-3 bg-white/30 hover:bg-white/40 border-2 border-white/60 rounded-md font-doto text-micro uppercase tracking-widest transition-colors"
+                                        >
+                                            Play Audio
+                                        </motion.button>
+                                        <motion.button
+                                            onClick={() => handleChoice(false)}
+                                            whileHover={{ scale: 1.02 }}
+                                            whileTap={{ scale: 0.98 }}
+                                            className="flex-1 px-4 py-3 bg-white/10 hover:bg-white/20 border border-white/20 rounded-md font-doto text-micro uppercase tracking-widest transition-colors"
+                                        >
+                                            Silent
+                                        </motion.button>
+                                    </div>
+                                </motion.div>
+                            )}
                         </div>
                     </div>
 
