@@ -65,11 +65,11 @@ export default function PageTransition({ children }: { children: ReactNode }) {
                                     transition={{ duration: 0.8, ease: "easeInOut" }}
                                 />
                             </div>
-                            <h2 className="font-electrolize text-h3 tracking-[0.3em] text-offwhite-100 flex items-center gap-4">
+                            <h4 className="font-electrolize text-h4 sm:text-h3 tracking-[0.3em] text-offwhite-100 flex items-center gap-4">
                                 <span className="text-vermelion opacity-40">[</span>
                                 <ScrambleText text={getRouteLabel(pathname)} duration={0.8} />
                                 <span className="text-vermelion opacity-40">]</span>
-                            </h2>
+                            </h4>
                         </div>
                     </motion.div>
                 )}

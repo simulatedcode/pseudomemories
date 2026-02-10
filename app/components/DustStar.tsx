@@ -222,10 +222,9 @@ const DustStar = ({
 
     return (
         <motion.div
-            className="fixed top-0 left-0 right-0 z-0 pointer-events-none"
+            className="fixed top-0 left-0 right-0 z-0 pointer-events-none bottom-[25vh] sm:bottom-[25vh] lg:bottom-[30vh] xl:bottom-[35vh]"
             style={{
                 y: yOffset,
-                bottom: "235px", // Aligns with the Hero8Bit horizon line
                 background: "transparent",
             }}
         >

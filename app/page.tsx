@@ -46,7 +46,7 @@ export default function Home() {
               style={{ willChange: "opacity, filter" }}
               className="fixed inset-0 z-10 pointer-events-none"
             >
-              <HeroCharacter y={-102} />
+              <HeroCharacter />
             </motion.div>
           </>
         )}

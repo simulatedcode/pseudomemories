@@ -14,7 +14,7 @@ interface HeroCharacterProps {
     anchor?: "center" | "bottom" | "top" | "left" | "right";
 }
 
-function CharacterSprite({ x = 184, y = 0, anchor = "center" }: HeroCharacterProps) {
+function CharacterSprite({ x = 204, y = 0, anchor = "center" }: HeroCharacterProps) {
     const texture = useTexture("/raden_.png");
     const { viewport, size } = useThree();
 
@@ -31,13 +31,12 @@ function CharacterSprite({ x = 184, y = 0, anchor = "center" }: HeroCharacterPro
     let characterHeight: number;
 
     if (isMobile) {
-        characterHeight = viewport.height * 0.9;
+        characterHeight = viewport.height * 1;
     } else if (isTablet) {
-        characterHeight = viewport.height * 0.95;
-    } else if (isWide) {
-        characterHeight = viewport.height * 0.9;
+        characterHeight = viewport.height * 0.85;
     } else {
-        characterHeight = viewport.height * 1.0;
+        // Laptop / Monitor 1080p+
+        characterHeight = viewport.height * 0.9;
     }
 
     const characterWidth = characterHeight * aspect;
@@ -57,15 +56,25 @@ function CharacterSprite({ x = 184, y = 0, anchor = "center" }: HeroCharacterPro
     };
 
     const posX = parseCoord(x, viewport.width, size.width);
-    const posY = parseCoord(y, viewport.height, size.height);
+    const horizonPercent = isMobile ? 0.40 : isTablet ? 0.50 : 0.60;
+    const horizonY = isMobile ? 80 : 112;
+    const horizonPos = (1 - (horizonY / 220)) * horizonPercent; // Horizon from bottom relative to screen height
+
+    // If y is provided as a number/string, use it, otherwise target the horizon
+    const posY = y !== undefined
+        ? parseCoord(y, viewport.height, size.height)
+        : (horizonPos - 0.5) * viewport.height;
+
+    // Default to anchoring at bottom for character placement on the horizon
+    const characterAnchor = y === undefined ? "bottom" : anchor;
 
     let offsetX = 0;
     let offsetY = 0;
 
-    if (anchor === "left") offsetX = characterWidth / 2;
-    if (anchor === "right") offsetX = -characterWidth / 2;
-    if (anchor === "top") offsetY = -characterHeight / 2;
-    if (anchor === "bottom") offsetY = characterHeight / 2;
+    if (characterAnchor === "left") offsetX = characterWidth / 2;
+    if (characterAnchor === "right") offsetX = -characterWidth / 2;
+    if (characterAnchor === "top") offsetY = -characterHeight / 2;
+    if (characterAnchor === "bottom") offsetY = characterHeight / 2;
 
     const targetPos = useMemo(() => new THREE.Vector3(posX + offsetX, posY + offsetY, 0), [posX, posY, offsetX, offsetY]);
 

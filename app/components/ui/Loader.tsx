@@ -11,14 +11,8 @@ interface LoaderProps {
 export default function Loader({ size = "md", className = "", text = "LOADING" }: LoaderProps) {
     const sizeClasses = {
         sm: "w-4 h-4 text-[10px]",
-        md: "w-8 h-8 text-micro",
-        lg: "w-12 h-12 text-caption",
-    };
-
-    const ringSize = {
-        sm: 16,
-        md: 32,
-        lg: 48,
+        md: "w-6 h-6 sm:w-8 sm:h-8 text-[10px] sm:text-micro",
+        lg: "w-8 h-8 sm:w-12 sm:h-12 text-micro sm:text-caption",
     };
 
     return (
