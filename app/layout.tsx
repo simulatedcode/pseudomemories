@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Electrolize, Doto } from "next/font/google"
+import GoogleAnalytics from "./components/GoogleAnalytics";
 import SmoothScroll from "./components/SmoothScroll";
 import { Header } from "./components/Header";
 import { Footer } from "./components/Footer";
@@ -42,6 +43,7 @@ export default function RootLayout({
       <body
         className={`${electrolize.variable} ${doto.variable} antialiased`}
       >
+        <GoogleAnalytics />
 
         <AudioProvider>
           <GeoProvider>
