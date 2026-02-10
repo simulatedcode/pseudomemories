@@ -2,17 +2,18 @@
 
 import dynamic from "next/dynamic";
 
+
 const DustStar = dynamic(() => import("./components/DustStar"), { ssr: false });
 const Hero8Bit = dynamic(() => import("./components/Hero8Bit").then(mod => mod.Hero8Bit), { ssr: false });
 const HeroCharacter = dynamic(() => import("./components/HeroCharacter"), { ssr: false });
 import { useIntro } from "./context/IntroContextCore";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useInView } from "framer-motion";
 
 export default function Home() {
   const { isComplete } = useIntro();
 
   return (
-    <div className="relative max-w-full mx-aut text-foreground font-sans selection:bg-inverse flex flex-col">
+    <div className="relative max-w-full mx-auto text-foreground font-sans selection:bg-inverse flex flex-col">
       {/* Red Gradient Background - Slides up after intro */}
       <motion.div
         initial={{ y: "100%", opacity: 0 }}
@@ -50,6 +51,10 @@ export default function Home() {
           </>
         )}
       </AnimatePresence>
+      {/* Spacer to push content below fixed hero */}
+      <div className="h-screen w-full relative pointer-events-none" />
     </div>
   );
 }
+
+

@@ -52,12 +52,12 @@ export default function RootLayout({
               <Intro />
               <SmoothScroll>
                 <Header />
-                <div className="relative min-h-screen flex flex-col">
-                  <main className="relative w-full mx-auto z-0 flex flex-col pt-spacing-13 flex-1 overflow-x-hidden">
+                <div className="relative w-full flex flex-col">
+                  <main className="relative overflow-x-hidden grow">
                     <PageTransition>{children}</PageTransition>
                   </main>
+                  <Footer />
                 </div>
-                <Footer />
               </SmoothScroll>
             </GeoProvider>
           </IntroProvider>

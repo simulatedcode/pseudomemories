@@ -4,13 +4,16 @@ import { motion } from "framer-motion";
 
 export function SineWaveform({ isPlaying }: { isPlaying: boolean }) {
     return (
-        <div className="flex items-center justify-center h-4 w-12 overflow-hidden">
+        <div className="flex items-center justify-center h-4 w-16 overflow-hidden">
             <svg viewBox="0 0 40 20" className="w-full h-full">
                 <motion.path
                     fill="transparent"
-                    stroke="cyan"
-                    strokeWidth="0.5"
+                    stroke="#00ffff"
+                    strokeWidth="1.2"
                     strokeLinecap="round"
+                    style={{
+                        filter: isPlaying ? "drop-shadow(0 0 3px rgba(0, 255, 255, 0.8))" : "none"
+                    }}
                     initial={{ d: "M-20 10 L60 10" }}
                     animate={{
                         d: isPlaying

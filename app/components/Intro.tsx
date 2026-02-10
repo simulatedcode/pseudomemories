@@ -49,7 +49,7 @@ export default function Intro() {
                         transition: { duration: 1.2, ease: [0.76, 0, 0.24, 1] }
                     }}
                     style={{ willChange: "clip-path" }}
-                    className="fixed h-dvh w-screen top-0 left-0 z-999 bg-background flex flex-col items-center justify-center text-offwhite-100 selection:bg-white/10"
+                    className="fixed h-dvh w-screen top-0 left-0 z-999 bg-vermelion-500/10 flex flex-col items-center justify-center text-offwhite-100 selection:bg-white/10"
                 >
                     <div className="flex flex-col items-center gap-spacing-09 max-w-md w-full px-spacing-08 relative z-10">
                         {/* Upper Details */}
@@ -113,23 +113,37 @@ export default function Intro() {
                                     transition={{ duration: 0.8, ease: "easeOut" }}
                                     className="w-full flex flex-col gap-spacing-05"
                                 >
-                                    <div className="flex flex-col sm:flex-row gap-spacing-04">
+                                    <div className="flex flex-col items-center gap-spacing-05 w-full">
                                         <motion.button
                                             onClick={() => handleChoice(true)}
-                                            whileHover={{ scale: 1.02 }}
-                                            whileTap={{ scale: 0.98 }}
-                                            className="flex-1 px-spacing-06 py-spacing-04 bg-vermelion hover:bg-vermelion/60 text-black rounded-full font-doto text-micro uppercase tracking-[0.2em] transition-colors border border-vermelion"
+                                            whileHover={{ scale: 1.05 }}
+                                            whileTap={{ scale: 0.95 }}
+                                            className="group relative px-spacing-08 py-spacing-05 bg-vermelion hover:bg-vermelion/90 text-black w-full flex items-center justify-center gap-spacing-03 rounded-none clip-path-slant transition-all"
                                         >
-                                            Transmission
+                                            <span className="font-electrolize uppercase tracking-widest">Initialize Memory</span>
+                                            <motion.span
+                                                animate={{ x: [0, 4, 0] }}
+                                                transition={{ duration: 1.5, repeat: Infinity }}
+                                            >
+                                                →
+                                            </motion.span>
+
+                                            {/* Button Glitch Effect Overlay */}
+                                            <div className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 mix-blend-overlay transition-opacity" />
                                         </motion.button>
-                                        <motion.button
-                                            onClick={() => handleChoice(false)}
-                                            whileHover={{ scale: 1.02 }}
-                                            whileTap={{ scale: 0.98 }}
-                                            className="flex-1 px-spacing-06 py-spacing-04 bg-white/5 hover:bg-white/10 text-offwhite-100/60 rounded-full font-doto text-micro uppercase tracking-[0.2em] transition-colors border border-white/10"
-                                        >
-                                            Silence
-                                        </motion.button>
+
+                                        <div className="flex flex-col items-center gap-spacing-02">
+                                            <span className="font-doto text-[9px] uppercase tracking-[0.2em] text-vermelion-100">
+                                                [ Audio Recommended ]
+                                            </span>
+
+                                            <button
+                                                onClick={() => handleChoice(false)}
+                                                className="font-doto text-[10px] uppercase tracking-widest text-white hover:text-white/80 transition-colors border-b border-transparent hover:border-white/20 pb-0.5"
+                                            >
+                                                Enter without audio
+                                            </button>
+                                        </div>
                                     </div>
                                 </motion.div>
                             )}

@@ -1,9 +1,10 @@
 import { useMemo, Suspense, useRef } from "react";
 import { Canvas, useThree } from "@react-three/fiber";
-import { useTexture } from "@react-three/drei";
+import { useTexture, Html } from "@react-three/drei";
 import { EffectComposer, Bloom } from "@react-three/postprocessing";
 import { motion, useScroll, useTransform } from "framer-motion";
 import * as THREE from "three";
+import Loader from "./ui/Loader";
 
 type PositionValue = number | string;
 
@@ -106,7 +107,7 @@ export default function HeroCharacter(props: HeroCharacterProps) {
                 dpr={[0.75, 1]}
                 performance={{ min: 0.5 }}
             >
-                <Suspense fallback={null}>
+                <Suspense fallback={<Html center><Loader /></Html>}>
                     <CharacterSprite {...props} />
                     {/* Bloom disabled for performance */}
                     {/* <EffectComposer enableNormalPass={false}>

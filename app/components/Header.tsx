@@ -1,67 +1,138 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { ScrambleText } from "./ScrambleText";
 import { useGeo } from "../context/GeoContextCore";
 import { useIntro } from "../context/IntroContextCore";
+import { useAudio } from "../context/AudioContextCore";
 import Link from "next/link";
 
 import { Navigation } from "./Navigation";
+import { SineWaveform } from "./SineWaveform";
 
 export function Header() {
     const [hoveredItem, setHoveredItem] = useState<string | null>(null);
     const { latitude, longitude, error } = useGeo();
     const { isComplete } = useIntro();
+    const [refId, setRefId] = useState("LOADING...");
+    const [currentTime, setCurrentTime] = useState("");
+
+    useEffect(() => {
+        setRefId(Math.random().toString(36).substring(7).toUpperCase());
+
+        const updateTime = () => {
+            const now = new Date();
+
+            const userTimeZone =
+                Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+            const formatter = new Intl.DateTimeFormat("en-US", {
+                month: "numeric",
+                day: "numeric",
+                hour: "2-digit",
+                minute: "2-digit",
+                hour12: true,
+                timeZone: userTimeZone,
+                timeZoneName: "short",
+            });
+
+            setCurrentTime(formatter.format(now));
+        };
+        updateTime();
+        const interval = setInterval(updateTime, 1000);
+        return () => clearInterval(interval);
+    }, []);
 
     const locationString = error || `${latitude.toFixed(4)}°N ${longitude.toFixed(4)}°E`;
+    const { audioEnabled, playing, togglePlay } = useAudio();
 
     return (
         <motion.header
             initial={{ opacity: 0, y: -20 }}
             animate={isComplete ? { opacity: 1, y: 0 } : { opacity: 0, y: -20 }}
             transition={{ duration: 0.8, delay: 1.2, ease: "easeOut" }}
-            className="fixed top-0 left-0 w-full z-50 flex items-center justify-between px-spacing-08 py-spacing-06 text-offwhite-100"
+            className="fixed top-0 left-0 w-full z-100 flex items-center justify-between px-spacing-05 md:px-spacing-08 py-spacing-04 text-offwhite-100 pointer-events-none border-b border-offwhite-100/5  bg-background/80 backdrop-blur-md"
         >
-            <div className="flex items-center">
-                <motion.div
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.8, delay: 1.4, ease: "easeOut" }}
-                    onMouseEnter={() => setHoveredItem("Logo")}
-                    onMouseLeave={() => setHoveredItem(null)}
-                    className="cursor-default"
-                >
-                    <span className="font-electrolize cursor-pointer text-caption uppercase tracking-[0.2em] opacity-80 hover:opacity-100 transition-opacity">
-                        <Link href="/" className="cursor-pointer">
-                            <ScrambleText text="pseudo memories" delay={1.2} duration={1.2} trigger={hoveredItem === "Logo"} />
-                        </Link>
-                    </span>
-                </motion.div>
-            </div>
-
-            <div className="fixed left-spacing-08 top-20 md:top-6 md:left-1/2 md:-translate-x-1/2 pointer-events-none text-left md:text-center z-40">
-                <motion.div
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 1, delay: 1.6, ease: "easeOut" }}
-                    onMouseEnter={() => setHoveredItem("Location")}
-                    onMouseLeave={() => setHoveredItem(null)}
-                    className="cursor-default pointer-events-auto"
-                >
-                    <span className="font-doto text-micro md:text-caption uppercase tracking-[0.4em] opacity-60 hover:opacity-100 transition-opacity">
-                        <ScrambleText text={locationString} delay={1.8} duration={1.5} trigger={hoveredItem === "Location"} />
-                    </span>
-                </motion.div>
-            </div>
-
-            <motion.div
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.8, delay: 1.4, ease: "easeOut" }}
+            {/* 1. Logo */}
+            <div
+                className="pointer-events-auto"
+                onMouseEnter={() => setHoveredItem("Logo")}
+                onMouseLeave={() => setHoveredItem(null)}
             >
-                <Navigation className="opacity-60 hover:opacity-100 transition-opacity" />
-            </motion.div>
+                <Link href="/" className="font-electrolize text-body uppercase tracking-[0.2em] opacity-80 hover:opacity-100 transition-opacity">
+                    <ScrambleText text="pseudo memories" delay={1.2} duration={1.2} trigger={hoveredItem === "Logo"} />
+                </Link>
+            </div>
+
+            {/* 2. System Reference */}
+            <div
+                className="hidden md:block pointer-events-auto font-doto text-body uppercase tracking-[0.2em] opacity-80 hover:opacity-100 transition-opacity cursor-default"
+                onMouseEnter={() => setHoveredItem("RefId")}
+                onMouseLeave={() => setHoveredItem(null)}
+            >
+                <div className="flex flex-col items-center">
+                    <ScrambleText text={refId} delay={1.8} duration={1.5} trigger={hoveredItem === "RefId"} />
+                </div>
+            </div>
+
+            {/* 3. Geo Location */}
+            <div
+                className="hidden md:block pointer-events-auto font-doto text-body uppercase tracking-[0.2em] opacity-80 hover:opacity-100 transition-opacity cursor-default"
+                onMouseEnter={() => setHoveredItem("Location")}
+                onMouseLeave={() => setHoveredItem(null)}
+            >
+                <ScrambleText text={locationString} delay={1.8} duration={1.5} trigger={hoveredItem === "Location"} />
+            </div>
+
+            {/* 4. Audio Transmit */}
+            {audioEnabled && (
+                <div
+                    className="hidden lg:flex pointer-events-auto items-center gap-2 opacity-80 hover:opacity-100 transition-opacity cursor-pointer"
+                    onClick={togglePlay}
+                    onMouseEnter={() => setHoveredItem("Audio")}
+                    onMouseLeave={() => setHoveredItem(null)}
+                >
+                    <span className="font-doto text-body uppercase tracking-widest">
+                        <ScrambleText
+                            text={playing ? "Analyzing" : "Terminate"}
+                            trigger={hoveredItem === "Audio"}
+                            duration={0.6}
+                        />
+                    </span>
+                    <div className="w-8">
+                        <SineWaveform isPlaying={playing} />
+                    </div>
+                </div>
+            )}
+
+            {/* world time */}
+            <div className="hidden md:block pointer-events-auto font-doto text-body uppercase tracking-[0.2em] text-offwhite-100/80 hover:text-offwhite-100 transition-colors cursor-default">
+                <div className="flex items-center gap-2">
+                    <ScrambleText text={currentTime} delay={1.8} duration={1.5} />
+                </div>
+            </div>
+
+            {/* 5. System Metrics */}
+            <div className="hidden xl:block pointer-events-auto">
+                <Navigation className="opacity-80 hover:opacity-100 transition-opacity" />
+            </div>
+
+            {/* 6. Menu */}
+            <div className="pointer-events-auto">
+                <button
+                    onClick={() => {
+                        if (typeof document !== 'undefined' && document.body) {
+                            window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+                        }
+                    }}
+                    onMouseEnter={() => setHoveredItem("Menu")}
+                    onMouseLeave={() => setHoveredItem(null)}
+                    className="font-doto text-body uppercase tracking-[0.2em] opacity-80 hover:opacity-100 transition-opacity"
+                >
+                    <ScrambleText text="Menu" trigger={hoveredItem === "Menu"} duration={0.6} />
+                </button>
+            </div>
         </motion.header>
     );
-};
+}

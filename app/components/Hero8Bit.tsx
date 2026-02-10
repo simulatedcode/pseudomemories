@@ -17,13 +17,13 @@ export function Hero8Bit() {
     return (
         <motion.div
             style={{ y: yOffset }}
-            className="fixed z-5 w-screen h-[316px] bottom-8 mx-auto flex items-center justify-center overflow-hidden"
+            className="fixed z-5 w-screen h-[660px] bottom-0 flex items-center justify-center"
         >
             <motion.svg
                 viewBox="0 0 300 220"
                 preserveAspectRatio="none"
                 style={{ shapeRendering: "geometricPrecision" }}
-                className="w-full h-full"
+                className="w-full h-full overflow-hidden"
                 initial="hidden"
                 animate="visible"
             >

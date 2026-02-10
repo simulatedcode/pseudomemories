@@ -55,176 +55,123 @@ export function Footer() {
     const [isGithubHovered, setIsGithubHovered] = useState(false);
     const { playing, togglePlay, audioEnabled } = useAudio();
     const { isComplete } = useIntro();
+    const [refId, setRefId] = useState("LOADING...");
+
+    React.useEffect(() => {
+        setRefId(Math.random().toString(36).substring(7).toUpperCase());
+    }, []);
 
     return (
-        <footer className="fixed bottom-spacing-04 z-100 flex flex-col items-center w-full">
-            <div className="pointer-events-auto flex flex-col items-center w-full max-w-full px-spacing-08 ">
-                <AnimatePresence mode="wait">
-                    {!isOpen ? (
-                        <motion.div
-                            key="footer-closed"
-                            onClick={() => handleToggle(true)}
-                            onMouseEnter={() => setIsCopyrightHovered(true)}
-                            onMouseLeave={() => setIsCopyrightHovered(false)}
-                            initial={{ opacity: 0, y: 100 }}
-                            animate={isComplete ? { opacity: 1, y: 0 } : { opacity: 0, y: 100 }}
-                            exit={{ opacity: 0, y: 100 }}
-                            transition={{ duration: 1.2, delay: 1.0, ease: [0.76, 0, 0.24, 1] }}
-                            className="cursor-pointer group w-full"
-                            role="button"
-                            tabIndex={0}
-                            onKeyDown={(e) => {
-                                if (e.key === 'Enter' || e.key === ' ') {
-                                    handleToggle(true);
-                                }
-                            }}
-                        >
-                            <div className="w-full grid grid-cols-1 md:grid-cols-3 items-center gap-spacing-02">
-                                {/* Copyright - Left */}
-                                <div className="flex justify-center md:justify-start order-2 md:order-1">
-                                    <span className="font-doto text-micro text-black mix-blend-difference tracking-widest uppercase whitespace-nowrap">
-                                        © Project 2020 - {new Date().getFullYear()}
-                                    </span>
-                                </div>
+        <footer className="relative z-20 w-full min-h-screen bg-black/80 backdrop-blur-xl flex flex-col justify-center items-center py-spacing-10">
+            <div className="w-full max-w-4xl px-spacing-08 flex flex-col gap-spacing-08">
 
-                                {/* Audio Control - Center */}
-                                <div className="flex justify-center order-1 md:order-2">
-                                    {audioEnabled && (
-                                        <button
-                                            onClick={(e) => {
-                                                e.stopPropagation();
-                                                togglePlay();
-                                            }}
-                                            className="flex items-center justify-center px-3 py-1.5 rounded-full bg-black/40 border border-white/40 hover:bg-black/60 transition-all duration-300 pointer-events-auto"
-                                            aria-label={playing ? "Pause Audio" : "Play Audio"}
-                                        >
-                                            <SineWaveform isPlaying={playing} />
-                                        </button>
-                                    )}
-                                </div>
+                {/* Header Section */}
+                <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-spacing-05 border-b border-white/10 pb-spacing-06">
+                    <div className="flex flex-col gap-spacing-02">
+                        <h3 className="font-electrolize text-h4 uppercase tracking-[0.2em] text-offwhite-100">
+                            System Architecture
+                        </h3>
+                        <p className="font-doto text-caption uppercase tracking-[0.3em] text-offwhite-100/60">
+                            v.{new Date().getFullYear()}.02.10 // Active Protocol
+                        </p>
+                    </div>
 
-                                {/* Status - Right */}
-                                <div className="flex justify-center md:justify-end order-3">
-                                    <span className="flex items-center gap-spacing-03 font-doto text-micro uppercase text-black mix-blend-difference tracking-widest transition-colors group-hover:text-black/60">
-                                        <motion.div
-                                            className="w-2 h-2 rounded-full bg-vermelion"
-                                            animate={{
-                                                opacity: [0.3, 1, 0.3],
-                                                scale: [0.8, 1, 0.8],
-                                            }}
-                                            transition={{
-                                                duration: 3,
-                                                repeat: Infinity,
-                                                ease: "easeInOut",
-                                            }}
-                                        />
-                                        <ScrambleText
-                                            text={`Node Status: Stable`}
-                                            delay={0}
-                                            duration={0.6}
-                                            trigger={isCopyrightHovered}
-                                        />
-                                    </span>
-                                </div>
+                    <div className="flex items-center gap-spacing-04">
+                        <div className="flex flex-col items-end">
+                            <span className="font-electrolize text-caption uppercase text-white/40">Status</span>
+                            <span className="flex items-center gap-spacing-03 font-doto text-micro uppercase text-vermelion tracking-widest">
+                                <motion.div
+                                    className="w-2 h-2 rounded-full bg-vermelion"
+                                    animate={{ opacity: [0.5, 1, 0.5] }}
+                                    transition={{ duration: 2, repeat: Infinity }}
+                                />
+                                Online
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Main Content Grid */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-spacing-08">
+                    {/* Tech Stack / Specs */}
+                    <div className="flex flex-col gap-spacing-05">
+                        <h4 className="font-doto text-micro uppercase tracking-widest text-white/40 border-b border-white/5 pb-2">Technical Specifications</h4>
+                        <div className="flex flex-col gap-2">
+                            <div className="flex justify-between items-center border-b border-white/5 py-2">
+                                <span className="font-electrolize text-caption text-white/60">Core Framework</span>
+                                <span className="font-doto text-micro text-white">Next.js 15 (App Router)</span>
                             </div>
-                        </motion.div>
-                    ) : (
-                        <motion.div
-                            key="footer-open"
-                            initial={{ opacity: 0, scale: 0.98, y: 40 }}
-                            animate={{ opacity: 1, scale: 1, y: 0 }}
-                            exit={{ opacity: 0, scale: 0.98, y: 40 }}
-                            transition={{
-                                type: "spring",
-                                stiffness: 60,
-                                damping: 15
-                            }}
-                            className="fixed bottom-spacing-10 left-1/2 -translate-x-1/2 sm:left-auto sm:right-spacing-10 sm:translate-x-0 w-[95vw] sm:w-[500px] max-h-[85vh] rounded-2xl border border-white/10 bg-black/60 backdrop-blur-3xl p-spacing-07 overflow-y-auto origin-bottom z-100"
-                        >
-
-
-                            <div className="flex flex-col gap-spacing-07 mt-spacing-04">
-                                {/* Header */}
-                                <div className="flex flex-col lg:flex-row justify-between items-start lg:items-end gap-spacing-05 border-b border-white/5 pb-spacing-06">
-                                    <div className="flex flex-col gap-spacing-02">
-                                        <h3 className="font-electrolize text-caption uppercase tracking-[0.2em] text-offwhite-100 opacity-90">
-                                            System Log
-                                        </h3>
-                                        <p className="font-doto text-[9px] uppercase tracking-[0.4em] text-offwhite-100/80">
-                                            v.{new Date().getFullYear()}.02.10 // Active
-                                        </p>
-                                    </div>
-
-                                    <div className="flex items-center gap-spacing-04">
-                                        <button
-                                            onClick={(e) => {
-                                                e.stopPropagation();
-                                                handleToggle(false);
-                                            }}
-                                            className="p-spacing-03 hover:bg-white/5 rounded-full transition-colors group"
-                                            aria-label="Close"
-                                        >
-                                            <svg width="10" height="10" viewBox="0 0 12 12" fill="none" className="opacity-40 group-hover:opacity-100 transition-opacity">
-                                                <path d="M1 1L11 11M1 11L11 1" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
-                                            </svg>
-                                        </button>
-                                    </div>
-                                </div>
-
-                                {/* Tech Table */}
-                                <div className="overflow-hidden border border-white/5 rounded-lg bg-white/0.02">
-                                    <table className="w-full text-left">
-                                        <thead className="bg-white/5 border-b border-white/5">
-                                            <tr>
-                                                <th className="px-spacing-05 py-spacing-03 font-electrolize text-[10px] uppercase tracking-[0.2em] text-offwhite-100/40">
-                                                    Module
-                                                </th>
-                                                <th className="px-spacing-05 py-spacing-03 font-electrolize text-[10px] uppercase tracking-[0.2em] text-offwhite-100/40">
-                                                    Registry
-                                                </th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <TechRow label="Framework" value="Next.js 16" delay={0.1} />
-                                            <TechRow label="Graphics" value="Three.js / GLSL" delay={0.2} />
-                                            <TechRow label="Motion" value="Framer Spring" delay={0.3} />
-                                            <TechRow label="Tokens" value="Tailwind v4" delay={0.4} />
-                                            <TechRow label="Service" value="GeoConnect" delay={0.5} />
-                                        </tbody>
-                                    </table>
-                                </div>
-
-                                {/* Bottom */}
-                                <div className="flex flex-col pt-spacing-05 gap-spacing-05">
-                                    <div className="flex flex-wrap items-center justify-between">
-                                        <span className="font-doto text-micro uppercase tracking-[0.2em] text-offwhite-100/80">
-                                            REF: {Math.random().toString(36).substring(7).toUpperCase()}
-                                        </span>
-
-                                        <Link
-                                            href="https://github.com/simulatedcode"
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            className="font-doto text-micro uppercase tracking-[0.2em] text-offwhite-100/80 hover:text-offwhite-100 transition-colors"
-                                            onMouseEnter={() => setIsGithubHovered(true)}
-                                            onMouseLeave={() => setIsGithubHovered(false)}
-                                        >
-                                            <ScrambleText
-                                                text="LINK_GITHUB"
-                                                delay={0}
-                                                duration={0.6}
-                                                trigger={isGithubHovered}
-                                            />
-                                        </Link>
-                                    </div>
-                                    <div className="font-doto text-[10px] uppercase tracking-[0.5em] text-offwhite-100/80 text-center">
-                                        // End of transmission //
-                                    </div>
-                                </div>
+                            <div className="flex justify-between items-center border-b border-white/5 py-2">
+                                <span className="font-electrolize text-caption text-white/60">Rendering Engine</span>
+                                <span className="font-doto text-micro text-white">Three.js R160 + Fiber</span>
                             </div>
-                        </motion.div>
-                    )}
-                </AnimatePresence>
+                            <div className="flex justify-between items-center border-b border-white/5 py-2">
+                                <span className="font-electrolize text-caption text-white/60">Physics/Motion</span>
+                                <span className="font-doto text-micro text-white">Framer Motion 12</span>
+                            </div>
+                            <div className="flex justify-between items-center border-b border-white/5 py-2">
+                                <span className="font-electrolize text-caption text-white/60">Styling System</span>
+                                <span className="font-doto text-micro text-white">TailwindCSS v4</span>
+                            </div>
+                            <div className="flex justify-between items-center border-b border-white/5 py-2">
+                                <span className="font-electrolize text-caption text-white/60">Geolocation</span>
+                                <span className="font-doto text-micro text-white">IP-Based Solar Calculation</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Navigation / Links */}
+                    <div className="flex flex-col gap-spacing-05">
+                        <h4 className="font-doto text-micro uppercase tracking-widest text-white/40 border-b border-white/5 pb-2">Communications</h4>
+                        <div className="flex flex-col gap-spacing-04">
+                            <Link
+                                href="https://github.com/simulatedcode"
+                                target="_blank"
+                                className="group flex items-center justify-between p-spacing-04 border border-white/10 hover:bg-white/5 transition-colors"
+                            >
+                                <span className="font-electrolize text-body uppercase">Github Repository</span>
+                                <span className="font-doto text-micro text-white/40 group-hover:text-white transition-colors">→</span>
+                            </Link>
+                            <Link
+                                href="/documentation"
+                                className="group flex items-center justify-between p-spacing-04 border border-white/10 hover:bg-white/5 transition-colors"
+                            >
+                                <span className="font-electrolize text-body uppercase">Documentation</span>
+                                <span className="font-doto text-micro text-white/40 group-hover:text-white transition-colors">→</span>
+                            </Link>
+
+                            {/* Audio Control Embed */}
+                            <div className="mt-auto pt-spacing-04 flex justify-between items-center">
+                                <span className="font-doto text-micro text-white/40">Audio Stream</span>
+                                <button
+                                    onClick={togglePlay}
+                                    className="flex items-center gap-2 px-4 py-2 border border-vermelion/40 text-vermelion hover:bg-vermelion/10 transition-colors uppercase font-doto text-micro"
+                                >
+                                    <span>{playing ? "Terminate" : "Initialize"}</span>
+                                    <SineWaveform isPlaying={playing} />
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Footer Bottom */}
+                <div className="flex justify-between items-end pt-spacing-08 border-t border-white/10 mt-spacing-04 opacity-60">
+                    <div className="flex flex-col">
+                        <span className="font-doto text-[10px] uppercase tracking-widest">
+                            © {new Date().getFullYear()} Pseudo Memories
+                        </span>
+                        <span className="font-doto text-[10px] uppercase tracking-widest text-white/40">
+                            All systems nominal
+                        </span>
+                    </div>
+                    <div>
+                        <span className="font-doto text-[10px] uppercase tracking-widest text-white/40">
+                            REF: {refId}
+                        </span>
+                    </div>
+                </div>
+
             </div>
         </footer>
     );
