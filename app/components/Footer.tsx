@@ -5,6 +5,7 @@ import { motion, useInView, AnimatePresence, easeOut } from "framer-motion";
 import { ScrambleText } from "./ScrambleText";
 import Link from "next/link";
 import { useAudio } from "../context/AudioContextCore";
+import { useIntro } from "../context/IntroContextCore";
 import { SineWaveform } from "./SineWaveform";
 
 type TechRowProps = {
@@ -50,25 +51,33 @@ export function Footer() {
         setIsOpen(open);
     };
 
-    const [isGithubHovered, setIsGithubHovered] = useState(false);
     const [isCopyrightHovered, setIsCopyrightHovered] = useState(false);
+    const [isGithubHovered, setIsGithubHovered] = useState(false);
     const { playing, togglePlay, audioEnabled } = useAudio();
+    const { isComplete } = useIntro();
 
     return (
         <footer className="fixed bottom-spacing-04 z-100 flex flex-col items-center w-full">
             <div className="pointer-events-auto flex flex-col items-center w-full max-w-full px-spacing-08 ">
                 <AnimatePresence mode="wait">
                     {!isOpen ? (
-                        <motion.button
+                        <motion.div
                             key="footer-closed"
                             onClick={() => handleToggle(true)}
                             onMouseEnter={() => setIsCopyrightHovered(true)}
                             onMouseLeave={() => setIsCopyrightHovered(false)}
-                            initial={{ opacity: 0, y: 10 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            exit={{ opacity: 0, y: 10 }}
-                            transition={{ duration: 0.8, delay: 2, ease: "easeOut" }}
+                            initial={{ opacity: 0, y: 100 }}
+                            animate={isComplete ? { opacity: 1, y: 0 } : { opacity: 0, y: 100 }}
+                            exit={{ opacity: 0, y: 100 }}
+                            transition={{ duration: 1.2, delay: 1.0, ease: [0.76, 0, 0.24, 1] }}
                             className="cursor-pointer group w-full"
+                            role="button"
+                            tabIndex={0}
+                            onKeyDown={(e) => {
+                                if (e.key === 'Enter' || e.key === ' ') {
+                                    handleToggle(true);
+                                }
+                            }}
                         >
                             <div className="w-full grid grid-cols-1 md:grid-cols-3 items-center gap-spacing-02">
                                 {/* Copyright - Left */}
@@ -118,7 +127,7 @@ export function Footer() {
                                     </span>
                                 </div>
                             </div>
-                        </motion.button>
+                        </motion.div>
                     ) : (
                         <motion.div
                             key="footer-open"

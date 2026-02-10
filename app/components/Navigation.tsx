@@ -1,60 +1,54 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import { motion } from "framer-motion";
-import { ScrambleText } from "./ScrambleText";
+import { useSystemMetrics } from "../hooks/useSystemMetrics";
 
-function AboutIcon() {
+function MemoryIcon() {
     return (
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="stroke-current">
-            <path d="M12 16V12M12 8H12.01M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="stroke-current">
+            <rect x="2" y="5" width="20" height="14" rx="2" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            <path d="M7 15V9M12 15V9M17 15V9" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
     );
 }
 
-function MissionIcon() {
+function GPUIcon() {
     return (
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="stroke-current">
-            <path d="M12 2L2 7L12 12L22 7L12 2Z" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-            <path d="M2 17L12 22L22 17" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-            <path d="M2 12L12 17L22 12" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="stroke-current">
+            <rect x="2" y="6" width="20" height="12" rx="2" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            <path d="M6 10H6.01M10 10H10.01M14 10H14.01M18 10H18.01M6 14H6.01M10 14H10.01M14 14H14.01M18 14H18.01" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
     );
 }
 
 export function Navigation({ className }: { className?: string }) {
-    const [hoveredItem, setHoveredItem] = useState<string | null>(null);
+    const { memory, gpu } = useSystemMetrics();
 
     return (
         <nav className={`flex items-center gap-spacing-02 sm:gap-spacing-04 md:gap-spacing-06 lg:gap-spacing-8 ${className}`}>
-            <motion.button
+            <motion.div
                 whileHover={{ scale: 1.05 }}
-                onMouseEnter={() => setHoveredItem("About")}
-                onMouseLeave={() => setHoveredItem(null)}
-                className="flex items-center gap-spacing-02 group focus:outline-none"
-                aria-label="About"
+                className="flex items-center gap-spacing-02 group"
             >
                 <div className="p-2 sm:p-0">
-                    <AboutIcon />
+                    <MemoryIcon />
                 </div>
-                <span className="font-electrolize cursor-pointer text-micro uppercase tracking-widest hidden sm:inline">
-                    <ScrambleText text="About" delay={0.5} duration={0.8} trigger={hoveredItem === "About"} />
+                <span className="font-doto cursor-default text-micro uppercase tracking-widest hidden sm:inline">
+                    MEM: {memory}%
                 </span>
-            </motion.button>
-            <motion.button
+            </motion.div>
+            <motion.div
                 whileHover={{ scale: 1.05 }}
-                onMouseEnter={() => setHoveredItem("Mission")}
-                onMouseLeave={() => setHoveredItem(null)}
-                className="flex items-center gap-spacing-02 group focus:outline-none"
-                aria-label="Mission"
+                className="flex items-center gap-spacing-02 group"
             >
                 <div className="p-2 sm:p-0">
-                    <MissionIcon />
+                    <GPUIcon />
                 </div>
-                <span className="font-electrolize cursor-pointer text-micro uppercase tracking-widest hidden sm:inline">
-                    <ScrambleText text="Mission" delay={0.7} duration={0.8} trigger={hoveredItem === "Mission"} />
+                <span className="font-doto cursor-default text-micro uppercase tracking-widest hidden sm:inline">
+                    GPU: {gpu}%
                 </span>
-            </motion.button>
+            </motion.div>
         </nav>
     );
 };

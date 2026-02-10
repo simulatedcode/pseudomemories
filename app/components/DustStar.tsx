@@ -235,18 +235,20 @@ const DustStar = ({
                 camera={{ position: [0, 0, 0], fov: 75, near: 0.1, far: 1000 }}
                 gl={{
                     alpha: true,
-                    antialias: true,
+                    antialias: false,
                     stencil: false,
                     depth: false,
                     powerPreference: "high-performance"
                 }}
+                dpr={[0.75, 1]}
+                performance={{ min: 0.5 }}
                 onCreated={({ gl }) => gl.setClearColor(0x000000, 0)}
             >
                 <Suspense fallback={null}>
                     <SkyRotation latitude={latitude} lst={lst}>
                         {/* Layer 1: Tiny, deep background dust - Firefly Pulse */}
                         <StarLayer
-                            count={3000}
+                            count={1500}
                             radius={0.5}
                             size={0.4}
                             baseBrightness={1.2}
@@ -260,7 +262,7 @@ const DustStar = ({
 
                         {/* Layer 2: Main sparkling stars - Medium movement */}
                         <StarLayer
-                            count={1500}
+                            count={750}
                             radius={1.5}
                             size={0.6}
                             baseBrightness={0.6}
@@ -274,7 +276,7 @@ const DustStar = ({
 
                         {/* Layer 3: Occasional bright hero stars - Fastest movement (Foreground) */}
                         <StarLayer
-                            count={500}
+                            count={250}
                             radius={1.8}
                             size={0.8}
                             baseBrightness={1.0}

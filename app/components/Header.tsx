@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { ScrambleText } from "./ScrambleText";
 import { useGeo } from "../context/GeoContextCore";
+import { useIntro } from "../context/IntroContextCore";
 import Link from "next/link";
 
 import { Navigation } from "./Navigation";
@@ -11,13 +12,14 @@ import { Navigation } from "./Navigation";
 export function Header() {
     const [hoveredItem, setHoveredItem] = useState<string | null>(null);
     const { latitude, longitude, error } = useGeo();
+    const { isComplete } = useIntro();
 
     const locationString = error || `${latitude.toFixed(4)}°N ${longitude.toFixed(4)}°E`;
 
     return (
         <motion.header
             initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
+            animate={isComplete ? { opacity: 1, y: 0 } : { opacity: 0, y: -20 }}
             transition={{ duration: 0.8, delay: 1.2, ease: "easeOut" }}
             className="fixed top-0 left-0 w-full z-50 flex items-center justify-between px-spacing-08 py-spacing-06 text-offwhite-100"
         >
@@ -58,7 +60,7 @@ export function Header() {
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.8, delay: 1.4, ease: "easeOut" }}
             >
-                <Navigation />
+                <Navigation className="opacity-60 hover:opacity-100 transition-opacity" />
             </motion.div>
         </motion.header>
     );

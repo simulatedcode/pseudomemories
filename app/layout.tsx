@@ -32,6 +32,7 @@ export const metadata: Metadata = {
 
 import { GeoProvider } from "./context/GeoContext";
 import { AudioProvider } from "./context/AudioContext";
+import { IntroProvider } from "./context/IntroContext";
 
 export default function RootLayout({
   children,
@@ -46,23 +47,25 @@ export default function RootLayout({
         <GoogleAnalytics />
 
         <AudioProvider>
-          <GeoProvider>
-            <Intro />
-            <SmoothScroll>
-              <Header />
-              <div className="relative min-h-screen flex flex-col">
-                <main className="relative w-full mx-auto z-10 flex flex-col pt-spacing-13 flex-1 overflow-x-hidden">
-                  <PageTransition>{children}</PageTransition>
-                </main>
-              </div>
-              <Footer />
-            </SmoothScroll>
-          </GeoProvider>
+          <IntroProvider>
+            <GeoProvider>
+              <Intro />
+              <SmoothScroll>
+                <Header />
+                <div className="relative min-h-screen flex flex-col">
+                  <main className="relative w-full mx-auto z-0 flex flex-col pt-spacing-13 flex-1 overflow-x-hidden">
+                    <PageTransition>{children}</PageTransition>
+                  </main>
+                </div>
+                <Footer />
+              </SmoothScroll>
+            </GeoProvider>
+          </IntroProvider>
         </AudioProvider>
 
 
         {/* Global Dynamic Texture/Grain overlay - Subtler for premium feel */}
-        <div className="fixed inset-0 pointer-events-none opacity-[0.06] z-100 bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
+        <div className="fixed inset-0 pointer-events-none opacity-[0.08] z-100 bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
       </body>
     </html >
   );

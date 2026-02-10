@@ -103,17 +103,20 @@ export default function HeroCharacter(props: HeroCharacterProps) {
             <Canvas
                 camera={{ position: [0, 0, 5], fov: 50 }}
                 gl={{ antialias: false }}
+                dpr={[0.75, 1]}
+                performance={{ min: 0.5 }}
             >
                 <Suspense fallback={null}>
                     <CharacterSprite {...props} />
-                    <EffectComposer enableNormalPass={false}>
+                    {/* Bloom disabled for performance */}
+                    {/* <EffectComposer enableNormalPass={false}>
                         <Bloom
                             luminanceThreshold={5.5}
                             mipmapBlur
-                            intensity={1.5}
-                            radius={0.6}
+                            intensity={1.2}
+                            radius={0.5}
                         />
-                    </EffectComposer>
+                    </EffectComposer> */}
                 </Suspense>
             </Canvas>
         </motion.div>

@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useGeo } from "../context/GeoContextCore";
 import { useAudio } from "../context/AudioContextCore";
+import { useIntro } from "../context/IntroContextCore";
 import { ScrambleText } from "./ScrambleText";
 
 export default function Intro() {
@@ -12,6 +13,7 @@ export default function Intro() {
     const [isVisible, setIsVisible] = useState(true);
     const { latitude, longitude, error } = useGeo();
     const { setAudioEnabled, playAudio } = useAudio();
+    const { setComplete } = useIntro();
 
     useEffect(() => {
         const interval = setInterval(() => {
@@ -31,6 +33,7 @@ export default function Intro() {
 
     const handleChoice = (withAudio: boolean) => {
         setAudioEnabled(withAudio);
+        setComplete(true);
         setTimeout(() => setIsVisible(false), 300);
     };
 
@@ -45,7 +48,8 @@ export default function Intro() {
                         clipPath: "inset(0 0 100% 0)",
                         transition: { duration: 1.2, ease: [0.76, 0, 0.24, 1] }
                     }}
-                    className="fixed inset-0 z-9999 bg-black flex flex-col items-center justify-center text-offwhite-100 selection:bg-white/10"
+                    style={{ willChange: "clip-path" }}
+                    className="fixed h-dvh w-screen top-0 left-0 z-999 bg-background flex flex-col items-center justify-center text-offwhite-100 selection:bg-white/10"
                 >
                     <div className="flex flex-col items-center gap-spacing-09 max-w-md w-full px-spacing-08 relative z-10">
                         {/* Upper Details */}
@@ -114,7 +118,7 @@ export default function Intro() {
                                             onClick={() => handleChoice(true)}
                                             whileHover={{ scale: 1.02 }}
                                             whileTap={{ scale: 0.98 }}
-                                            className="flex-1 px-spacing-06 py-spacing-04 bg-vermelion hover:bg-vermelion/60 text-white rounded-full font-doto text-micro uppercase tracking-[0.2em] transition-colors border border-vermelion"
+                                            className="flex-1 px-spacing-06 py-spacing-04 bg-vermelion hover:bg-vermelion/60 text-black rounded-full font-doto text-micro uppercase tracking-[0.2em] transition-colors border border-vermelion"
                                         >
                                             Transmission
                                         </motion.button>
@@ -133,7 +137,7 @@ export default function Intro() {
                     </div>
 
                     {/* Dynamic Texture/Grain overlay */}
-                    <div className="absolute inset-0 pointer-events-none opacity-[0.08] bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
+                    <div className="absolute inset-0 pointer-events-none opacity-[0.09]  bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
                 </motion.div>
             )}
         </AnimatePresence>
