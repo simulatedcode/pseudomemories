@@ -21,8 +21,7 @@ body {
   background: #000;
   /* True black background for full immersion */
   color: var(--foreground);
-  height: 100dvh;
-  width: 100dvw;
+  min-height: 100dvh;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

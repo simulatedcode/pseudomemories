@@ -4,9 +4,7 @@ import React, { useState, useRef } from "react";
 import { motion, useInView, AnimatePresence, easeOut } from "framer-motion";
 import { ScrambleText } from "./ScrambleText";
 import Link from "next/link";
-import { useAudio } from "../context/AudioContextCore";
 import { useIntro } from "../context/IntroContextCore";
-import { SineWaveform } from "./SineWaveform";
 
 type TechRowProps = {
     label: string;
@@ -53,7 +51,6 @@ export function Footer() {
 
     const [isCopyrightHovered, setIsCopyrightHovered] = useState(false);
     const [isGithubHovered, setIsGithubHovered] = useState(false);
-    const { playing, togglePlay, audioEnabled } = useAudio();
     const { isComplete } = useIntro();
     const [refId, setRefId] = useState("LOADING...");
 
@@ -140,17 +137,14 @@ export function Footer() {
                                 <span className="font-doto text-micro text-white/40 group-hover:text-white transition-colors">→</span>
                             </Link>
 
-                            {/* Audio Control Embed */}
-                            <div className="mt-auto pt-spacing-04 flex justify-between items-center">
-                                <span className="font-doto text-micro text-white/40">Audio Stream</span>
-                                <button
-                                    onClick={togglePlay}
-                                    className="flex items-center gap-2 px-4 py-2 border border-vermelion/40 text-vermelion hover:bg-vermelion/10 transition-colors uppercase font-doto text-micro"
-                                >
-                                    <span>{playing ? "Terminate" : "Initialize"}</span>
-                                    <SineWaveform isPlaying={playing} />
-                                </button>
-                            </div>
+                            <Link
+                                href="https://instagram.com/keppett"
+                                target="_blank"
+                                className="group flex items-center justify-between p-spacing-04 border border-white/10 hover:bg-white/5 transition-colors"
+                            >
+                                <span className="font-electrolize text-body uppercase">Instagram Connection</span>
+                                <span className="font-doto text-micro text-white/40 group-hover:text-white transition-colors">→</span>
+                            </Link>
                         </div>
                     </div>
                 </div>

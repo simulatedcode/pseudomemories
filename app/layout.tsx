@@ -53,11 +53,13 @@ export default function RootLayout({
               <SmoothScroll>
                 <Header />
                 <div className="relative w-full flex flex-col">
-                  <main className="relative overflow-x-hidden grow">
-                    <PageTransition>{children}</PageTransition>
-                  </main>
-                  <Footer />
+                  <PageTransition>
+                    <main className="relative overflow-x-hidden grow">
+                      {children}
+                    </main>
+                  </PageTransition>
                 </div>
+                <Footer />
               </SmoothScroll>
             </GeoProvider>
           </IntroProvider>

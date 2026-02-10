@@ -38,7 +38,7 @@ export default function PageTransition({ children }: { children: ReactNode }) {
                         duration: 0.6,
                         ease: [0.19, 1, 0.22, 1] // Fast out, slow in
                     }}
-                    className="w-full relative z-10"
+                    className="w-full relative z-10 min-h-screen"
                 >
                     {children}
                 </motion.div>
