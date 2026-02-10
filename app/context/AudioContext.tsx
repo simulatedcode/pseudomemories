@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useState, ReactNode, useEffect } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { SineWaveform } from "../components/SineWaveform";
 import { AudioContext } from "./AudioContextCore";
 
@@ -38,28 +39,26 @@ export function AudioProvider({ children }: { children: ReactNode }) {
         setPlaying(!playing);
     };
 
+    const { scrollYProgress } = useScroll();
+
+    // When scroll reaches the bottom (0.98 to 1.0), slide the player up
+    // -64px (approx gap-16) to clear the footer and add gap-6
+    const translateY = useTransform(
+        scrollYProgress,
+        [0.98, 1],
+        [0, -46]
+    );
+
     return (
         <AudioContext.Provider value={{ audioEnabled, setAudioEnabled, playing, togglePlay, playAudio }}>
             {children}
             {audioEnabled && (
-                <div className="fixed bottom-0 left-0 p-spacing-04 sm:p-spacing-06 z-50 flex flex-col items-start">
-
-                    <button
-                        onClick={togglePlay}
-                        className="flex items-center justify-center w-10 h-10 rounded-full bg-black/50 text-white border-2 border-white/20 hover:border-white/40 transition-all duration-300"
-                    >
-                        <div className="flex items-center gap-2">
-                            <SineWaveform isPlaying={playing} />
-                        </div>
-                    </button>
-
-                    <audio
-                        ref={audioRef}
-                        src="/audio/sudut-pandang.mp3"
-                        preload="auto"
-                        onEnded={() => setPlaying(false)}
-                    />
-                </div>
+                <audio
+                    ref={audioRef}
+                    src="/audio/sudut-pandang.mp3"
+                    preload="auto"
+                    onEnded={() => setPlaying(false)}
+                />
             )}
         </AudioContext.Provider>
     );

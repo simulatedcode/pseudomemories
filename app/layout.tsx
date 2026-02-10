@@ -48,17 +48,19 @@ export default function RootLayout({
             <Intro />
             <SmoothScroll>
               <Header />
-              <main className="relative w-auto mx-auto z-10 flex flex-col pt-spacing-10 px-spacing-06 sm:px-spacing-08 flex-1">
-                <PageTransition>{children}</PageTransition>
-              </main>
+              <div className="relative min-h-screen flex flex-col">
+                <main className="relative w-full mx-auto z-10 flex flex-col pt-spacing-13 flex-1 overflow-x-hidden">
+                  <PageTransition>{children}</PageTransition>
+                </main>
+              </div>
               <Footer />
             </SmoothScroll>
           </GeoProvider>
         </AudioProvider>
 
 
-        {/* Global Dynamic Texture/Grain overlay */}
-        <div className="fixed inset-0 pointer-events-none opacity-[0.2] z-100 bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
+        {/* Global Dynamic Texture/Grain overlay - Subtler for premium feel */}
+        <div className="fixed inset-0 pointer-events-none opacity-[0.06] z-100 bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
       </body>
     </html >
   );

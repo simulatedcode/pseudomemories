@@ -1,16 +1,22 @@
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 
 export function Hero8Bit() {
+    const { scrollYProgress } = useScroll();
+    const yOffset = useTransform(scrollYProgress, [0, 1], [0, -150]); // Move grid up as we scroll
+
     const gridLines = [
-        { y: 135, opacity: 0.1 },
-        { y: 145, opacity: 0.2 },
-        { y: 160, opacity: 0.4 },
-        { y: 180, opacity: 0.6 },
-        { y: 205, opacity: 0.8 },
+        { y: 115, opacity: 0.1 },
+        { y: 125, opacity: 0.2 },
+        { y: 140, opacity: 0.4 },
+        { y: 160, opacity: 0.6 },
+        { y: 185, opacity: 0.8 },
     ];
 
     return (
-        <div className="fixed z-5 w-screen h-[500px] bottom-8 flex items-center justify-center overflow-hidden -mx-spacing-06 sm:-mx-spacing-08">
+        <motion.div
+            style={{ y: yOffset }}
+            className="fixed z-5 w-screen h-[608px] bottom-8 flex items-center justify-center overflow-hidden"
+        >
             <motion.svg
                 viewBox="0 0 300 220"
                 preserveAspectRatio="none"
@@ -18,10 +24,9 @@ export function Hero8Bit() {
                 initial="hidden"
                 animate="visible"
             >
-
                 {/* Horizon Line */}
                 <motion.line
-                    x1="0" y1="130" x2="300" y2="130"
+                    x1="0" y1="110" x2="300" y2="110"
                     strokeWidth="0.5"
                     className="stroke-cyan-800/8 mix-blend-difference"
                     initial={{ scaleX: 0 }}
@@ -38,11 +43,11 @@ export function Hero8Bit() {
                         className="stroke-cyan-800 mix-blend-difference"
                         initial={{ scaleX: 0, opacity: 0 }}
                         animate={{ scaleX: 1, opacity: line.opacity }}
-                        transition={{ duration: 1.5, delay: 0.8 + (index * 0.2) }}
+                        transition={{ duration: 1.5, delay: 0.5 + (index * 0.2) }}
                     />
                 ))}
             </motion.svg>
-        </div>
+        </motion.div>
     );
 };
 

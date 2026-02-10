@@ -6,6 +6,7 @@ import { Points, PointMaterial } from "@react-three/drei";
 import * as THREE from "three";
 import { useGeo } from "../context/GeoContextCore";
 import { useSkyTime } from "../hooks/useSkyTime";
+import { motion, useScroll, useTransform } from "framer-motion";
 
 /* ================= STAR FIELD ================= */
 
@@ -215,11 +216,15 @@ const DustStar = ({
     const { latitude, longitude } = useGeo();
     const lst = useSkyTime(longitude);
 
+    const { scrollYProgress } = useScroll();
+    const yOffset = useTransform(scrollYProgress, [0, 1], [0, -50]); // Subtly move stars
+
     return (
-        <div
+        <motion.div
             className="fixed top-0 left-0 right-0 z-0 pointer-events-none"
             style={{
-                bottom: "235px", // Aligns with the Hero8Bit horizon line (500px height, viewBox pos 130/220, + 32px bottom offset)
+                y: yOffset,
+                bottom: "235px", // Aligns with the Hero8Bit horizon line
                 background: "transparent",
             }}
         >
@@ -283,7 +288,7 @@ const DustStar = ({
                     </SkyRotation>
                 </Suspense>
             </Canvas>
-        </div>
+        </motion.div>
     );
 };
 

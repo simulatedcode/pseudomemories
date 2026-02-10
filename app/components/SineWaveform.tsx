@@ -11,31 +11,33 @@ export function SineWaveform({ isPlaying }: { isPlaying: boolean }) {
                     stroke="cyan"
                     strokeWidth="0.5"
                     strokeLinecap="round"
-                    initial={{ d: "M0 10 L40 10" }}
+                    initial={{ d: "M-20 10 L60 10" }}
                     animate={{
                         d: isPlaying
                             ? [
-                                "M-20 10 Q-15 10 -10 10 T0 10 T10 10 T20 10 T30 10 T40 10 T50 10 T60 10", // Flat
-                                "M-20 10 Q-15 2 -10 10 T0 10 T10 10 T20 10 T30 10 T40 10 T50 10 T60 10",  // Inhale
-                                "M-20 10 Q-15 18 -10 10 T0 10 T10 10 T20 10 T30 10 T40 10 T50 10 T60 10", // Exhale
-                                "M-20 10 Q-15 8 -10 10 T0 10 T10 10 T20 10 T30 10 T40 10 T50 10 T60 10",  // Recovery
-                                "M-20 10 Q-15 10 -10 10 T0 10 T10 10 T20 10 T30 10 T40 10 T50 10 T60 10", // Flat
+                                "M-20 10 Q-15 10 -10 10 T0 10 T10 10 T20 10 T30 10 T40 10 T50 10 T60 10", // Flat/Zero
+                                "M-20 10 Q-15 0 -10 10 T0 10 T10 10 T20 10 T30 10 T40 10 T50 10 T60 10",  // High Pulse
+                                "M-20 10 Q-15 14 -10 10 T0 10 T10 10 T20 10 T30 10 T40 10 T50 10 T60 10", // Mid Exhale
+                                "M-20 10 Q-15 4 -10 10 T0 10 T10 10 T20 10 T30 10 T40 10 T50 10 T60 10",  // Sharp Spike
+                                "M-20 10 Q-15 10 -10 10 T0 10 T10 10 T20 10 T30 10 T40 10 T50 10 T60 10", // Return
                             ]
                             : "M-20 10 L60 10",
-                        x: isPlaying ? [0, -20] : 0 // Perfect wavelength shift for seamless loop
+                        x: isPlaying ? [0, -20] : 0,
+                        opacity: isPlaying ? 1 : 0.4
                     }}
                     transition={{
                         d: {
-                            duration: 3.5, // Natural breathing rhythm
+                            duration: 0.8, // Much faster for "audio signal" feel
                             repeat: Infinity,
-                            times: [0, 0.3, 0.5, 0.8, 1], // Asymmetric biorythm
+                            times: [0, 0.15, 0.4, 0.75, 1], // Rapid intensity changes
                             ease: "easeInOut"
                         },
                         x: {
-                            duration: 2.0, // Slower phase shift
+                            duration: 1.2, // Faster drift
                             repeat: Infinity,
                             ease: "linear"
-                        }
+                        },
+                        opacity: { duration: 0.3 }
                     }}
                 />
             </svg>

@@ -42,51 +42,61 @@ export default function Intro() {
                 <motion.div
                     initial={{ opacity: 1 }}
                     exit={{
-                        y: "-100%",
+                        clipPath: "inset(0 0 100% 0)",
                         transition: { duration: 1.2, ease: [0.76, 0, 0.24, 1] }
                     }}
-                    className="fixed inset-0 z-9999 bg-vermelion-700/80 backdrop-blur-xl flex flex-col items-center justify-center text-offwhite-50 selection:bg-white/10"
+                    className="fixed inset-0 z-9999 bg-black flex flex-col items-center justify-center text-offwhite-100 selection:bg-white/10"
                 >
-                    <div className="flex flex-col items-center gap-12 max-w-md w-full px-spacing-08">
+                    <div className="flex flex-col items-center gap-spacing-09 max-w-md w-full px-spacing-08 relative z-10">
                         {/* Upper Details */}
-                        <div className="w-full flex justify-between font-doto text-[10px] tracking-widest opacity-40 uppercase">
-                            <div className="flex flex-col gap-1">
-                                <span>Status: {showChoice ? "Ready" : "Booting"}</span>
-                                <span>Signal: {error ? "Offline" : "Locked"}</span>
-                            </div>
-                            <div className="text-right">
-                                <span>Mem. Link: pseudo</span>
-                                <span>Rev. 2018.24</span>
-                            </div>
+                        <div className="w-full flex justify-between font-doto text-[10px] tracking-[0.3em] opacity-40 uppercase">
+                            <motion.div
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                transition={{ delay: 0.2 }}
+                                className="flex flex-col gap-spacing-01"
+                            >
+                                <span>Status: {showChoice ? "Online" : "Booting"}</span>
+                                <span>Signal: {error ? "Err" : "Sync"}</span>
+                            </motion.div>
+                            <motion.div
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                transition={{ delay: 0.4 }}
+                                className="text-right flex flex-col gap-spacing-01"
+                            >
+                                <span>Ref: pseudo_mem</span>
+                                <span>v.2018.02.10</span>
+                            </motion.div>
                         </div>
 
                         {/* Large Counter */}
-                        <div className="relative pt-12">
+                        <div className="relative pt-spacing-08">
                             <motion.h1
-                                className="font-electrolize text-[120px] sm:text-[180px] leading-none tracking-tighter"
-                                initial={{ opacity: 0, scale: 0.9 }}
-                                animate={{ opacity: 1, scale: 1 }}
-                                transition={{ duration: 1 }}
+                                className="font-electrolize text-[140px] sm:text-[200px] leading-none tracking-tighter text-vermelion"
+                                initial={{ opacity: 0, scale: 0.95, filter: "blur(10px)" }}
+                                animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
+                                transition={{ duration: 1.5, ease: "easeOut" }}
                             >
                                 {progress.toString().padStart(2, "0")}
-                                <span className="text-[20px] sm:text-[32px] absolute -top-4 -right-8 opacity-60">%</span>
+                                <span className="text-[20px] sm:text-[32px] absolute -top-4 -right-12 opacity-30 font-doto">%</span>
                             </motion.h1>
                         </div>
 
                         {/* Lower Details */}
-                        <div className="w-full flex flex-col items-center gap-6 pt-12 border-t border-white/10">
-                            <div className="flex flex-col items-center gap-1">
-                                <span className="font-electrolize text-[10px] uppercase tracking-[0.3em] opacity-60">Coordinates</span>
-                                <span className="font-doto text-caption tracking-widest">
+                        <div className="w-full flex flex-col items-center gap-spacing-07 pt-spacing-10 border-t border-white/10">
+                            <div className="flex flex-col items-center gap-spacing-02">
+                                <span className="font-electrolize text-[10px] uppercase tracking-[0.5em] opacity-30">Spatial Analysis</span>
+                                <span className="font-doto text-micro md:text-caption tracking-[0.4em] opacity-80">
                                     <ScrambleText text={locationString} delay={0.5} duration={1.5} />
                                 </span>
                             </div>
 
                             {/* Loading Bar or Choice Buttons */}
                             {!showChoice ? (
-                                <div className="w-full h-0.5 bg-white/10 relative overflow-hidden">
+                                <div className="w-full h-px bg-white/5 relative overflow-hidden">
                                     <motion.div
-                                        className="absolute inset-0 bg-white/60"
+                                        className="absolute inset-0 bg-vermelion"
                                         initial={{ x: "-100%" }}
                                         animate={{ x: `${progress - 100}%` }}
                                         transition={{ ease: "linear" }}
@@ -96,28 +106,25 @@ export default function Intro() {
                                 <motion.div
                                     initial={{ opacity: 0, y: 10 }}
                                     animate={{ opacity: 1, y: 0 }}
-                                    transition={{ duration: 0.5 }}
-                                    className="w-full flex flex-col gap-3"
+                                    transition={{ duration: 0.8, ease: "easeOut" }}
+                                    className="w-full flex flex-col gap-spacing-05"
                                 >
-                                    <span className="font-electrolize text-[10px] uppercase tracking-[0.3em] opacity-60 text-center">
-                                        Audio Preference
-                                    </span>
-                                    <div className="flex gap-3">
+                                    <div className="flex flex-col sm:flex-row gap-spacing-04">
                                         <motion.button
                                             onClick={() => handleChoice(true)}
                                             whileHover={{ scale: 1.02 }}
                                             whileTap={{ scale: 0.98 }}
-                                            className="flex-1 px-4 py-3 bg-white/30 hover:bg-white/40 border-2 border-white/60 rounded-md font-doto text-micro uppercase tracking-widest transition-colors"
+                                            className="flex-1 px-spacing-06 py-spacing-04 bg-vermelion hover:bg-vermelion/60 text-white rounded-full font-doto text-micro uppercase tracking-[0.2em] transition-colors border border-vermelion"
                                         >
-                                            Play Audio
+                                            Transmission
                                         </motion.button>
                                         <motion.button
                                             onClick={() => handleChoice(false)}
                                             whileHover={{ scale: 1.02 }}
                                             whileTap={{ scale: 0.98 }}
-                                            className="flex-1 px-4 py-3 bg-white/10 hover:bg-white/20 border border-white/20 rounded-md font-doto text-micro uppercase tracking-widest transition-colors"
+                                            className="flex-1 px-spacing-06 py-spacing-04 bg-white/5 hover:bg-white/10 text-offwhite-100/60 rounded-full font-doto text-micro uppercase tracking-[0.2em] transition-colors border border-white/10"
                                         >
-                                            Silent
+                                            Silence
                                         </motion.button>
                                     </div>
                                 </motion.div>
@@ -126,7 +133,7 @@ export default function Intro() {
                     </div>
 
                     {/* Dynamic Texture/Grain overlay */}
-                    <div className="absolute inset-0 pointer-events-none opacity-[0.2] bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
+                    <div className="absolute inset-0 pointer-events-none opacity-[0.08] bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
                 </motion.div>
             )}
         </AnimatePresence>
