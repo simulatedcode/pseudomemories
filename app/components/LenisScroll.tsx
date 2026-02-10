@@ -4,7 +4,7 @@ import Lenis from "lenis";
 import { usePathname } from "next/navigation";
 import { useIntro } from "../context/IntroContextCore";
 
-export default function SmoothScroll({ children }: { children: React.ReactNode }) {
+export default function LenisScroll({ children }: { children: React.ReactNode }) {
     const { isComplete } = useIntro();
     const pathname = usePathname();
     const lenisRef = useRef<Lenis | null>(null);

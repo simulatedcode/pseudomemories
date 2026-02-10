@@ -2,9 +2,9 @@
 
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { useGeo } from "../context/GeoContextCore";
-import { useAudio } from "../context/AudioContextCore";
-import { useIntro } from "../context/IntroContextCore";
+import { useGeo } from "../../context/GeoContextCore";
+import { useAudio } from "../../context/AudioContextCore";
+import { useIntro } from "../../context/IntroContextCore";
 import { usePathname } from "next/navigation";
 import { ScrambleText } from "./ScrambleText";
 

@@ -2,7 +2,7 @@
 
 import React, { useState, useRef } from "react";
 import { motion, useInView, AnimatePresence, easeOut } from "framer-motion";
-import { ScrambleText } from "./ScrambleText";
+import { ScrambleText } from "./ui/ScrambleText";
 import Link from "next/link";
 import { useIntro } from "../context/IntroContextCore";
 

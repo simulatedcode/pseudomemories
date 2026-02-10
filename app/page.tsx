@@ -3,9 +3,9 @@
 import dynamic from "next/dynamic";
 
 
-const DustStar = dynamic(() => import("./components/DustStar"), { ssr: false });
-const Hero8Bit = dynamic(() => import("./components/Hero8Bit").then(mod => mod.Hero8Bit), { ssr: false });
-const HeroCharacter = dynamic(() => import("./components/HeroCharacter"), { ssr: false });
+const DustStar = dynamic(() => import("./components/hero/DustStar"), { ssr: false });
+const Hero8Bit = dynamic(() => import("./components/hero/Hero8Bit").then(mod => mod.Hero8Bit), { ssr: false });
+const HeroCharacter = dynamic(() => import("./components/hero/HeroCharacter"), { ssr: false });
 import { useIntro } from "./context/IntroContextCore";
 import { motion, AnimatePresence, useInView } from "framer-motion";
 

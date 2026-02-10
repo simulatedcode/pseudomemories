@@ -4,7 +4,7 @@ import { useTexture, Html } from "@react-three/drei";
 import { EffectComposer, Bloom } from "@react-three/postprocessing";
 import { motion, useScroll, useTransform } from "framer-motion";
 import * as THREE from "three";
-import Loader from "./ui/Loader";
+import Loader from "../ui/Loader";
 
 type PositionValue = number | string;
 

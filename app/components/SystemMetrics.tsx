@@ -22,7 +22,7 @@ function GPUIcon() {
     );
 }
 
-export function Navigation({ className }: { className?: string }) {
+export function SystemMetrics({ className }: { className?: string }) {
     const { memory, gpu } = useSystemMetrics();
 
     return (

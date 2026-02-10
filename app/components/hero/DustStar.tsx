@@ -4,10 +4,10 @@ import { useRef, Suspense, useMemo, useEffect, useState } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { Points, PointMaterial, Html } from "@react-three/drei";
 import * as THREE from "three";
-import { useGeo } from "../context/GeoContextCore";
-import { useSkyTime } from "../hooks/useSkyTime";
+import { useGeo } from "../../context/GeoContextCore";
+import { useSkyTime } from "../../hooks/useSkyTime";
 import { motion, useScroll, useTransform } from "framer-motion";
-import Loader from "./ui/Loader";
+import Loader from "../ui/Loader";
 
 /* ================= STAR FIELD ================= */
 

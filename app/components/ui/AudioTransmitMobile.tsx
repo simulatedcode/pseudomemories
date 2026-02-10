@@ -2,8 +2,8 @@
 
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { useAudio } from "../context/AudioContextCore";
-import { useIntro } from "../context/IntroContextCore";
+import { useAudio } from "../../context/AudioContextCore";
+import { useIntro } from "../../context/IntroContextCore";
 import { usePathname } from "next/navigation";
 import { ScrambleText } from "./ScrambleText";
 import { SineWaveform } from "./SineWaveform";

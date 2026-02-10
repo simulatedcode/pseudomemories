@@ -1,13 +1,22 @@
+"use client";
+
 import type { Metadata } from "next";
-import { Electrolize, Doto, DotGothic16, Pixelify_Sans } from "next/font/google"
-import GoogleAnalytics from "./components/GoogleAnalytics";
-import SmoothScroll from "./components/SmoothScroll";
+import { Electrolize, Doto, Pixelify_Sans } from "next/font/google";
+import GoogleAnalytics from "./lib/GoogleAnalytics";
+import LenisScroll from "./components/LenisScroll";
 import { Header } from "./components/Header";
 import { Footer } from "./components/Footer";
-import PageTransition from "./components/PageTransition";
-import Intro from "./components/Intro";
-import { AudioTransmitMobile } from "./components/AudioTransmitMobile";
+import PageTransition from "./components/ui/PageTransition";
+import { AudioTransmitMobile } from "./components/ui/AudioTransmitMobile";
 import "./globals.css";
+
+import { GeoProvider } from "./context/GeoContext";
+import { AudioProvider } from "./context/AudioContext";
+import { IntroProvider } from "./context/IntroContext";
+import { Menu } from "./components/Menu";
+import PageShell from "./components/ui/PageShell";
+import { useState } from "react";
+import Intro from "./components/ui/Intro";
 
 const electrolize = Electrolize({
   subsets: ["latin"],
@@ -30,25 +39,15 @@ const pixelifysans = Pixelify_Sans({
   display: "swap",
 });
 
-export const metadata: Metadata = {
-  title: "pseudo memories",
-  description: "pseudo memories - memories of the past",
-  icons: {
-    icon: "/favicon.ico",
-  },
-};
-
-import { GeoProvider } from "./context/GeoContext";
-import { AudioProvider } from "./context/AudioContext";
-import { IntroProvider } from "./context/IntroContext";
-
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
+  const [menuOpen, setMenuOpen] = useState(false);
+
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body
         className={`${electrolize.variable} ${doto.variable} ${pixelifysans.variable} antialiased`}
       >
@@ -59,24 +58,25 @@ export default function RootLayout({
             <GeoProvider>
               <Intro />
               <AudioTransmitMobile />
-              <SmoothScroll>
-                <Header />
-                <div className="relative w-full flex flex-col">
-                  <PageTransition>
-                    <main className="relative overflow-x-hidden grow">
-                      {children}
-                    </main>
-                  </PageTransition>
-                </div>
-                <Footer />
-              </SmoothScroll>
+              <LenisScroll>
+                <PageShell isMenuOpen={menuOpen}>
+                  <Header onMenuToggle={() => setMenuOpen(true)} />
+                  <div className="relative min-h-screen w-full flex flex-col">
+                    <PageTransition>
+                      <main className="relative overflow-x-hidden">
+                        {children}
+                      </main>
+                    </PageTransition>
+                  </div>
+                  <Footer />
+                </PageShell>
+              </LenisScroll>
+              <Menu isOpen={menuOpen} onClose={() => setMenuOpen(false)} />
             </GeoProvider>
           </IntroProvider>
         </AudioProvider>
 
-
-        {/* Global Dynamic Texture/Grain overlay - Subtler for premium feel */}
-        <div className="fixed inset-0 pointer-events-none opacity-[0.08] z-100 bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
+        <div className="fixed inset-0 pointer-events-none opacity-[0.08] z-10 bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
       </body>
     </html >
   );

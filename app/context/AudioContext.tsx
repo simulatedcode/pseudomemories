@@ -2,7 +2,7 @@
 
 import { useRef, useState, ReactNode, useEffect } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
-import { SineWaveform } from "../components/SineWaveform";
+import { SineWaveform } from "../components/ui/SineWaveform";
 import { AudioContext } from "./AudioContextCore";
 
 export function AudioProvider({ children }: { children: ReactNode }) {
