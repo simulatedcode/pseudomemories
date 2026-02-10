@@ -5,9 +5,11 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useGeo } from "../context/GeoContextCore";
 import { useAudio } from "../context/AudioContextCore";
 import { useIntro } from "../context/IntroContextCore";
+import { usePathname } from "next/navigation";
 import { ScrambleText } from "./ScrambleText";
 
 export default function Intro() {
+    const pathname = usePathname();
     const [progress, setProgress] = useState(0);
     const [showChoice, setShowChoice] = useState(false);
     const [isVisible, setIsVisible] = useState(true);
@@ -38,6 +40,9 @@ export default function Intro() {
     };
 
     const locationString = error || `${latitude.toFixed(4)}°N ${longitude.toFixed(4)}°E`;
+
+    // Only render intro on the homepage
+    if (pathname !== "/") return null;
 
     return (
         <AnimatePresence>

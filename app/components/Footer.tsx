@@ -155,12 +155,12 @@ export function Footer() {
                         <span className="font-doto text-[10px] uppercase tracking-widest">
                             © {new Date().getFullYear()} Pseudo Memories
                         </span>
-                        <span className="font-doto text-[10px] uppercase tracking-widest text-white/40">
+                        <span className="font-doto text-[10px] uppercase tracking-widest text-white/80">
                             All systems nominal
                         </span>
                     </div>
                     <div>
-                        <span className="font-doto text-[10px] uppercase tracking-widest text-white/40">
+                        <span className="font-doto text-[10px] uppercase tracking-widest text-white/80">
                             REF: {refId}
                         </span>
                     </div>

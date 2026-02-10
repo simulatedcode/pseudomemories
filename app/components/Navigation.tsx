@@ -28,8 +28,7 @@ export function Navigation({ className }: { className?: string }) {
     return (
         <nav className={`flex items-center gap-spacing-02 sm:gap-spacing-04 md:gap-spacing-06 lg:gap-spacing-8 ${className}`}>
             <motion.div
-                whileHover={{ scale: 1.05 }}
-                className="flex items-center gap-spacing-02 group"
+                className="flex items-center gap-spacing-02"
             >
                 <div className="p-2 sm:p-0">
                     <MemoryIcon />
@@ -39,8 +38,7 @@ export function Navigation({ className }: { className?: string }) {
                 </span>
             </motion.div>
             <motion.div
-                whileHover={{ scale: 1.05 }}
-                className="flex items-center gap-spacing-02 group"
+                className="flex items-center gap-spacing-02"
             >
                 <div className="p-2 sm:p-0">
                     <GPUIcon />

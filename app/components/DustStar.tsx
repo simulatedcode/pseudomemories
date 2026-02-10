@@ -220,6 +220,14 @@ const DustStar = ({
     const { scrollYProgress } = useScroll();
     const yOffset = useTransform(scrollYProgress, [0, 1], [0, -50]); // Subtly move stars
 
+    const [eventSource, setEventSource] = useState<HTMLElement | undefined>(undefined);
+
+    useEffect(() => {
+        if (typeof document !== 'undefined') {
+            setEventSource(document.body);
+        }
+    }, []);
+
     return (
         <motion.div
             className="fixed top-0 left-0 right-0 z-0 pointer-events-none bottom-[25vh] sm:bottom-[25vh] lg:bottom-[30vh] xl:bottom-[35vh]"
@@ -230,7 +238,7 @@ const DustStar = ({
         >
             <Canvas
                 frameloop="always"
-                eventSource={(typeof document !== 'undefined' && document.body) ? document.body : undefined}
+                eventSource={eventSource}
                 className="pointer-events-none"
                 camera={{ position: [0, 0, 0], fov: 75, near: 0.1, far: 1000 }}
                 gl={{

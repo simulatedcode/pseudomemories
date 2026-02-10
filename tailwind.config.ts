@@ -1,5 +1,6 @@
 import type { Config } from "tailwindcss";
 import typography from "@tailwindcss/typography";
+import { Pixelify_Sans } from "next/font/google";
 
 const config: Config = {
     content: [
@@ -53,6 +54,7 @@ const config: Config = {
                 sans: ["var(--font-electrolize)", "sans-serif"],
                 electrolize: ["var(--font-electrolize)", "sans-serif"],
                 doto: ["var(--font-doto)", "sans-serif"],
+                Pixelify_Sans: ["var(--font-pixelify-sans)", "sans-serif"],
             },
             fontSize: {
                 h1: ["60px", { lineHeight: "1.1", letterSpacing: "-0.03em", fontWeight: "500" }],

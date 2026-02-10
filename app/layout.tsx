@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
-import { Electrolize, Doto } from "next/font/google"
+import { Electrolize, Doto, DotGothic16, Pixelify_Sans } from "next/font/google"
 import GoogleAnalytics from "./components/GoogleAnalytics";
 import SmoothScroll from "./components/SmoothScroll";
 import { Header } from "./components/Header";
 import { Footer } from "./components/Footer";
 import PageTransition from "./components/PageTransition";
 import Intro from "./components/Intro";
+import { AudioTransmitMobile } from "./components/AudioTransmitMobile";
 import "./globals.css";
 
 const electrolize = Electrolize({
@@ -17,8 +18,15 @@ const electrolize = Electrolize({
 
 const doto = Doto({
   subsets: ["latin"],
-  weight: ["400"],
+  weight: ["300", "400", "500", "600", "700", "800", "900"],
   variable: "--font-doto",
+  display: "swap",
+});
+
+const pixelifysans = Pixelify_Sans({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-pixelify-sans",
   display: "swap",
 });
 
@@ -42,7 +50,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${electrolize.variable} ${doto.variable} antialiased`}
+        className={`${electrolize.variable} ${doto.variable} ${pixelifysans.variable} antialiased`}
       >
         <GoogleAnalytics />
 
@@ -50,6 +58,7 @@ export default function RootLayout({
           <IntroProvider>
             <GeoProvider>
               <Intro />
+              <AudioTransmitMobile />
               <SmoothScroll>
                 <Header />
                 <div className="relative w-full flex flex-col">
