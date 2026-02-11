@@ -8,13 +8,13 @@ import Loader from "../ui/Loader";
 
 type PositionValue = number | string;
 
-interface HeroCharacterProps {
+export interface HeroCharacterProps {
     x?: PositionValue;
     y?: PositionValue;
     anchor?: "center" | "bottom" | "top" | "left" | "right";
 }
 
-function CharacterSprite({ x = 204, y = 0, anchor = "center" }: HeroCharacterProps) {
+export function CharacterSprite({ x = 204, y = -540, anchor = "center" }: HeroCharacterProps) {
     const texture = useTexture("/raden_.png");
     const { viewport, size } = useThree();
 

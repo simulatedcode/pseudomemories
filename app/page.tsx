@@ -2,16 +2,28 @@
 
 import dynamic from "next/dynamic";
 import { useIntro } from "@/app/context/IntroContextCore";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useScroll, useSpring, useTransform } from "framer-motion";
 
 /* Effects */
 const DustStar = dynamic(() => import("@/app/components/hero/DustStar"), { ssr: false });
+const SectionAbout = dynamic(() => import("@/app/components/hero/SectionAbout"), { ssr: false });
 
 /* Hero (Grid + Character merged) */
 const Hero = dynamic(() => import("@/app/components/hero/Hero"), { ssr: false });
 
 export default function Home() {
   const { isComplete } = useIntro();
+  const { scrollYProgress } = useScroll();
+
+  // Softer spring for more "luxurious" movement
+  const smoothY = useSpring(scrollYProgress, {
+    stiffness: 40,
+    damping: 30,
+    mass: 1,
+    restDelta: 0.001
+  });
+
+  const bgY = useTransform(smoothY, [0, 1], ["0%", "-10%"]);
 
   return (
     <div className="relative max-w-full mx-auto text-foreground font-sans selection:bg-inverse flex flex-col">
@@ -20,6 +32,7 @@ export default function Home() {
       <motion.div
         initial={{ y: "100%", opacity: 0 }}
         animate={isComplete ? { y: 0, opacity: 1 } : { y: "100%", opacity: 0 }}
+        style={{ y: bgY }}
         transition={{ duration: 1.5, ease: [0.76, 0, 0.24, 1], delay: 0.8 }}
         className="pointer-events-none fixed inset-0 z-0 bg-linear-to-b from-vermelion-800 via-vermelion-500 to-cyan-200"
       />
@@ -40,8 +53,16 @@ export default function Home() {
         )}
       </AnimatePresence>
 
-      {/* Spacer */}
-      <div className="h-screen w-full relative pointer-events-none" />
+      {/* Main Content Flow */}
+      <div className="relative z-20">
+        {/* Hero Spacer */}
+        <div className="h-screen w-full pointer-events-none" />
+
+        {/* Sections: No delay/fade here to prevent gaps */}
+        {isComplete && (
+          <SectionAbout />
+        )}
+      </div>
     </div>
   );
 }

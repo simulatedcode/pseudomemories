@@ -1,6 +1,7 @@
 "use client";
 
-import { Electrolize, Doto, Pixelify_Sans } from "next/font/google";
+import { Electrolize, Doto, IBM_Plex_Mono, } from "next/font/google";
+import localFont from "next/font/local";
 import GoogleAnalytics from "./lib/GoogleAnalytics";
 import LenisScroll from "./components/LenisScroll";
 import { Header } from "./components/Header";
@@ -31,12 +32,19 @@ const doto = Doto({
   display: "swap",
 });
 
-const pixelifysans = Pixelify_Sans({
+const ibmplexmono = IBM_Plex_Mono({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
-  variable: "--font-pixelify-sans",
+  variable: "--font-ibmplexmono",
   display: "swap",
 });
+
+const iawriter = localFont({
+  src: "../public/fonts/iAWriterDuoS-Regular.woff2",
+  variable: "--font-iawriter",
+  display: "swap",
+});
+
 
 export default function RootLayout({
   children,
@@ -48,7 +56,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${electrolize.variable} ${doto.variable} ${pixelifysans.variable} antialiased`}
+        className={`${electrolize.variable} ${doto.variable} ${ibmplexmono.variable} ${iawriter.variable} antialiased`}
       >
         <GoogleAnalytics />
 

@@ -27,12 +27,12 @@ export default function DocumentationLayout({
                     prose-h3:font-electrolize prose-h3:uppercase prose-h3:tracking-wide prose-h3:text-h5 prose-h3:text-offwhite-100/70 prose-h3:mt-spacing-07 prose-h3:mb-spacing-03
                     
                     /* Body & Paragraphs */
-                    prose-p:font-doto prose-p:text-body prose-p:leading-relaxed prose-p:text-offwhite-100/60 prose-p:mb-spacing-06
+                    prose-p:font-iawriter prose-p:text-body prose-p:leading-relaxed prose-p:text-offwhite-100/60 prose-p:mb-spacing-06
                     prose-strong:text-offwhite-100 prose-strong:font-bold
                     
                     /* Lists */
                     prose-ul:list-none prose-ul:pl-0 prose-ul:mb-spacing-06
-                    prose-li:font-doto prose-li:text-body prose-li:text-offwhite-100/50 prose-li:mb-spacing-03
+                    prose-li:font-iawriter prose-li:text-body prose-li:text-offwhite-100/50 prose-li:mb-spacing-03
                     prose-li:before:content-['•'] prose-li:before:mr-4 prose-li:before:text-vermelion
                     
                     /* Hr & Spacing */

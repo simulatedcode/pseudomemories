@@ -52,7 +52,7 @@ export function Header({ onMenuToggle }: { onMenuToggle: () => void }) {
             initial={{ opacity: 0, y: -20 }}
             animate={isComplete ? { opacity: 1, y: 0 } : { opacity: 0, y: -20 }}
             transition={{ duration: 0.8, delay: 1.2, ease: "easeOut" }}
-            className="fixed top-0 left-0 w-full z-100 flex items-center justify-between px-spacing-05 md:px-spacing-08 py-spacing-04 text-offwhite-100 pointer-events-none border-b border-offwhite-100/5 bg-background/80 backdrop-blur-md"
+            className="fixed top-0 left-0 w-full z-100 flex items-center justify-between px-spacing-05 md:px-spacing-08 py-spacing-04 pointer-events-none border-b border-offwhite-100/5 bg-background/80 backdrop-blur-md"
         >
             {/* Logo */}
             <div
@@ -89,7 +89,7 @@ export function Header({ onMenuToggle }: { onMenuToggle: () => void }) {
 
             {/* Location */}
             <div
-                className="hidden md:block pointer-events-auto font-doto text-body uppercase tracking-[0.2em] opacity-80 hover:opacity-100 transition-opacity cursor-default"
+                className="hidden md:block pointer-events-auto font-doto text-body mix-blend-difference uppercase tracking-[0.2em] opacity-80 hover:opacity-100 transition-opacity cursor-default"
                 onMouseEnter={() => setHoveredItem("Location")}
                 onMouseLeave={() => setHoveredItem(null)}
             >
