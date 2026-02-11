@@ -1,12 +1,22 @@
-import type { Metadata } from "next";
-import { Electrolize, Doto } from "next/font/google"
-import GoogleAnalytics from "./components/GoogleAnalytics";
-import SmoothScroll from "./components/SmoothScroll";
+"use client";
+
+import { Electrolize, Doto, IBM_Plex_Mono, } from "next/font/google";
+import localFont from "next/font/local";
+import GoogleAnalytics from "./lib/GoogleAnalytics";
+import LenisScroll from "./components/LenisScroll";
 import { Header } from "./components/Header";
 import { Footer } from "./components/Footer";
-import PageTransition from "./components/PageTransition";
-import Intro from "./components/Intro";
+import PageTransition from "./components/ui/PageTransition";
+import { AudioTransmitMobile } from "./components/ui/AudioTransmitMobile";
 import "./globals.css";
+
+import { GeoProvider } from "./context/GeoContext";
+import { AudioProvider } from "./context/AudioContext";
+import { IntroProvider } from "./context/IntroContext";
+import { Menu } from "./components/Menu";
+import PageShell from "./components/ui/PageShell";
+import { useState } from "react";
+import Intro from "./components/ui/Intro";
 
 const electrolize = Electrolize({
   subsets: ["latin"],
@@ -17,32 +27,36 @@ const electrolize = Electrolize({
 
 const doto = Doto({
   subsets: ["latin"],
-  weight: ["400"],
+  weight: ["300", "400", "500", "600", "700", "800", "900"],
   variable: "--font-doto",
   display: "swap",
 });
 
-export const metadata: Metadata = {
-  title: "pseudo memories",
-  description: "pseudo memories - memories of the past",
-  icons: {
-    icon: "/favicon.ico",
-  },
-};
+const ibmplexmono = IBM_Plex_Mono({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-ibmplexmono",
+  display: "swap",
+});
 
-import { GeoProvider } from "./context/GeoContext";
-import { AudioProvider } from "./context/AudioContext";
-import { IntroProvider } from "./context/IntroContext";
+const iawriter = localFont({
+  src: "../public/fonts/iAWriterDuoS-Regular.woff2",
+  variable: "--font-iawriter",
+  display: "swap",
+});
+
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
+  const [menuOpen, setMenuOpen] = useState(false);
+
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body
-        className={`${electrolize.variable} ${doto.variable} antialiased`}
+        className={`${electrolize.variable} ${doto.variable} ${ibmplexmono.variable} ${iawriter.variable} antialiased`}
       >
         <GoogleAnalytics />
 
@@ -50,22 +64,26 @@ export default function RootLayout({
           <IntroProvider>
             <GeoProvider>
               <Intro />
-              <SmoothScroll>
-                <Header />
-                <div className="relative min-h-screen flex flex-col">
-                  <main className="relative w-full mx-auto z-0 flex flex-col pt-spacing-13 flex-1 overflow-x-hidden">
-                    <PageTransition>{children}</PageTransition>
-                  </main>
-                </div>
-                <Footer />
-              </SmoothScroll>
+              <AudioTransmitMobile />
+              <LenisScroll>
+                <PageShell isMenuOpen={menuOpen}>
+                  <Header onMenuToggle={() => setMenuOpen(true)} />
+                  <PageTransition>
+                    <div className="relative min-h-screen w-full flex flex-col">
+                      <main className="relative overflow-x-hidden">
+                        {children}
+                      </main>
+                    </div>
+                  </PageTransition>
+                  <Footer />
+                </PageShell>
+              </LenisScroll>
+              <Menu isOpen={menuOpen} onClose={() => setMenuOpen(false)} />
             </GeoProvider>
           </IntroProvider>
         </AudioProvider>
 
-
-        {/* Global Dynamic Texture/Grain overlay - Subtler for premium feel */}
-        <div className="fixed inset-0 pointer-events-none opacity-[0.08] z-100 bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
+        <div className="fixed inset-0 pointer-events-none opacity-[0.08] z-10 bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
       </body>
     </html >
   );

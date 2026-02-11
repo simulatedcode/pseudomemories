@@ -22,30 +22,28 @@ function GPUIcon() {
     );
 }
 
-export function Navigation({ className }: { className?: string }) {
+export function SystemMetrics({ className }: { className?: string }) {
     const { memory, gpu } = useSystemMetrics();
 
     return (
         <nav className={`flex items-center gap-spacing-02 sm:gap-spacing-04 md:gap-spacing-06 lg:gap-spacing-8 ${className}`}>
             <motion.div
-                whileHover={{ scale: 1.05 }}
-                className="flex items-center gap-spacing-02 group"
+                className="flex items-center gap-spacing-02"
             >
                 <div className="p-2 sm:p-0">
                     <MemoryIcon />
                 </div>
-                <span className="font-doto cursor-default text-micro uppercase tracking-widest hidden sm:inline">
+                <span className="font-doto cursor-default text-body uppercase tracking-[0.2em] hidden sm:inline">
                     MEM: {memory}%
                 </span>
             </motion.div>
             <motion.div
-                whileHover={{ scale: 1.05 }}
-                className="flex items-center gap-spacing-02 group"
+                className="flex items-center gap-spacing-02"
             >
                 <div className="p-2 sm:p-0">
                     <GPUIcon />
                 </div>
-                <span className="font-doto cursor-default text-micro uppercase tracking-widest hidden sm:inline">
+                <span className="font-doto cursor-default text-body uppercase tracking-[0.2em] hidden sm:inline">
                     GPU: {gpu}%
                 </span>
             </motion.div>

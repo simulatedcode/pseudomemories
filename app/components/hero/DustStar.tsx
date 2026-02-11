@@ -2,11 +2,12 @@
 
 import { useRef, Suspense, useMemo, useEffect, useState } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { Points, PointMaterial } from "@react-three/drei";
+import { Points, PointMaterial, Html } from "@react-three/drei";
 import * as THREE from "three";
-import { useGeo } from "../context/GeoContextCore";
-import { useSkyTime } from "../hooks/useSkyTime";
+import { useGeo } from "../../context/GeoContextCore";
+import { useSkyTime } from "../../hooks/useSkyTime";
 import { motion, useScroll, useTransform } from "framer-motion";
+import Loader from "../ui/Loader";
 
 /* ================= STAR FIELD ================= */
 
@@ -219,18 +220,25 @@ const DustStar = ({
     const { scrollYProgress } = useScroll();
     const yOffset = useTransform(scrollYProgress, [0, 1], [0, -50]); // Subtly move stars
 
+    const [eventSource, setEventSource] = useState<HTMLElement | undefined>(undefined);
+
+    useEffect(() => {
+        if (typeof document !== 'undefined') {
+            setEventSource(document.body);
+        }
+    }, []);
+
     return (
         <motion.div
-            className="fixed top-0 left-0 right-0 z-0 pointer-events-none"
+            className="fixed top-0 left-0 right-0 z-0 pointer-events-none bottom-[25vh] sm:bottom-[25vh] lg:bottom-[30vh] xl:bottom-[35vh]"
             style={{
                 y: yOffset,
-                bottom: "235px", // Aligns with the Hero8Bit horizon line
                 background: "transparent",
             }}
         >
             <Canvas
                 frameloop="always"
-                eventSource={typeof document !== 'undefined' ? document.body : undefined}
+                eventSource={eventSource}
                 className="pointer-events-none"
                 camera={{ position: [0, 0, 0], fov: 75, near: 0.1, far: 1000 }}
                 gl={{
@@ -244,13 +252,13 @@ const DustStar = ({
                 performance={{ min: 0.5 }}
                 onCreated={({ gl }) => gl.setClearColor(0x000000, 0)}
             >
-                <Suspense fallback={null}>
+                <Suspense fallback={<Html center><Loader /></Html>}>
                     <SkyRotation latitude={latitude} lst={lst}>
                         {/* Layer 1: Tiny, deep background dust - Firefly Pulse */}
                         <StarLayer
                             count={1500}
                             radius={0.5}
-                            size={0.4}
+                            size={0.6}
                             baseBrightness={1.2}
                             driftIntensity={2.5}
                             depth={1.6}
@@ -264,7 +272,7 @@ const DustStar = ({
                         <StarLayer
                             count={750}
                             radius={1.5}
-                            size={0.6}
+                            size={0.8}
                             baseBrightness={0.6}
                             driftIntensity={0.15}
                             depth={1.2}
@@ -278,7 +286,7 @@ const DustStar = ({
                         <StarLayer
                             count={250}
                             radius={1.8}
-                            size={0.8}
+                            size={0.86}
                             baseBrightness={1.0}
                             driftIntensity={0.08}
                             depth={1.4}

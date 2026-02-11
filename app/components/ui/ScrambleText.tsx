@@ -23,16 +23,20 @@ export function ScrambleText({
 }: ScrambleTextProps) {
     const [displayText, setDisplayText] = useState("");
     const [isStarted, setIsStarted] = useState(false);
+    const [isFinished, setIsFinished] = useState(false);
 
-    // Initialize with spaces or placeholder
+    // Initialize or Update when not scrambling
     useEffect(() => {
-        setDisplayText(" ".repeat(text.length));
-    }, [text]);
+        if (!isStarted || isFinished) {
+            setDisplayText(text);
+        }
+    }, [text, isStarted, isFinished]);
 
     // Handle initial delay and trigger changes
     useEffect(() => {
         if (trigger !== undefined) {
             setIsStarted(false);
+            setIsFinished(false);
             // Small timeout to ensure state transitions correctly
             const timer = setTimeout(() => setIsStarted(true), 10);
             return () => clearTimeout(timer);
@@ -45,7 +49,7 @@ export function ScrambleText({
     }, [delay, trigger]);
 
     useEffect(() => {
-        if (!isStarted) return;
+        if (!isStarted || isFinished) return;
 
         let frame = 0;
         const totalFrames = (duration * 1000) / scrambleSpeed;
@@ -54,10 +58,7 @@ export function ScrambleText({
             const scrambled = text.split("").map((char, i) => {
                 if (char === " ") return " ";
 
-                // Progress as a value between 0 and 1
                 const progress = frame / totalFrames;
-
-                // Reveal threshold allows for a cascading settle effect
                 const revealThreshold = (i / text.length) * 0.8;
 
                 if (progress > revealThreshold + 0.1) {
@@ -72,12 +73,13 @@ export function ScrambleText({
 
             if (frame >= totalFrames) {
                 setDisplayText(text);
+                setIsFinished(true);
                 clearInterval(interval);
             }
         }, scrambleSpeed);
 
         return () => clearInterval(interval);
-    }, [isStarted, text, duration, scrambleSpeed]);
+    }, [isStarted, isFinished, text, duration, scrambleSpeed]);
 
     return <span className={className}>{displayText}</span>;
-};
+}

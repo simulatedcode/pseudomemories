@@ -2,7 +2,8 @@
 @config "../tailwind.config.ts";
 
 :root {
-  --background: #111111; /* Darker neutral background for elements */
+  --background: #111111;
+  /* Darker neutral background for elements */
   --foreground: #F7F6ED;
   --vermelion: #F0440F;
 }
@@ -11,16 +12,16 @@
   /* Existing color palettes retained but adding easier variables */
   --color-vermelion: #F0440F;
   --color-offwhite: #F7F6ED;
-  
+
   /* Noise texture */
   --bg-noise: url('https://grainy-gradients.vercel.app/noise.svg');
 }
 
 body {
-  background: #000; /* True black background for full immersion */
+  background: #000;
+  /* True black background for full immersion */
   color: var(--foreground);
-  height: 100dvh;
-  width: 100dvw;
+  min-height: 100dvh;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -42,4 +43,8 @@ body {
 
 ::-webkit-scrollbar-thumb:hover {
   background: rgba(255, 255, 255, 0.2);
+}
+
+.clip-path-slant {
+  clip-path: polygon(0 0, 100% 0, 100% 80%, 95% 100%, 0 100%);
 }

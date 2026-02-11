@@ -1,4 +1,6 @@
 import type { Config } from "tailwindcss";
+import typography from "@tailwindcss/typography";
+import { IBM_Plex_Mono, Pixelify_Sans } from "next/font/google";
 
 const config: Config = {
     content: [
@@ -52,6 +54,7 @@ const config: Config = {
                 sans: ["var(--font-electrolize)", "sans-serif"],
                 electrolize: ["var(--font-electrolize)", "sans-serif"],
                 doto: ["var(--font-doto)", "sans-serif"],
+                iawriter: ["var(--font-iawriter)", "sans-serif",],
             },
             fontSize: {
                 h1: ["60px", { lineHeight: "1.1", letterSpacing: "-0.03em", fontWeight: "500" }],
@@ -78,8 +81,17 @@ const config: Config = {
                 "spacing-12": "96px",
                 "spacing-13": "160px",
             },
+            zIndex: {
+                "100": "100",
+                "110": "110",
+                "490": "490",
+                "500": "500",
+                "999": "999",
+                "1000": "1000",
+                "9999": "9999",
+            },
         },
     },
-    plugins: [],
+    plugins: [typography],
 };
 export default config;

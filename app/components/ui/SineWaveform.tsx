@@ -4,13 +4,21 @@ import { motion } from "framer-motion";
 
 export function SineWaveform({ isPlaying }: { isPlaying: boolean }) {
     return (
-        <div className="flex items-center justify-center h-4 w-12 overflow-hidden">
+        <div className="flex items-center justify-center h-6 min-w-[64px] overflow-hidden"
+            style={{
+                maskImage: 'linear-gradient(to right, transparent, black 10%, black 90%, transparent)',
+                WebkitMaskImage: 'linear-gradient(to right, transparent, black 10%, black 90%, transparent)'
+            }}
+        >
             <svg viewBox="0 0 40 20" className="w-full h-full">
                 <motion.path
                     fill="transparent"
-                    stroke="cyan"
-                    strokeWidth="0.5"
+                    stroke="#00ffff"
+                    strokeWidth="1"
                     strokeLinecap="round"
+                    style={{
+                        filter: isPlaying ? "drop-shadow(0 0 3px rgba(0, 255, 255, 0.8))" : "none"
+                    }}
                     initial={{ d: "M-20 10 L60 10" }}
                     animate={{
                         d: isPlaying
@@ -23,7 +31,7 @@ export function SineWaveform({ isPlaying }: { isPlaying: boolean }) {
                             ]
                             : "M-20 10 L60 10",
                         x: isPlaying ? [0, -20] : 0,
-                        opacity: isPlaying ? 1 : 0.4
+                        opacity: isPlaying ? 1 : 1
                     }}
                     transition={{
                         d: {
