@@ -1,4 +1,5 @@
 "use client";
+
 import { useEffect, useRef } from "react";
 import Lenis from "lenis";
 import { usePathname } from "next/navigation";
@@ -12,9 +13,9 @@ export default function LenisScroll({ children }: { children: React.ReactNode })
     useEffect(() => {
         const lenis = new Lenis({
             duration: 1.2,
-            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-            orientation: 'vertical',
-            gestureOrientation: 'vertical',
+            easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+            orientation: "vertical",
+            gestureOrientation: "vertical",
             smoothWheel: true,
             wheelMultiplier: 1,
             touchMultiplier: 2,
@@ -24,6 +25,7 @@ export default function LenisScroll({ children }: { children: React.ReactNode })
         lenisRef.current = lenis;
 
         let rafId: number;
+
         function raf(time: number) {
             lenis.raf(time);
             rafId = requestAnimationFrame(raf);
@@ -38,22 +40,21 @@ export default function LenisScroll({ children }: { children: React.ReactNode })
         };
     }, []);
 
-    // Handle Route Changes: Reset scroll and Resize
+    // Reset scroll + resize on route change
     useEffect(() => {
         if (!lenisRef.current) return;
 
-        // Reset to top immediately on navigation
         lenisRef.current.scrollTo(0, { immediate: true });
 
-        // Force a resize after a small delay to account for page transitions
-        // This ensures the new content height is correctly calculated
         const timer = setTimeout(() => {
             lenisRef.current?.resize();
+            lenisRef.current?.raf(0);
         }, 100);
 
         return () => clearTimeout(timer);
     }, [pathname]);
 
+    // Stop scroll during intro
     useEffect(() => {
         if (!lenisRef.current) return;
 

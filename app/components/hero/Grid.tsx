@@ -1,7 +1,7 @@
 import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 import { useState, useEffect } from "react";
 
-export function Hero8Bit() {
+export function Grid() {
     const { scrollYProgress } = useScroll();
     const smoothY = useSpring(scrollYProgress, { stiffness: 60, damping: 20, mass: 0.5 });
     const yOffset = useTransform(smoothY, [0, 1], [0, -168]); // Move grid up as we scroll
@@ -36,7 +36,7 @@ export function Hero8Bit() {
     return (
         <motion.div
             style={{ y: yOffset }}
-            className="fixed z-5 w-screen h-[40vh] sm:h-[50vh] lg:h-[60vh] xl:h-[70vh] max-h-[800px] bottom-0 flex items-center justify-center"
+            className="fixed z-50 w-screen h-[40vh] sm:h-[50vh] lg:h-[60vh] xl:h-[70vh] max-h-[800px] bottom-0 flex items-center justify-center"
         >
             <motion.svg
                 viewBox="0 0 300 220"

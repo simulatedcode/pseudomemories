@@ -1,6 +1,5 @@
 "use client";
 
-import type { Metadata } from "next";
 import { Electrolize, Doto, Pixelify_Sans } from "next/font/google";
 import GoogleAnalytics from "./lib/GoogleAnalytics";
 import LenisScroll from "./components/LenisScroll";
@@ -61,13 +60,13 @@ export default function RootLayout({
               <LenisScroll>
                 <PageShell isMenuOpen={menuOpen}>
                   <Header onMenuToggle={() => setMenuOpen(true)} />
-                  <div className="relative min-h-screen w-full flex flex-col">
-                    <PageTransition>
+                  <PageTransition>
+                    <div className="relative min-h-screen w-full flex flex-col">
                       <main className="relative overflow-x-hidden">
                         {children}
                       </main>
-                    </PageTransition>
-                  </div>
+                    </div>
+                  </PageTransition>
                   <Footer />
                 </PageShell>
               </LenisScroll>
