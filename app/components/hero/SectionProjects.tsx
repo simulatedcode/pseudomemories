@@ -29,7 +29,7 @@ const projects = [
     {
         id: 3,
         title: "Panorama",
-        category: "Screen Study",
+        category: "Screen printing",
         image: "/projects/panorama.jpg",
         pos: 6,
         description: "A rhythmic layering of ocean blues and atmospheric clouds, frozen in a moment of perpetual stillness.",
@@ -65,7 +65,7 @@ const projects = [
     {
         id: 7,
         title: "Stay Unknow Nº.2",
-        category: "Shadow Work",
+        category: "Shadow Works",
         image: "/projects/sketsa-yang-hilang.jpg",
         pos: 13,
         description: "A lonely silhouette traversing a vibrant pink void, leaving behind nothing but a long, dark memory.",
@@ -166,13 +166,10 @@ export default function SectionProjects() {
                                                     {project.title}
                                                 </h3>
                                             </div>
-                                            <div className="text-h3 text-white/40 font-doto">
-                                                0{project.id}
-                                            </div>
                                         </div>
                                     </div>
 
-                                    <div className="absolute top-4 left-6 text-body font-doto text-white/80 transition-opacity group-hover:opacity-0">
+                                    <div className="absolute top-4 left-6 text-h4 font-doto text-black/60 transition-opacity group-hover:opacity-0">
                                         0{project.id}
                                     </div>
                                 </div>
