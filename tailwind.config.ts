@@ -54,7 +54,7 @@ const config: Config = {
                 sans: ["var(--font-electrolize)", "sans-serif"],
                 electrolize: ["var(--font-electrolize)", "sans-serif"],
                 doto: ["var(--font-doto)", "sans-serif"],
-                ibmplexmono: ["var(--font-ibm-plex-mono)", "sans-serif"],
+                iawriter: ["var(--font-iawriter)", "sans-serif",],
             },
             fontSize: {
                 h1: ["60px", { lineHeight: "1.1", letterSpacing: "-0.03em", fontWeight: "500" }],

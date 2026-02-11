@@ -52,7 +52,7 @@ export function Header({ onMenuToggle }: { onMenuToggle: () => void }) {
             initial={{ opacity: 0, y: -20 }}
             animate={isComplete ? { opacity: 1, y: 0 } : { opacity: 0, y: -20 }}
             transition={{ duration: 0.8, delay: 1.2, ease: "easeOut" }}
-            className="fixed top-0 left-0 w-full z-100 flex items-center justify-between px-spacing-05 md:px-spacing-08 py-spacing-04 pointer-events-none border-b border-offwhite-100/5 bg-background/80 backdrop-blur-md"
+            className="fixed top-0 left-0 w-full z-100 flex items-center justify-between px-spacing-05 md:px-spacing-08 py-spacing-04 pointer-events-none border-b border-offwhite-100/10 bg-background/80 backdrop-blur-lg"
         >
             {/* Logo */}
             <div

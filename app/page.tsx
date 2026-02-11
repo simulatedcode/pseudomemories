@@ -6,7 +6,7 @@ import { motion, AnimatePresence, useScroll, useSpring, useTransform } from "fra
 
 /* Effects */
 const DustStar = dynamic(() => import("@/app/components/hero/DustStar"), { ssr: false });
-const SectionAbout = dynamic(() => import("@/app/components/hero/SectionAbout"), { ssr: false });
+const SectionProjects = dynamic(() => import("@/app/components/hero/SectionProjects"), { ssr: false });
 
 /* Hero (Grid + Character merged) */
 const Hero = dynamic(() => import("@/app/components/hero/Hero"), { ssr: false });
@@ -60,7 +60,9 @@ export default function Home() {
 
         {/* Sections: No delay/fade here to prevent gaps */}
         {isComplete && (
-          <SectionAbout />
+          <>
+            <SectionProjects />
+          </>
         )}
       </div>
     </div>
