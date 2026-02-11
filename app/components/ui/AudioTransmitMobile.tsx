@@ -25,7 +25,7 @@ export function AudioTransmitMobile() {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: 50 }}
                     transition={{ duration: 0.8, delay: 2.2, ease: "easeOut" }}
-                    className="fixed bottom-12 left-1/2 -translate-x-1/2 z-100 lg:hidden pointer-events-auto"
+                    className="fixed bottom-12 left-1/2 -translate-x-1/2 z-110 lg:hidden pointer-events-auto"
                 >
                     <button
                         onClick={togglePlay}

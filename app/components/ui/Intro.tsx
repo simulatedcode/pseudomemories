@@ -54,7 +54,7 @@ export default function Intro() {
                         transition: { duration: 1.2, ease: [0.76, 0, 0.24, 1] }
                     }}
                     style={{ willChange: "clip-path" }}
-                    className="fixed h-dvh w-screen top-0 left-0 z-999 bg-vermelion-500/10 flex flex-col items-center justify-center text-offwhite-100 selection:bg-white/10"
+                    className="fixed h-dvh w-screen top-0 left-0 z-1000 bg-vermelion-500/10 flex flex-col items-center justify-center text-offwhite-100 selection:bg-white/10"
                 >
                     <div className="flex flex-col items-center gap-spacing-09 max-w-md w-full px-spacing-08 relative z-10">
                         {/* Upper Details */}

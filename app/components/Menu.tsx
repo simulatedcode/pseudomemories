@@ -36,7 +36,7 @@ export function Menu({ isOpen, onClose }: MenuProps) {
                         animate={{ opacity: 0.3 }}
                         exit={{ opacity: 0 }}
                         onClick={onClose}
-                        className="fixed inset-0 z-40 cursor-pointer"
+                        className="fixed inset-0 z-490 cursor-pointer"
                     />
 
                     <motion.div
@@ -44,7 +44,7 @@ export function Menu({ isOpen, onClose }: MenuProps) {
                         animate={{ x: 0 }}
                         exit={{ x: 320 }}
                         transition={{ type: "spring", stiffness: 220, damping: 30 }}
-                        className="fixed top-0 right-0 h-full w-[320px] z-50 bg-vermelion/20 backdrop-blur-2xl p-spacing-08 flex flex-col"
+                        className="fixed top-0 right-0 h-full w-[320px] z-500 bg-vermelion/20 backdrop-blur-2xl p-spacing-08 flex flex-col"
                     >
                         <div className="flex justify-start mb-spacing-12">
                             <button onClick={onClose} className="group">
