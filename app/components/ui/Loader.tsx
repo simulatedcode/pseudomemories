@@ -38,7 +38,7 @@ export default function Loader({ size = "md", className = "", text = "LOADING" }
                 <motion.div
                     className="w-1.5 h-1.5 bg-white rounded-full"
                     animate={{ opacity: [0.3, 1, 0.3] }}
-                    transition={{ duration: 1.5, ease: "easeInOut", repeat: Infinity }}
+                    transition={{ duration: 0.7, ease: [0.2, 0, 0.38, 0.9], repeat: Infinity }} // Carbon standard-productive
                 />
             </div>
 
@@ -46,7 +46,7 @@ export default function Loader({ size = "md", className = "", text = "LOADING" }
                 <motion.span
                     className={`font-doto uppercase tracking-widest text-white/60 ${sizeClasses[size].split(" ").slice(2).join(" ")}`}
                     animate={{ opacity: [0.4, 1, 0.4] }}
-                    transition={{ duration: 1.5, ease: "easeInOut", repeat: Infinity }}
+                    transition={{ duration: 0.7, ease: [0.2, 0, 0.38, 0.9], repeat: Infinity }}
                 >
                     {text}
                 </motion.span>

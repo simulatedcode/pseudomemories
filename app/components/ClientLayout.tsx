@@ -4,7 +4,6 @@ import React, { useState } from "react";
 import { Header } from "./Header";
 import { Footer } from "./Footer";
 import { Menu } from "./Menu";
-import PageShell from "./ui/PageShell";
 import PageTransition from "./ui/PageTransition";
 import Intro from "./ui/Intro";
 import { AudioTransmitMobile } from "./ui/AudioTransmitMobile";
@@ -23,17 +22,16 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
                     <Intro />
                     <AudioTransmitMobile />
                     <LenisScroll>
-                        <PageShell isMenuOpen={menuOpen}>
-                            <Header onMenuToggle={() => setMenuOpen(true)} />
-                            <PageTransition>
-                                <div className="relative min-h-screen w-full flex flex-col">
-                                    <main className="relative overflow-x-hidden">
-                                        {children}
-                                    </main>
-                                </div>
-                            </PageTransition>
-                            <Footer />
-                        </PageShell>
+
+                        <Header onMenuToggle={() => setMenuOpen(true)} />
+                        <PageTransition>
+                            <div className="relative min-h-screen w-full flex flex-col">
+                                <main className="relative overflow-x-hidden">
+                                    {children}
+                                </main>
+                            </div>
+                        </PageTransition>
+                        <Footer />
                     </LenisScroll>
                     <Menu isOpen={menuOpen} onClose={() => setMenuOpen(false)} />
                 </GeoProvider>

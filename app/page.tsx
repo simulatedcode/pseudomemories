@@ -10,6 +10,7 @@ const SectionProjects = dynamic(() => import("@/app/components/hero/SectionProje
 
 /* Hero (Grid + Character merged) */
 const Hero = dynamic(() => import("@/app/components/hero/Hero"), { ssr: false });
+const SectionSlide = dynamic(() => import("@/app/components/hero/SectionSlide"), { ssr: false });
 
 export default function Home() {
   const { isComplete } = useIntro();
@@ -62,6 +63,7 @@ export default function Home() {
         {isComplete && (
           <>
             <SectionProjects />
+            <SectionSlide />
           </>
         )}
       </div>

@@ -63,7 +63,7 @@ function Grid({ yOffset }: GridProps) {
                     className="stroke-cyan-800/6 mix-blend-exclusion"
                     initial={{ scaleX: 0 }}
                     animate={{ scaleX: 1 }}
-                    transition={{ duration: 1.5, delay: 1.8 }}
+                    transition={{ duration: 0.7, delay: 1.8, ease: [0, 0, 0.38, 0.9] }} // Carbon entrance-expressive
                 />
 
                 {gridLines.map((line, i) => (
@@ -77,7 +77,7 @@ function Grid({ yOffset }: GridProps) {
                         className="stroke-cyan-800 mix-blend-exclusion"
                         initial={{ scaleX: 0, opacity: 0 }}
                         animate={{ scaleX: 1, opacity: line.opacity }}
-                        transition={{ duration: 1.5, delay: 1.8 + i * 0.2 }}
+                        transition={{ duration: 0.7, delay: 1.8 + i * 0.11, ease: [0, 0, 0.38, 0.9] }} // Carbon entrance-expressive
                     />
                 ))}
             </motion.svg>

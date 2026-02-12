@@ -6,7 +6,7 @@ import { Points, PointMaterial, Html } from "@react-three/drei";
 import * as THREE from "three";
 import { useGeo } from "../../context/GeoContextCore";
 import { useSkyTime } from "../../hooks/useSkyTime";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
 import Loader from "../ui/Loader";
 
 /* ================= STAR FIELD ================= */
@@ -229,76 +229,78 @@ const DustStar = ({
     }, []);
 
     return (
-        <motion.div
-            className="fixed top-0 left-0 right-0 z-0 pointer-events-none bottom-[25vh] sm:bottom-[25vh] lg:bottom-[30vh] xl:bottom-[35vh]"
-            style={{
-                y: yOffset,
-                background: "transparent",
-            }}
-        >
-            <Canvas
-                frameloop="always"
-                eventSource={eventSource}
-                className="pointer-events-none"
-                camera={{ position: [0, 0, 0], fov: 75, near: 0.1, far: 1000 }}
-                gl={{
-                    alpha: true,
-                    antialias: false,
-                    stencil: false,
-                    depth: false,
-                    powerPreference: "high-performance"
+        <>
+            <motion.div
+                className="fixed top-0 left-0 right-0 z-0 pointer-events-none bottom-[25vh] sm:bottom-[25vh] lg:bottom-[30vh] xl:bottom-[35vh]"
+                style={{
+                    y: yOffset,
+                    background: "transparent",
                 }}
-                dpr={[0.75, 1]}
-                performance={{ min: 0.5 }}
-                onCreated={({ gl }) => gl.setClearColor(0x000000, 0)}
             >
-                <Suspense fallback={<Html center><Loader /></Html>}>
-                    <SkyRotation latitude={latitude} lst={lst}>
-                        {/* Layer 1: Tiny, deep background dust - Firefly Pulse */}
-                        <StarLayer
-                            count={1500}
-                            radius={0.5}
-                            size={0.6}
-                            baseBrightness={1.2}
-                            driftIntensity={2.5}
-                            depth={1.6}
-                            twinkleSpeed={twinkleSpeed ?? 0.8}
-                            twinkleSharpness={twinkleSharpness ?? 1.5}
-                            movementSpeed={0.05}
-                            color={color}
-                        />
+                <Canvas
+                    frameloop="always"
+                    eventSource={eventSource}
+                    className="pointer-events-none"
+                    camera={{ position: [0, 0, 0], fov: 75, near: 0.1, far: 1000 }}
+                    gl={{
+                        alpha: true,
+                        antialias: false,
+                        stencil: false,
+                        depth: false,
+                        powerPreference: "high-performance"
+                    }}
+                    dpr={[0.75, 1]}
+                    performance={{ min: 0.5 }}
+                    onCreated={({ gl }) => gl.setClearColor(0x000000, 0)}
+                >
+                    <Suspense fallback={<Html center><Loader /></Html>}>
+                        <SkyRotation latitude={latitude} lst={lst}>
+                            {/* Layer 1: Tiny, deep background dust - Firefly Pulse */}
+                            <StarLayer
+                                count={1500}
+                                radius={0.5}
+                                size={0.8}
+                                baseBrightness={1.2}
+                                driftIntensity={2.5}
+                                depth={1.6}
+                                twinkleSpeed={twinkleSpeed ?? 0.8}
+                                twinkleSharpness={twinkleSharpness ?? 1.5}
+                                movementSpeed={0.05}
+                                color={color}
+                            />
 
-                        {/* Layer 2: Main sparkling stars - Medium movement */}
-                        <StarLayer
-                            count={750}
-                            radius={1.5}
-                            size={0.8}
-                            baseBrightness={0.6}
-                            driftIntensity={0.15}
-                            depth={1.2}
-                            twinkleSpeed={twinkleSpeed ?? 1.0}
-                            twinkleSharpness={twinkleSharpness ?? 8.0}
-                            movementSpeed={0.15}
-                            color={color}
-                        />
+                            {/* Layer 2: Main sparkling stars - Medium movement */}
+                            <StarLayer
+                                count={750}
+                                radius={1.5}
+                                size={1.2}
+                                baseBrightness={0.6}
+                                driftIntensity={0.15}
+                                depth={1.2}
+                                twinkleSpeed={twinkleSpeed ?? 1.0}
+                                twinkleSharpness={twinkleSharpness ?? 8.0}
+                                movementSpeed={0.15}
+                                color={color}
+                            />
 
-                        {/* Layer 3: Occasional bright hero stars - Fastest movement (Foreground) */}
-                        <StarLayer
-                            count={250}
-                            radius={1.8}
-                            size={0.86}
-                            baseBrightness={1.0}
-                            driftIntensity={0.08}
-                            depth={1.4}
-                            twinkleSpeed={twinkleSpeed ?? 8.0}
-                            twinkleSharpness={twinkleSharpness ?? 12.0}
-                            movementSpeed={0.05}
-                            color={color}
-                        />
-                    </SkyRotation>
-                </Suspense>
-            </Canvas>
-        </motion.div>
+                            {/* Layer 3: Occasional bright hero stars - Fastest movement (Foreground) */}
+                            <StarLayer
+                                count={250}
+                                radius={1.8}
+                                size={1.6}
+                                baseBrightness={1.0}
+                                driftIntensity={0.08}
+                                depth={1.4}
+                                twinkleSpeed={twinkleSpeed ?? 8.0}
+                                twinkleSharpness={twinkleSharpness ?? 12.0}
+                                movementSpeed={0.05}
+                                color={color}
+                            />
+                        </SkyRotation>
+                    </Suspense>
+                </Canvas>
+            </motion.div>
+        </>
     );
 };
 

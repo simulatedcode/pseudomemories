@@ -35,8 +35,8 @@ export default function PageTransition({ children }: { children: ReactNode }) {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -50 }}
                     transition={{
-                        duration: 0.6,
-                        ease: [0.19, 1, 0.22, 1] // Fast out, slow in
+                        duration: 0.5,
+                        ease: [0, 0, 0.38, 0.9] // Carbon entrance-expressive
                     }}
                     className="w-full relative z-10 min-h-screen"
                 >
@@ -62,7 +62,7 @@ export default function PageTransition({ children }: { children: ReactNode }) {
                                     className="absolute inset-0 bg-vermelion"
                                     initial={{ x: "-100%" }}
                                     animate={{ x: "0%" }}
-                                    transition={{ duration: 0.8, ease: "easeInOut" }}
+                                    transition={{ duration: 0.5, ease: [0, 0, 0.38, 0.9] }} // Carbon entrance-expressive
                                 />
                             </div>
                             <h4 className="font-electrolize text-h4 sm:text-h3 tracking-[0.3em] text-offwhite-100 flex items-center gap-4">
