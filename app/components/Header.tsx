@@ -11,17 +11,17 @@ import Link from "next/link";
 import { SystemMetrics } from "./SystemMetrics";
 import { SineWaveform } from "./ui/SineWaveform";
 
+import pkg from "../../package.json";
+
 export function Header({ onMenuToggle }: { onMenuToggle: () => void }) {
     const [hoveredItem, setHoveredItem] = useState<string | null>(null);
     const { latitude, longitude, error } = useGeo();
     const { isComplete } = useIntro();
-    const [refId, setRefId] = useState("LOADING...");
+    const [version] = useState(`v${pkg.version}`);
     const [currentTime, setCurrentTime] = useState("");
     const { audioEnabled, playing, togglePlay } = useAudio();
 
     useEffect(() => {
-        setRefId(Math.random().toString(36).substring(7).toUpperCase());
-
         const updateTime = () => {
             const now = new Date();
             const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
@@ -76,14 +76,14 @@ export function Header({ onMenuToggle }: { onMenuToggle: () => void }) {
             {/* Ref ID */}
             <div
                 className="hidden md:block pointer-events-auto font-doto text-body uppercase tracking-[0.2em] opacity-80 hover:opacity-100 transition-opacity cursor-default"
-                onMouseEnter={() => setHoveredItem("RefId")}
+                onMouseEnter={() => setHoveredItem("Version")}
                 onMouseLeave={() => setHoveredItem(null)}
             >
                 <ScrambleText
-                    text={refId}
+                    text={version}
                     delay={1.8}
                     duration={1.5}
-                    trigger={hoveredItem === "RefId"}
+                    trigger={hoveredItem === "Version"}
                 />
             </div>
 

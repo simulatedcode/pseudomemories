@@ -51,7 +51,7 @@ export default function Intro() {
                     initial={{ opacity: 1 }}
                     exit={{
                         clipPath: "inset(0 0 100% 0)",
-                        transition: { duration: 1.2, ease: [0.76, 0, 0.24, 1] }
+                        transition: { duration: 0.5, ease: [0.2, 0, 1, 0.9] } // Carbon exit-productive
                     }}
                     style={{ willChange: "clip-path" }}
                     className="fixed h-dvh w-screen top-0 left-0 z-1000 bg-vermelion-500/10 flex flex-col items-center justify-center text-offwhite-100 selection:bg-white/10"
@@ -62,7 +62,7 @@ export default function Intro() {
                             <motion.div
                                 initial={{ opacity: 0 }}
                                 animate={{ opacity: 1 }}
-                                transition={{ delay: 0.2 }}
+                                transition={{ delay: 0.15, duration: 0.24, ease: [0.2, 0, 0.38, 0.9] }} // Carbon entrance-productive
                                 className="flex flex-col gap-spacing-01"
                             >
                                 <span>Status: {showChoice ? "Online" : "Booting"}</span>
@@ -71,7 +71,7 @@ export default function Intro() {
                             <motion.div
                                 initial={{ opacity: 0 }}
                                 animate={{ opacity: 1 }}
-                                transition={{ delay: 0.4 }}
+                                transition={{ delay: 0.3, duration: 0.24, ease: [0.2, 0, 0.38, 0.9] }}
                                 className="text-right flex flex-col gap-spacing-01"
                             >
                                 <span>Ref: pseudo_mem</span>
@@ -85,7 +85,7 @@ export default function Intro() {
                                 className="font-electrolize text-[140px] sm:text-[200px] leading-none tracking-tighter text-vermelion"
                                 initial={{ opacity: 0, scale: 0.95, filter: "blur(10px)" }}
                                 animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
-                                transition={{ duration: 1.5, ease: "easeOut" }}
+                                transition={{ duration: 0.7, ease: [0, 0, 0.38, 0.9] }} // Carbon entrance-expressive
                             >
                                 {progress.toString().padStart(2, "0")}
                                 <span className="text-[20px] sm:text-[32px] absolute -top-4 -right-12 opacity-30 font-doto">%</span>
@@ -115,7 +115,7 @@ export default function Intro() {
                                 <motion.div
                                     initial={{ opacity: 0, y: 10 }}
                                     animate={{ opacity: 1, y: 0 }}
-                                    transition={{ duration: 0.8, ease: "easeOut" }}
+                                    transition={{ duration: 0.5, ease: [0, 0, 0.38, 0.9] }} // Carbon entrance-expressive
                                     className="w-full flex flex-col gap-spacing-05"
                                 >
                                     <div className="flex flex-col items-center gap-spacing-05 w-full">
@@ -128,7 +128,7 @@ export default function Intro() {
                                             <span className="font-electrolize uppercase tracking-widest">Initialize Memory</span>
                                             <motion.span
                                                 animate={{ x: [0, 4, 0] }}
-                                                transition={{ duration: 1.5, repeat: Infinity }}
+                                                transition={{ duration: 0.7, ease: [0.2, 0, 0.38, 0.9], repeat: Infinity }} // Carbon standard-productive
                                             >
                                                 →
                                             </motion.span>

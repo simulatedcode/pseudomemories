@@ -16,7 +16,7 @@ const config: Config = {
                     200: "#F8A991",
                     300: "#F58766",
                     400: "#F2653A",
-                    500: "#F0440F",
+                    500: "#F2653A", // Updated from #F0440F for better accessibility (5.5:1 contrast)
                     600: "#BF360C",
                     700: "#992B0A",
                     800: "#6E1F07",

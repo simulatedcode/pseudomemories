@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.2](https://github.com/simulatedcode/pseudomemories/compare/v0.1.1...v0.1.2) (2026-02-12)
+
+
+### Features
+
+* Add changelog page, refactor root layout into a client component, and display package version in header and footer. ([66b8b01](https://github.com/simulatedcode/pseudomemories/commit/66b8b01c37e6ba904b9b89be9396a1d45cce4416))
+* introduce project slide section and refine hero, intro, and star field animations ([fcce330](https://github.com/simulatedcode/pseudomemories/commit/fcce330ea6b08cecc70773e7f03f3e5c223a5266))
+
 ### 0.1.1 (2026-02-11)
 
 

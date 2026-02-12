@@ -5,6 +5,7 @@ import { motion, useInView, AnimatePresence, easeOut } from "framer-motion";
 import { ScrambleText } from "./ui/ScrambleText";
 import Link from "next/link";
 import { useIntro } from "../context/IntroContextCore";
+import pkg from "../../package.json";
 
 type TechRowProps = {
     label: string;
@@ -52,10 +53,10 @@ export function Footer() {
     const [isCopyrightHovered, setIsCopyrightHovered] = useState(false);
     const [isGithubHovered, setIsGithubHovered] = useState(false);
     const { isComplete } = useIntro();
-    const [refId, setRefId] = useState("LOADING...");
+    const [refId, setRefId] = useState(`v${pkg.version}`);
 
     React.useEffect(() => {
-        setRefId(Math.random().toString(36).substring(7).toUpperCase());
+        // Version is static for the session
     }, []);
 
     return (
@@ -69,13 +70,13 @@ export function Footer() {
                             System Architecture
                         </h3>
                         <p className="font-doto text-caption uppercase tracking-[0.3em] text-offwhite-100/60">
-                            v.{new Date().getFullYear()}.02.10 // Active Protocol
+                            {new Date().getFullYear()}.02.11 // v{pkg.version} // Active Protocol
                         </p>
                     </div>
 
                     <div className="flex items-center gap-spacing-04">
                         <div className="flex flex-col items-end">
-                            <span className="font-electrolize text-caption uppercase text-white/40">Status</span>
+                            <span className="font-electrolize text-caption uppercase text-white/50">Status</span>
                             <span className="flex items-center gap-spacing-03 font-doto text-micro uppercase text-vermelion tracking-widest">
                                 <motion.div
                                     className="w-2 h-2 rounded-full bg-vermelion"
@@ -92,7 +93,7 @@ export function Footer() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-spacing-08">
                     {/* Tech Stack / Specs */}
                     <div className="flex flex-col gap-spacing-05">
-                        <h4 className="font-doto text-micro uppercase tracking-widest text-white/40 border-b border-white/5 pb-2">Technical Specifications</h4>
+                        <h4 className="font-doto text-micro uppercase tracking-widest text-white/50 border-b border-white/5 pb-2">Technical Specifications</h4>
                         <div className="flex flex-col gap-2">
                             <div className="flex justify-between items-center border-b border-white/5 py-2">
                                 <span className="font-electrolize text-caption text-white/60">Core Framework</span>
@@ -119,7 +120,7 @@ export function Footer() {
 
                     {/* Navigation / Links */}
                     <div className="flex flex-col gap-spacing-05">
-                        <h4 className="font-doto text-micro uppercase tracking-widest text-white/40 border-b border-white/5 pb-2">Communications</h4>
+                        <h4 className="font-doto text-micro uppercase tracking-widest text-white/50 border-b border-white/5 pb-2">Communications</h4>
                         <div className="flex flex-col gap-spacing-04">
                             <Link
                                 href="https://github.com/simulatedcode"
@@ -127,14 +128,14 @@ export function Footer() {
                                 className="group flex items-center justify-between p-spacing-04 border border-white/10 hover:bg-white/5 transition-colors"
                             >
                                 <span className="font-electrolize text-body uppercase">Github Repository</span>
-                                <span className="font-doto text-micro text-white/40 group-hover:text-white transition-colors">→</span>
+                                <span className="font-doto text-micro text-white/50 group-hover:text-white transition-colors">→</span>
                             </Link>
                             <Link
                                 href="/documentation"
                                 className="group flex items-center justify-between p-spacing-04 border border-white/10 hover:bg-white/5 transition-colors"
                             >
                                 <span className="font-electrolize text-body uppercase">Documentation</span>
-                                <span className="font-doto text-micro text-white/40 group-hover:text-white transition-colors">→</span>
+                                <span className="font-doto text-micro text-white/50 group-hover:text-white transition-colors">→</span>
                             </Link>
 
                             <Link
@@ -143,7 +144,7 @@ export function Footer() {
                                 className="group flex items-center justify-between p-spacing-04 border border-white/10 hover:bg-white/5 transition-colors"
                             >
                                 <span className="font-electrolize text-body uppercase">Instagram Connection</span>
-                                <span className="font-doto text-micro text-white/40 group-hover:text-white transition-colors">→</span>
+                                <span className="font-doto text-micro text-white/50 group-hover:text-white transition-colors">→</span>
                             </Link>
                         </div>
                     </div>

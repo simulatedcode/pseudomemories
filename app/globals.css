@@ -18,7 +18,7 @@
 }
 
 body {
-  background: #000;
+  background: #111111;
   /* True black background for full immersion */
   color: var(--foreground);
   min-height: 100dvh;
