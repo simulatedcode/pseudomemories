@@ -5,6 +5,7 @@ import { motion, useInView, AnimatePresence, easeOut } from "framer-motion";
 import { ScrambleText } from "./ui/ScrambleText";
 import Link from "next/link";
 import { useIntro } from "../context/IntroContextCore";
+import pkg from "../../package.json";
 
 type TechRowProps = {
     label: string;
@@ -52,10 +53,10 @@ export function Footer() {
     const [isCopyrightHovered, setIsCopyrightHovered] = useState(false);
     const [isGithubHovered, setIsGithubHovered] = useState(false);
     const { isComplete } = useIntro();
-    const [refId, setRefId] = useState("LOADING...");
+    const [refId, setRefId] = useState(`v${pkg.version}`);
 
     React.useEffect(() => {
-        setRefId(Math.random().toString(36).substring(7).toUpperCase());
+        // Version is static for the session
     }, []);
 
     return (
@@ -69,7 +70,7 @@ export function Footer() {
                             System Architecture
                         </h3>
                         <p className="font-doto text-caption uppercase tracking-[0.3em] text-offwhite-100/60">
-                            v.{new Date().getFullYear()}.02.10 // Active Protocol
+                            {new Date().getFullYear()}.02.11 // v{pkg.version} // Active Protocol
                         </p>
                     </div>
 

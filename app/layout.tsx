@@ -1,22 +1,9 @@
-"use client";
-
 import { Electrolize, Doto, IBM_Plex_Mono, } from "next/font/google";
 import localFont from "next/font/local";
 import GoogleAnalytics from "./lib/GoogleAnalytics";
-import LenisScroll from "./components/LenisScroll";
-import { Header } from "./components/Header";
-import { Footer } from "./components/Footer";
-import PageTransition from "./components/ui/PageTransition";
-import { AudioTransmitMobile } from "./components/ui/AudioTransmitMobile";
+import ClientLayout from "./components/ClientLayout";
 import "./globals.css";
-
-import { GeoProvider } from "./context/GeoContext";
-import { AudioProvider } from "./context/AudioContext";
-import { IntroProvider } from "./context/IntroContext";
-import { Menu } from "./components/Menu";
-import PageShell from "./components/ui/PageShell";
-import { useState } from "react";
-import Intro from "./components/ui/Intro";
+import { Metadata } from "next";
 
 const electrolize = Electrolize({
   subsets: ["latin"],
@@ -45,44 +32,39 @@ const iawriter = localFont({
   display: "swap",
 });
 
+export const metadata: Metadata = {
+  title: "Pseudo Memories",
+  description: "An immersive digital artifact exploring simulated memories through cinematic 3D, ambient audio, and interactive storytelling.",
+  keywords: ["Artist, Printmaker, Illustrator, Digital Art", "Creative Coding", "Three.js", "Portfolio", "Immersive Experience"],
+  openGraph: {
+    title: "Pseudo Memories",
+    description: "An immersive digital artifact exploring simulated memories.",
+    url: "https://pseudomemories.web.app",
+    siteName: "Pseudo Memories",
+    locale: "indonesia",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Pseudo Memories",
+    description: "An immersive digital artifact exploring simulated memories.",
+  },
+};
 
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const [menuOpen, setMenuOpen] = useState(false);
-
   return (
     <html lang="en" suppressHydrationWarning>
       <body
         className={`${electrolize.variable} ${doto.variable} ${ibmplexmono.variable} ${iawriter.variable} antialiased`}
       >
         <GoogleAnalytics />
-
-        <AudioProvider>
-          <IntroProvider>
-            <GeoProvider>
-              <Intro />
-              <AudioTransmitMobile />
-              <LenisScroll>
-                <PageShell isMenuOpen={menuOpen}>
-                  <Header onMenuToggle={() => setMenuOpen(true)} />
-                  <PageTransition>
-                    <div className="relative min-h-screen w-full flex flex-col">
-                      <main className="relative overflow-x-hidden">
-                        {children}
-                      </main>
-                    </div>
-                  </PageTransition>
-                  <Footer />
-                </PageShell>
-              </LenisScroll>
-              <Menu isOpen={menuOpen} onClose={() => setMenuOpen(false)} />
-            </GeoProvider>
-          </IntroProvider>
-        </AudioProvider>
-
+        <ClientLayout>
+          {children}
+        </ClientLayout>
         <div className="fixed inset-0 pointer-events-none opacity-[0.08] z-10 bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
       </body>
     </html >

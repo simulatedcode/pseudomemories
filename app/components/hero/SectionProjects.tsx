@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { useLenis } from "lenis/react";
 import { createPortal } from "react-dom";
-import { PlusIcon } from "lucide-react";
+import { Plus } from "lucide-react";
 
 const projects = [
     {
@@ -265,7 +265,7 @@ export default function SectionProjects() {
                                             onClick={() => setSelectedId(null)}
                                             className="text-white hover:text-vermelion transition-all flex items-center gap-2 group"
                                         >
-                                            <PlusIcon className="h-12 w-12 transition-all hover:rotate-45 cursor-pointer" />
+                                            <Plus className="h-12 w-12 transition-all hover:rotate-45 cursor-pointer" />
                                         </motion.button>
                                     </div>
 

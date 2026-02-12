@@ -46,7 +46,7 @@ function Grid({ yOffset }: GridProps) {
     return (
         <motion.div
             style={{ y: yOffset }}
-            className="fixed top-[540] md:top-[440] lg:top-[336] left-0 z-0 w-screen h-[40vh] sm:h-[50vh] lg:h-[60vh] xl:h-[70vh] flex items-center justify-center pointer-events-none"
+            className="fixed top-[540px] md:top-[440px] lg:top-[336px] left-0 z-10 w-screen h-[40vh] sm:h-[50vh] lg:h-[60vh] xl:h-[70vh] flex items-center justify-center pointer-events-none"
         >
             <motion.svg
                 viewBox="0 0 300 220"
@@ -57,7 +57,7 @@ function Grid({ yOffset }: GridProps) {
                 <motion.line
                     x1="0"
                     y1={horizonY}
-                    x2="300"
+                    x2="1080"
                     y2={horizonY}
                     strokeWidth="1"
                     className="stroke-cyan-800/6 mix-blend-exclusion"
@@ -71,7 +71,7 @@ function Grid({ yOffset }: GridProps) {
                         key={i}
                         x1="0"
                         y1={line.y}
-                        x2="300"
+                        x2="1080"
                         y2={line.y}
                         strokeWidth="0.5"
                         className="stroke-cyan-800 mix-blend-exclusion"
