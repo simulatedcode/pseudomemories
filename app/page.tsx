@@ -3,6 +3,7 @@
 import dynamic from "next/dynamic";
 import { useIntro } from "@/app/context/IntroContextCore";
 import { motion, AnimatePresence, useScroll, useSpring, useTransform } from "framer-motion";
+import { duration, easing } from "@/app/lib/motion-tokens";
 
 /* Effects */
 const DustStar = dynamic(() => import("@/app/components/hero/DustStar"), { ssr: false });
@@ -34,7 +35,7 @@ export default function Home() {
         initial={{ y: "100%", opacity: 0 }}
         animate={isComplete ? { y: 0, opacity: 1 } : { y: "100%", opacity: 0 }}
         style={{ y: bgY }}
-        transition={{ duration: 1.5, ease: [0.76, 0, 0.24, 1], delay: 0.8 }}
+        transition={{ duration: duration.cinematic, ease: easing.memoryFade, delay: 0.8 }}
         className="pointer-events-none fixed inset-0 z-0 bg-linear-to-b from-vermelion-800 via-vermelion-500 to-cyan-200"
       />
 
@@ -46,7 +47,7 @@ export default function Home() {
             key="hero"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 1.6, delay: 1.4 }}
+            transition={{ duration: duration.cinematic, ease: easing.entrance, delay: 1.4 }}
             className="fixed inset-0 z-10 pointer-events-none"
           >
             <Hero x={204} anchor="bottom" />

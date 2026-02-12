@@ -1,11 +1,11 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
 import { useLenis } from "lenis/react";
 import { createPortal } from "react-dom";
-import { Plus } from "lucide-react";
+import { ArrowUpRight, Plus } from "lucide-react";
 
 const projects = [
     {
@@ -110,23 +110,52 @@ export default function SectionProjects() {
         return project || null;
     });
 
+    // Define motion variants and easing/duration (assuming these are defined elsewhere or need to be added)
+    const variants = {
+        staggerContainer: {
+            hidden: {},
+            visible: {
+                transition: {
+                    staggerChildren: 0.1,
+                },
+            },
+        },
+        fadeDrift: {
+            hidden: { opacity: 0, y: 30 },
+            visible: { opacity: 1, y: 0 },
+        },
+    };
+
+    const duration = {
+        medium: 0.5,
+    };
+
+    const easing = {
+        soft: [0, 0, 0.38, 0.9] as const, // Example easing
+    };
+
     return (
         <section className="relative w-full pt-14 bg-black/60 backdrop-blur-lg text-white">
             <div className="max-w-screen mx-auto">
                 <div className="flex flex-col px-8 md:flex-row md:items-end justify-between mb-12">
                     <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.3, ease: [0.2, 0, 0.38, 0.9] }} // Carbon entrance-productive
-                        className="flex flex-col gap-4 pb-8"
+                        variants={variants.staggerContainer}
+                        initial="hidden"
+                        whileInView="visible"
+                        viewport={{ once: true, margin: "-10%" }}
+                        className="flex flex-col gap-4 pb-8" // Retained original className for this div
                     >
-                        <p className="text-micro font-doto uppercase tracking-widest text-white mb-2">
-                            Project Preview
-                        </p>
-                        <h2 className="font-electrolize text-h3 md:text-h2 max-w-2xl">
-                            Selection of sketches highlighting from fragmented memories.
-                        </h2>
+                        <motion.div // Wrapped the p and h2 in a new motion.div for fadeDrift
+                            variants={variants.fadeDrift}
+                            transition={{ duration: duration.medium, ease: easing.soft }}
+                        >
+                            <p className="text-micro font-doto uppercase tracking-widest text-white mb-2">
+                                Project Preview
+                            </p>
+                            <h2 className="font-electrolize text-h3 md:text-h2 max-w-2xl">
+                                Selection of sketches highlighting from fragmented memories.
+                            </h2>
+                        </motion.div>
                     </motion.div>
                 </div>
 

@@ -1,7 +1,9 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { motion } from "framer-motion";
+import { delay, motion } from "framer-motion";
+import { Menu, Radio } from "lucide-react";
+import { duration, easing } from "@/app/lib/motion-tokens";
 import { ScrambleText } from "./ui/ScrambleText";
 import { useGeo } from "../context/GeoContextCore";
 import { useIntro } from "../context/IntroContextCore";
@@ -47,15 +49,20 @@ export function Header({ onMenuToggle }: { onMenuToggle: () => void }) {
     const locationString =
         error || `${latitude.toFixed(4)}°N ${longitude.toFixed(4)}°E`;
 
+    // Header Content with Staggered Entrance
     return (
         <motion.header
-            initial={{ opacity: 0, y: -20 }}
-            animate={isComplete ? { opacity: 1, y: 0 } : { opacity: 0, y: -20 }}
-            transition={{ duration: 0.8, delay: 1.2, ease: "easeOut" }}
-            className="fixed top-0 left-0 w-full z-100 flex items-center justify-between px-spacing-05 md:px-spacing-08 py-spacing-04 pointer-events-none border-b border-offwhite-100/10 bg-background/80 backdrop-blur-lg"
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{
+                duration: duration.medium,
+                ease: easing.entrance,
+                delay: 0.2
+            }}
+            className="fixed top-0 left-0 w-full z-50 flex items-center justify-between px-spacing-05 py-spacing-04 border-b border-offwhite-100/10 bg-background/5 backdrop-blur-md"
         >
             {/* Logo */}
-            <div
+            < div
                 className="pointer-events-auto"
                 onMouseEnter={() => setHoveredItem("Logo")}
                 onMouseLeave={() => setHoveredItem(null)}
@@ -71,10 +78,10 @@ export function Header({ onMenuToggle }: { onMenuToggle: () => void }) {
                         trigger={hoveredItem === "Logo"}
                     />
                 </Link>
-            </div>
+            </div >
 
             {/* Ref ID */}
-            <div
+            < div
                 className="hidden md:block pointer-events-auto font-doto text-body uppercase tracking-[0.2em] opacity-80 hover:opacity-100 transition-opacity cursor-default"
                 onMouseEnter={() => setHoveredItem("Version")}
                 onMouseLeave={() => setHoveredItem(null)}
@@ -85,10 +92,10 @@ export function Header({ onMenuToggle }: { onMenuToggle: () => void }) {
                     duration={1.5}
                     trigger={hoveredItem === "Version"}
                 />
-            </div>
+            </div >
 
             {/* Location */}
-            <div
+            < div
                 className="hidden md:block pointer-events-auto font-doto text-body mix-blend-difference uppercase tracking-[0.2em] opacity-80 hover:opacity-100 transition-opacity cursor-default"
                 onMouseEnter={() => setHoveredItem("Location")}
                 onMouseLeave={() => setHoveredItem(null)}
@@ -99,28 +106,30 @@ export function Header({ onMenuToggle }: { onMenuToggle: () => void }) {
                     duration={1.5}
                     trigger={hoveredItem === "Location"}
                 />
-            </div>
+            </div >
 
             {/* Audio */}
-            {audioEnabled && (
-                <div
-                    className="hidden lg:flex pointer-events-auto items-center gap-2 opacity-80 hover:opacity-100 transition-opacity cursor-pointer"
-                    onClick={togglePlay}
-                    onMouseEnter={() => setHoveredItem("Audio")}
-                    onMouseLeave={() => setHoveredItem(null)}
-                >
-                    <span className="font-doto text-body uppercase tracking-widest">
-                        <ScrambleText
-                            text={playing ? "Analyzing" : "Terminate"}
-                            trigger={hoveredItem === "Audio"}
-                            duration={0.6}
-                        />
-                    </span>
-                    <div className="w-8">
-                        <SineWaveform isPlaying={playing} />
+            {
+                audioEnabled && (
+                    <div
+                        className="hidden lg:flex pointer-events-auto items-center gap-2 opacity-80 hover:opacity-100 transition-opacity cursor-pointer"
+                        onClick={togglePlay}
+                        onMouseEnter={() => setHoveredItem("Audio")}
+                        onMouseLeave={() => setHoveredItem(null)}
+                    >
+                        <span className="font-doto text-body uppercase tracking-widest">
+                            <ScrambleText
+                                text={playing ? "Analyzing" : "Terminate"}
+                                trigger={hoveredItem === "Audio"}
+                                duration={0.6}
+                            />
+                        </span>
+                        <div className="w-8">
+                            <SineWaveform isPlaying={playing} />
+                        </div>
                     </div>
-                </div>
-            )}
+                )
+            }
 
             {/* Time */}
             <div className="hidden md:block pointer-events-auto font-doto text-body uppercase tracking-[0.2em] text-offwhite-100/80 hover:text-offwhite-100 transition-colors cursor-default">
@@ -147,6 +156,6 @@ export function Header({ onMenuToggle }: { onMenuToggle: () => void }) {
                     />
                 </button>
             </div>
-        </motion.header>
+        </motion.header >
     );
 }

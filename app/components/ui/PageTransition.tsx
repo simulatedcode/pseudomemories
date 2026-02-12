@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { usePathname } from "next/navigation";
 import { ReactNode, useState, useEffect } from "react";
 import { ScrambleText } from "./ScrambleText";
+import { duration, easing } from "@/app/lib/motion-tokens";
 
 export default function PageTransition({ children }: { children: ReactNode }) {
     const pathname = usePathname();
@@ -35,8 +36,8 @@ export default function PageTransition({ children }: { children: ReactNode }) {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -50 }}
                     transition={{
-                        duration: 0.5,
-                        ease: [0, 0, 0.38, 0.9] // Carbon entrance-expressive
+                        duration: duration.cinematic, // 1.6s
+                        ease: easing.memoryFade,
                     }}
                     className="w-full relative z-10 min-h-screen"
                 >
@@ -62,13 +63,13 @@ export default function PageTransition({ children }: { children: ReactNode }) {
                                     className="absolute inset-0 bg-vermelion"
                                     initial={{ x: "-100%" }}
                                     animate={{ x: "0%" }}
-                                    transition={{ duration: 0.5, ease: [0, 0, 0.38, 0.9] }} // Carbon entrance-expressive
+                                    transition={{ duration: 0.8, ease: [0, 0, 0.38, 0.9] }} // Carbon entrance-expressive
                                 />
                             </div>
-                            <h4 className="font-electrolize text-h4 sm:text-h3 tracking-[0.3em] text-offwhite-100 flex items-center gap-4">
-                                <span className="text-vermelion opacity-40">[</span>
+                            <h4 className="font-electrolize text-body sm:text-h4 tracking-[0.3em] text-offwhite-100 flex items-center gap-4">
+                                <span className="text-vermelion opacity-60">[</span>
                                 <ScrambleText text={getRouteLabel(pathname)} duration={0.8} />
-                                <span className="text-vermelion opacity-40">]</span>
+                                <span className="text-vermelion opacity-60">]</span>
                             </h4>
                         </div>
                     </motion.div>

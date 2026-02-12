@@ -4,7 +4,8 @@ import React, { useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ScrambleText } from "./ui/ScrambleText";
 import Link from "next/link";
-import { Plus } from "lucide-react";
+import { X, ExternalLink, Plus } from "lucide-react";
+import { duration, easing, variants } from "@/app/lib/motion-tokens";
 
 interface MenuProps {
     isOpen: boolean;
@@ -36,9 +37,9 @@ export function Menu({ isOpen, onClose }: MenuProps) {
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
-                        transition={{ duration: 0.24, ease: [0.2, 0, 0.38, 0.9] }} // Carbon standard-productive
-                        onClick={onClose}
-                        className="fixed inset-0 z-490 cursor-pointer bg-black/60 backdrop-blur-sm"
+                        transition={{ duration: duration.slow }}
+                        onClick={onClose} // Keep onClick on the backdrop itself
+                        className="fixed inset-0 bg-background/90 z-50 flex flex-col items-center justify-center backdrop-blur-sm"
                     />
 
                     {/* Slide-down Modal */}
