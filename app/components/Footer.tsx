@@ -60,7 +60,7 @@ export function Footer() {
     }, []);
 
     return (
-        <footer className="relative bottom-0 z-40 w-full min-h-screen bg-black/60 backdrop-blur-lg flex flex-col justify-center items-center py-spacing-10">
+        <footer className="relative bottom-0 z-40 w-full min-h-screen bg-background/80 backdrop-blur-lg flex flex-col justify-center items-center py-spacing-10">
             <div className="w-full max-w-4xl px-spacing-08 flex flex-col gap-spacing-08">
 
                 {/* Header Section */}

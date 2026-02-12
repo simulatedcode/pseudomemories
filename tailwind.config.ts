@@ -1,6 +1,5 @@
 import type { Config } from "tailwindcss";
 import typography from "@tailwindcss/typography";
-import { IBM_Plex_Mono, Pixelify_Sans } from "next/font/google";
 
 const config: Config = {
     content: [

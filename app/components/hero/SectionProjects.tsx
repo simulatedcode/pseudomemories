@@ -135,9 +135,9 @@ export default function SectionProjects() {
     };
 
     return (
-        <section className="relative w-full pt-14 bg-black/60 backdrop-blur-lg text-white">
+        <section className="relative w-full pt-14 bg-linear-to-t from-background/80 via-background/50 mask-to-b backdrop-blur-lg text-white">
             <div className="max-w-screen mx-auto">
-                <div className="flex flex-col px-8 md:flex-row md:items-end justify-between mb-12">
+                <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 pt-48 px-12">
                     <motion.div
                         variants={variants.staggerContainer}
                         initial="hidden"
@@ -149,7 +149,7 @@ export default function SectionProjects() {
                             variants={variants.fadeDrift}
                             transition={{ duration: duration.medium, ease: easing.soft }}
                         >
-                            <p className="text-micro font-doto uppercase tracking-widest text-white mb-2">
+                            <p className="text-micro font-doto uppercase tracking-widest text-white mb-4">
                                 Project Preview
                             </p>
                             <h2 className="font-electrolize text-h3 md:text-h2 max-w-2xl">
@@ -226,13 +226,13 @@ export default function SectionProjects() {
                                 exit={{ opacity: 0 }}
                                 transition={{ duration: 0.24, ease: [0.2, 0, 0.38, 0.9] }}
                                 onClick={() => setSelectedId(null)}
-                                className="absolute inset-0 bg-black/60 backdrop-blur-lg cursor-pointer"
+                                className="absolute inset-0 bg-background/80 backdrop-blur-lg cursor-pointer"
                             />
 
                             {/* Modal Content */}
                             <motion.div
                                 layoutId={`project-${selectedId}`}
-                                className="relative w-[95dvw] max-w-screen h-[90dvh] grid grid-cols-1 lg:grid-cols-3 bg-zinc-950 overflow-hidden border border-white/10"
+                                className="relative w-[95dvw] max-w-screen h-[90dvh] grid grid-cols-1 lg:grid-cols-3 bg-background overflow-hidden border border-white/10"
                             >
                                 {/* Info Side (Col 1) - Scrollable Internally */}
                                 <div className="lg:col-span-1 p-8 md:p-10 flex flex-col justify-between overflow-hidden border-r border-white/5">

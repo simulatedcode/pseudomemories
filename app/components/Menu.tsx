@@ -39,7 +39,7 @@ export function Menu({ isOpen, onClose }: MenuProps) {
                         exit={{ opacity: 0 }}
                         transition={{ duration: duration.slow }}
                         onClick={onClose} // Keep onClick on the backdrop itself
-                        className="fixed inset-0 bg-background/90 z-50 flex flex-col items-center justify-center backdrop-blur-sm"
+                        className="fixed inset-0 bg-background/80 z-50 flex flex-col items-center justify-center backdrop-blur-sm"
                     />
 
                     {/* Slide-down Modal */}
@@ -115,7 +115,7 @@ export function Menu({ isOpen, onClose }: MenuProps) {
                                                 <Link
                                                     href={link.href}
                                                     onClick={onClose}
-                                                    className="group relative block h-full p-8 border border-white/10 hover:border-vermelion/50 bg-black/20 hover:bg-vermelion/5 transition-all duration-300"
+                                                    className="group relative block h-full p-8 border border-white/10 hover:border-cyan-100/20 bg-black/20 hover:bg-vermelion/5 transition-all duration-300"
                                                 >
                                                     {/* Number Indicator */}
                                                     <div className="absolute top-4 right-4 font-doto text-h4 text-white/10 group-hover:text-vermelion/20 transition-colors">
@@ -169,7 +169,7 @@ export function Menu({ isOpen, onClose }: MenuProps) {
                                         <div className="flex items-center gap-4">
                                             <div className="flex items-center gap-2">
                                                 <motion.div
-                                                    className="w-2 h-2 rounded-full bg-vermelion"
+                                                    className="w-2 h-2 rounded-full bg-cyan"
                                                     animate={{ opacity: [1, 0.3, 1] }}
                                                     transition={{ duration: 0.7, ease: [0.2, 0, 0.38, 0.9], repeat: Infinity }}
                                                 />

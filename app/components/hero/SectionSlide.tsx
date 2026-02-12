@@ -52,7 +52,7 @@ export default function SectionSlide() {
     return (
         <section
             ref={sectionRef}
-            className="relative h-[dvh] bg-black/60 backdrop-blur-sm px-8"
+            className="relative h-[dvh] bg-background/80 backdrop-blur-sm px-12"
         >
             <div className="sticky top-0 max-w-none h-screen w-full flex flex-col justify-center overflow-hidden">
                 <div className="px-8 mb-12 md:mb-16">
@@ -60,7 +60,7 @@ export default function SectionSlide() {
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
-                        className="text-micro font-doto uppercase tracking-widest text-white/60 mb-4"
+                        className="text-micro font-doto uppercase tracking-widest text-white mb-4"
                     >
                         Section Slide
                     </motion.p>
@@ -69,7 +69,7 @@ export default function SectionSlide() {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ delay: 0.1, duration: 0.3, ease: [0.2, 0, 0.38, 0.9] }} // Carbon entrance-productive
-                        className="font-electrolize text-h2 md:text-h1 max-w-4xl text-white leading-tight"
+                        className="font-electrolize text-h2 md:text-h1 max-w-2xl text-white leading-tight"
                     >
                         Exploration of visual balance through varied aspect ratios.
                     </motion.h2>
