@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 
 export function SineWaveform({ isPlaying }: { isPlaying: boolean }) {
     return (
-        <div className="flex items-center justify-center h-6 min-w-[64px] overflow-hidden"
+        <div className="flex items-center justify-center mx-auto h-6 w-full overflow-hidden"
             style={{
                 maskImage: 'linear-gradient(to right, transparent, black 10%, black 90%, transparent)',
                 WebkitMaskImage: 'linear-gradient(to right, transparent, black 10%, black 90%, transparent)'

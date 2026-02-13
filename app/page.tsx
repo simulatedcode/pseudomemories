@@ -11,7 +11,7 @@ const SectionProjects = dynamic(() => import("@/app/components/hero/SectionProje
 
 /* Hero (Grid + Character merged) */
 const Hero = dynamic(() => import("@/app/components/hero/Hero"), { ssr: false });
-const SectionSlide = dynamic(() => import("@/app/components/hero/SectionSlide"), { ssr: false });
+import { HUDFrame } from "./components/ui/HUDFrame";
 
 export default function Home() {
   const { isComplete } = useIntro();
@@ -37,7 +37,18 @@ export default function Home() {
         style={{ y: bgY }}
         transition={{ duration: duration.cinematic, ease: easing.memoryFade, delay: 0.8 }}
         className="pointer-events-none fixed inset-0 z-0 bg-linear-to-b from-vermelion-800 via-vermelion-500 to-cyan-200"
-      />
+      >
+        {/* HUD Scanline/Line Pattern */}
+        <div
+          className="absolute inset-0 opacity-[0.03]"
+          style={{
+            backgroundImage: `repeating-linear-gradient(0deg, transparent, transparent 1px, #fff 1px, #fff 2px)`,
+            backgroundSize: '100% 4px'
+          }}
+        />
+      </motion.div>
+
+      <HUDFrame />
 
       <DustStar />
 
@@ -64,7 +75,7 @@ export default function Home() {
         {isComplete && (
           <>
             <SectionProjects />
-            <SectionSlide />
+
           </>
         )}
       </div>

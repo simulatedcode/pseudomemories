@@ -5,11 +5,14 @@ import { usePathname } from "next/navigation";
 import { ReactNode, useState, useEffect } from "react";
 import { ScrambleText } from "./ScrambleText";
 import { duration, easing } from "@/app/lib/motion-tokens";
+import { useLenis } from "lenis/react";
 
 export default function PageTransition({ children }: { children: ReactNode }) {
     const pathname = usePathname();
     const [displayPath, setDisplayPath] = useState(pathname);
     const [isTransitioning, setIsTransitioning] = useState(false);
+
+    const lenis = useLenis();
 
     useEffect(() => {
         if (pathname !== displayPath) {
@@ -17,10 +20,13 @@ export default function PageTransition({ children }: { children: ReactNode }) {
             const timer = setTimeout(() => {
                 setDisplayPath(pathname);
                 setIsTransitioning(false);
+                if (lenis) {
+                    lenis.scrollTo(0, { immediate: true });
+                }
             }, 800);
             return () => clearTimeout(timer);
         }
-    }, [pathname, displayPath]);
+    }, [pathname, displayPath, lenis]);
 
     const getRouteLabel = (path: string) => {
         if (path === "/" || path === "") return "MEMORY_ROOT";

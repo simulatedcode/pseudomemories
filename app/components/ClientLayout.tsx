@@ -1,9 +1,8 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import { Header } from "./Header";
 import { Footer } from "./Footer";
-import { Menu } from "./Menu";
 import PageTransition from "./ui/PageTransition";
 import Intro from "./ui/Intro";
 import { AudioTransmitMobile } from "./ui/AudioTransmitMobile";
@@ -13,8 +12,6 @@ import { AudioProvider } from "../context/AudioContext";
 import { IntroProvider } from "../context/IntroContext";
 
 export default function ClientLayout({ children }: { children: React.ReactNode }) {
-    const [menuOpen, setMenuOpen] = useState(false);
-
     return (
         <AudioProvider>
             <IntroProvider>
@@ -23,7 +20,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
                     <AudioTransmitMobile />
                     <LenisScroll>
 
-                        <Header onMenuToggle={() => setMenuOpen(true)} />
+                        <Header />
                         <PageTransition>
                             <div className="relative min-h-screen w-full flex flex-col">
                                 <main className="relative overflow-x-hidden">
@@ -33,7 +30,6 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
                         </PageTransition>
                         <Footer />
                     </LenisScroll>
-                    <Menu isOpen={menuOpen} onClose={() => setMenuOpen(false)} />
                 </GeoProvider>
             </IntroProvider>
         </AudioProvider>

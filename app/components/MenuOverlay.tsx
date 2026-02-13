@@ -1,36 +1,30 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ScrambleText } from "./ui/ScrambleText";
+import { Plus } from "lucide-react";
 import Link from "next/link";
-import { X, ExternalLink, Plus } from "lucide-react";
-import { duration, easing, variants } from "@/app/lib/motion-tokens";
+import { duration } from "@/app/lib/motion-tokens";
+import { ScrambleText } from "./ui/ScrambleText";
 
-interface MenuProps {
-    isOpen: boolean;
-    onClose: () => void;
+interface MenuOverlayProps {
+    isMenuOpen: boolean;
+    setIsMenuOpen: (isOpen: boolean) => void;
+    hoveredItem: string | null;
+    setHoveredItem: (item: string | null) => void;
+    menuLinks: Array<{ label: string; href: string; desc: string }>;
 }
 
-const menuLinks = [
-    { label: "Home", href: "/", desc: "Return to main interface" },
-    { label: "Documentation", href: "/documentation", desc: "Technical specifications" },
-    { label: "Changelog", href: "/changelog", desc: "System updates log" },
-];
-
-export function Menu({ isOpen, onClose }: MenuProps) {
-    const [hoveredItem, setHoveredItem] = React.useState<string | null>(null);
-
-    useEffect(() => {
-        document.body.style.overflow = isOpen ? "hidden" : "unset";
-        return () => {
-            document.body.style.overflow = "unset";
-        };
-    }, [isOpen]);
-
+export function MenuOverlay({
+    isMenuOpen,
+    setIsMenuOpen,
+    hoveredItem,
+    setHoveredItem,
+    menuLinks
+}: MenuOverlayProps) {
     return (
         <AnimatePresence>
-            {isOpen && (
+            {isMenuOpen && (
                 <>
                     {/* Backdrop */}
                     <motion.div
@@ -38,7 +32,7 @@ export function Menu({ isOpen, onClose }: MenuProps) {
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                         transition={{ duration: duration.slow }}
-                        onClick={onClose} // Keep onClick on the backdrop itself
+                        onClick={() => setIsMenuOpen(false)}
                         className="fixed inset-0 bg-background/80 z-50 flex flex-col items-center justify-center backdrop-blur-sm"
                     />
 
@@ -48,7 +42,7 @@ export function Menu({ isOpen, onClose }: MenuProps) {
                         animate={{ y: 0, opacity: 1 }}
                         exit={{ y: "-100%", opacity: 0 }}
                         transition={{ duration: 0.5, ease: [0, 0, 0.38, 0.9] }} // Carbon entrance-expressive
-                        className="fixed top-0 left-0 right-0 z-500 pt-[72px]" // Offset for header height
+                        className="fixed top-0 left-0 right-0 z-60 pt-[72px]" // Offset for header height
                     >
                         <div className="relative mx-auto max-w-7xl px-8">
                             {/* Glass Panel */}
@@ -90,7 +84,7 @@ export function Menu({ isOpen, onClose }: MenuProps) {
                                             initial={{ opacity: 0, rotate: -90 }}
                                             animate={{ opacity: 1, rotate: 0 }}
                                             transition={{ delay: 0.3, duration: 0.24, ease: [0, 0, 0.38, 0.9] }}
-                                            onClick={onClose}
+                                            onClick={() => setIsMenuOpen(false)}
                                             className="group p-4 hover:bg-white/5 transition-colors border border-white/10"
                                         >
                                             <Plus className="w-6 h-6 rotate-45 group-hover:rotate-90 transition-all duration-300 text-white group-hover:text-vermelion" />
@@ -114,7 +108,7 @@ export function Menu({ isOpen, onClose }: MenuProps) {
                                             >
                                                 <Link
                                                     href={link.href}
-                                                    onClick={onClose}
+                                                    onClick={() => setIsMenuOpen(false)}
                                                     className="group relative block h-full p-8 border border-white/10 hover:border-cyan-100/20 bg-black/20 hover:bg-vermelion/5 transition-all duration-300"
                                                 >
                                                     {/* Number Indicator */}

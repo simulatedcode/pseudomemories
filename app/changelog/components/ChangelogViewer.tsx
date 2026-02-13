@@ -43,7 +43,7 @@ export default function ChangelogViewer({ content }: ChangelogViewerProps) {
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             exit={{ opacity: 0 }}
-                            className="absolute bottom-0 left-0 right-0 h-32 bg-linear-to-t from-[#111111] to-transparent pointer-events-none"
+                            className="absolute bottom-0 left-0 right-0 h-32 bg-linear-to-t from-background to-transparent pointer-events-none"
                         />
                     )}
                 </AnimatePresence>
@@ -51,12 +51,12 @@ export default function ChangelogViewer({ content }: ChangelogViewerProps) {
 
             {/* Expand/Collapse Button */}
             {isOverflowing && (
-                <div className="flex justify-center mt-8">
+                <div className="flex justify-center mt-48">
                     <button
                         onClick={() => setIsExpanded(!isExpanded)}
                         className="group flex items-center gap-2 px-6 py-3 rounded-full bg-vermelion-500/10 hover:bg-vermelion-500/20 text-vermelion-500 transition-all duration-300 backdrop-blur-sm border border-vermelion-500/20"
                     >
-                        <span className="font-electrolize text-sm tracking-wider uppercase">
+                        <span className="font-electrolize text-micro tracking-wider uppercase">
                             {isExpanded ? "Show Less" : "Read Full Changelog"}
                         </span>
                         {isExpanded ? (
