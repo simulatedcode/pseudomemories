@@ -42,7 +42,7 @@ export function HeaderTop({ hoveredItem, setHoveredItem }: HeaderTopProps) {
 
     return (
         <div
-            className="fixed top-10 left-12 z-[100] flex flex-col pointer-events-none"
+            className="fixed top-8 left-12 z-[100] flex flex-col pointer-events-none"
         >
             {/* Logo/Title */}
             <motion.div

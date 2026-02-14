@@ -2,6 +2,7 @@ import { Electrolize, Doto, IBM_Plex_Mono, } from "next/font/google";
 import localFont from "next/font/local";
 import GoogleAnalytics from "./lib/GoogleAnalytics";
 import ClientLayout from "./components/ClientLayout";
+import { CustomCursor } from "./components/CustomCursor";
 import "./globals.css";
 import { Metadata } from "next";
 
@@ -62,6 +63,7 @@ export default function RootLayout({
         className={`${electrolize.variable} ${doto.variable} ${ibmplexmono.variable} ${iawriter.variable} antialiased`}
       >
         <GoogleAnalytics />
+        <CustomCursor />
         <ClientLayout>
           {children}
         </ClientLayout>

@@ -4,8 +4,8 @@ import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { duration, easing } from "@/app/lib/motion-tokens";
 import { ScrambleText } from "./ui/ScrambleText";
-import { SystemMetrics } from "./SystemMetrics";
 import { useGeo } from "../context/GeoContextCore";
+import { useTransition } from "../context/TransitionContext";
 
 interface HUDBottomLeftProps {
     hoveredItem: string | null;
@@ -14,7 +14,9 @@ interface HUDBottomLeftProps {
 
 export function HUDBottomLeft({ hoveredItem, setHoveredItem }: HUDBottomLeftProps) {
     const { latitude, longitude, error } = useGeo();
+    const { isTransitioning } = useTransition();
     const [currentTime, setCurrentTime] = useState("");
+    const [timeZone, setTimeZone] = useState("");
 
     const locationString = error || `${latitude.toFixed(4)}°N ${longitude.toFixed(4)}°E`;
 
@@ -28,9 +30,10 @@ export function HUDBottomLeft({ hoveredItem, setHoveredItem }: HUDBottomLeftProp
                 hour: "2-digit",
                 minute: "2-digit",
                 hour12: true,
-                timeZone: userTimeZone,
+                timeZone: userTimeZone
             });
             setCurrentTime(formatter.format(now));
+            setTimeZone(userTimeZone);
         };
 
         updateTime();
@@ -43,45 +46,35 @@ export function HUDBottomLeft({ hoveredItem, setHoveredItem }: HUDBottomLeftProp
             {/* Box 1: Time & Geo */}
             <motion.div
                 initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
+                animate={{ opacity: isTransitioning ? 0 : 1, y: isTransitioning ? 20 : 0 }}
                 transition={{
-                    duration: duration.medium,
-                    delay: 1.8,
+                    duration: isTransitioning ? 0.3 : duration.medium,
+                    delay: isTransitioning ? 0 : 1.8,
                     ease: easing.entrance,
                 }}
-                className="pointer-events-auto bg-background/40 backdrop-blur-lg border border-white/10 p-4 min-w-[180px]"
+                className="pointer-events-auto bg-black/10 backdrop-blur-md border border-white/5 p-4 min-w-[180px]"
             >
                 <div className="flex flex-col gap-1">
                     <div className="flex items-center justify-between gap-4">
-                        <span className="font-doto text-[10px] uppercase tracking-widest text-ultramarine-100/80">Date & Time</span>
-                        <span className="font-doto text-[10px] text-ultramarine-100/80">
+                        <span className="font-doto text-micro uppercase tracking-widest text-white">Date & Time</span>
+                        <span className="font-doto text-micro text-white">
                             <ScrambleText text={currentTime} delay={2} />
                         </span>
                     </div>
+                    <hr className="border-white/5" />
                     <div className="flex items-center justify-between gap-4">
-                        <span className="font-doto text-[10px] uppercase tracking-widest text-ultramarine-100/80">Coordinate</span>
-                        <span className="font-doto text-[10px] text-ultramarine-100/80">
+                        <span className="font-doto text-micro uppercase tracking-widest text-white">Timezone</span>
+                        <span className="font-doto text-micro text-white">
+                            <ScrambleText text={timeZone} delay={2.1} />
+                        </span>
+                    </div>
+                    <hr className="border-white/5" />
+                    <div className="flex items-center justify-between gap-4">
+                        <span className="font-doto text-micro uppercase tracking-widest text-white">Coordinate</span>
+                        <span className="font-doto text-micro text-white">
                             <ScrambleText text={locationString} delay={2.2} />
                         </span>
                     </div>
-                </div>
-            </motion.div>
-
-            {/* Box 2: System Metrics */}
-            <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{
-                    duration: duration.medium,
-                    delay: 2,
-                    ease: easing.entrance,
-                }}
-                className="pointer-events-auto bg-background/40 backdrop-blur-lg border border-white/10 p-4 min-w-[180px]"
-            >
-                <div className="flex flex-col gap-2">
-                    <span className="font-doto text-[10px] uppercase tracking-widest text-ultramarine-100
-                    ">System Resources</span>
-                    <SystemMetrics className="text-ultramarine-100/80" />
                 </div>
             </motion.div>
         </div>

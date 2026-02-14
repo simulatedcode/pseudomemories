@@ -2,7 +2,7 @@
 
 import dynamic from "next/dynamic";
 import { useIntro } from "@/app/context/IntroContextCore";
-import { motion, AnimatePresence, useScroll, useSpring, useTransform } from "framer-motion";
+import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
 import { duration, easing } from "@/app/lib/motion-tokens";
 
 /* Effects */
@@ -17,15 +17,8 @@ export default function Home() {
   const { isComplete } = useIntro();
   const { scrollYProgress } = useScroll();
 
-  // Softer spring for more "luxurious" movement
-  const smoothY = useSpring(scrollYProgress, {
-    stiffness: 40,
-    damping: 30,
-    mass: 1,
-    restDelta: 0.001
-  });
-
-  const bgY = useTransform(smoothY, [0, 1], ["0%", "-10%"]);
+  // Softer spring replaced with linear scroll for "fixed" feel
+  const bgY = useTransform(scrollYProgress, [0, 1], ["0%", "-10%"]);
 
   return (
     <div className="relative max-w-full mx-auto text-foreground font-sans selection:bg-inverse flex flex-col">
@@ -75,7 +68,6 @@ export default function Home() {
         {isComplete && (
           <>
             <SectionProjects />
-
           </>
         )}
       </div>

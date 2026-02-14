@@ -60,7 +60,7 @@ export function Footer() {
     }, []);
 
     return (
-        <footer className="relative bottom-0 z-40 w-full min-h-screen bg-background/80 backdrop-blur-lg flex flex-col justify-center items-center py-spacing-10">
+        <footer className="relative bottom-0 z-40 w-full min-h-screen bg-background/80 backdrop-blur-lg from-background to-transparent flex flex-col justify-center items-center py-spacing-10">
             <div className="w-full max-w-4xl px-spacing-08 flex flex-col gap-spacing-08">
 
                 {/* Header Section */}
@@ -77,9 +77,9 @@ export function Footer() {
                     <div className="flex items-center gap-spacing-04">
                         <div className="flex flex-col items-end">
                             <span className="font-electrolize text-caption uppercase text-white/50">Status</span>
-                            <span className="flex items-center gap-spacing-03 font-doto text-micro uppercase text-vermelion tracking-widest">
+                            <span className="flex items-center gap-spacing-03 font-doto text-micro uppercase text-white/50 tracking-widest">
                                 <motion.div
-                                    className="w-2 h-2 rounded-full bg-vermelion"
+                                    className="w-2 h-2 rounded-full bg-ultramarine-600"
                                     animate={{ opacity: [0.5, 1, 0.5] }}
                                     transition={{ duration: 2, repeat: Infinity }}
                                 />
@@ -123,6 +123,13 @@ export function Footer() {
                         <h4 className="font-doto text-micro uppercase tracking-widest text-white/50 border-b border-white/5 pb-2">Communications</h4>
                         <div className="flex flex-col gap-spacing-04">
                             <Link
+                                href="/updates"
+                                className="group flex items-center justify-between p-spacing-04 border border-white/10 hover:bg-white/5 transition-colors"
+                            >
+                                <span className="font-electrolize text-body uppercase">Updates</span>
+                                <span className="font-doto text-micro text-white/50 group-hover:text-white transition-colors">→</span>
+                            </Link>
+                            <Link
                                 href="https://github.com/simulatedcode"
                                 target="_blank"
                                 className="group flex items-center justify-between p-spacing-04 border border-white/10 hover:bg-white/5 transition-colors"
@@ -130,14 +137,6 @@ export function Footer() {
                                 <span className="font-electrolize text-body uppercase">Github Repository</span>
                                 <span className="font-doto text-micro text-white/50 group-hover:text-white transition-colors">→</span>
                             </Link>
-                            <Link
-                                href="/documentation"
-                                className="group flex items-center justify-between p-spacing-04 border border-white/10 hover:bg-white/5 transition-colors"
-                            >
-                                <span className="font-electrolize text-body uppercase">Documentation</span>
-                                <span className="font-doto text-micro text-white/50 group-hover:text-white transition-colors">→</span>
-                            </Link>
-
                             <Link
                                 href="https://instagram.com/keppett"
                                 target="_blank"

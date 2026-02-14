@@ -2,44 +2,69 @@
 
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { useGeo } from "../../context/GeoContextCore";
-import { useAudio } from "../../context/AudioContextCore";
 import { useIntro } from "../../context/IntroContextCore";
+import { useAudio } from "../../context/AudioContextCore";
+import { useGeo } from "../../context/GeoContextCore";
 import { usePathname } from "next/navigation";
 import { ScrambleText } from "./ScrambleText";
 
 export default function Intro() {
     const pathname = usePathname();
     const [progress, setProgress] = useState(0);
-    const [showChoice, setShowChoice] = useState(false);
+    const [isComplete, setIsComplete] = useState(false);
     const [isVisible, setIsVisible] = useState(true);
-    const { latitude, longitude, error } = useGeo();
-    const { setAudioEnabled, playAudio } = useAudio();
+    const [audioEnabled, setAudioEnabled] = useState(false);
+    const [isHovering, setIsHovering] = useState(false);
     const { setComplete } = useIntro();
+    const { setAudioEnabled: setGlobalAudio } = useAudio();
+    const { latitude, longitude, error } = useGeo();
 
+    // Loading progress based on geolocation
     useEffect(() => {
-        const interval = setInterval(() => {
-            setProgress((prev) => {
-                const next = prev + Math.floor(Math.random() * 10) + 1;
-                if (next >= 100) {
-                    clearInterval(interval);
-                    setTimeout(() => setShowChoice(true), 800);
-                    return 100;
-                }
-                return next;
-            });
-        }, 120);
+        let interval: NodeJS.Timeout;
+
+        // Start with initial progress
+        setProgress(10);
+
+        // If we have geolocation data or an error, we're connected
+        const hasGeoData = (latitude !== 0 && longitude !== 0) || error !== null;
+
+        if (hasGeoData) {
+            // Fast progress to 100% when geo data is available
+            interval = setInterval(() => {
+                setProgress((prev) => {
+                    const next = prev + Math.floor(Math.random() * 15) + 10;
+                    if (next >= 100) {
+                        clearInterval(interval);
+                        setIsComplete(true);
+                        return 100;
+                    }
+                    return next;
+                });
+            }, 80);
+        } else {
+            // Slower progress while waiting for geo data
+            interval = setInterval(() => {
+                setProgress((prev) => {
+                    const next = prev + Math.floor(Math.random() * 5) + 1;
+                    // Cap at 90% until we get geo data
+                    if (next >= 90) {
+                        clearInterval(interval);
+                        return 90;
+                    }
+                    return next;
+                });
+            }, 150);
+        }
 
         return () => clearInterval(interval);
-    }, []);
+    }, [latitude, longitude, error]);
 
-    const handleChoice = (withAudio: boolean) => {
-        setAudioEnabled(withAudio);
+    const handleProceed = () => {
+        setGlobalAudio(audioEnabled);
         setComplete(true);
-        setTimeout(() => setIsVisible(false), 300);
+        setIsVisible(false);
     };
-
-    const locationString = error || `${latitude.toFixed(4)}°N ${longitude.toFixed(4)}°E`;
 
     // Only render intro on the homepage
     if (pathname !== "/") return null;
@@ -51,112 +76,79 @@ export default function Intro() {
                     initial={{ opacity: 1 }}
                     exit={{
                         clipPath: "inset(0 0 100% 0)",
-                        transition: { duration: 0.5, ease: [0.2, 0, 1, 0.9] } // Carbon exit-productive
+                        transition: { duration: 0.5, ease: [0.2, 0, 1, 0.9] }
                     }}
                     style={{ willChange: "clip-path" }}
-                    className="fixed h-dvh w-screen top-0 left-0 z-1000 bg-vermelion-500/10 flex flex-col items-center justify-center text-offwhite-100 selection:bg-white/10"
+                    className="fixed h-dvh w-screen top-0 left-0 z-1000 bg-black/40 flex items-center justify-center text-vermelion selection:bg-white/10"
                 >
-                    <div className="flex flex-col items-center gap-spacing-09 max-w-md w-full px-spacing-08 relative z-10">
-                        {/* Upper Details */}
-                        <div className="w-full flex justify-between font-doto text-[10px] tracking-[0.3em] opacity-40 uppercase">
-                            <motion.div
+                    <div className="flex flex-col items-center gap-4 max-w-2xl w-full px-8 relative z-10">
+                        {/* Main Text with Mask - Clickable when complete */}
+                        <div className="relative overflow-hidden">
+                            <motion.button
+                                disabled={!isComplete}
+                                onClick={isComplete ? handleProceed : undefined}
+                                onMouseEnter={() => isComplete && setIsHovering(true)}
+                                onMouseLeave={() => setIsHovering(false)}
+                                className={`font-electrolize font-black text-h3 sm:text-h4 uppercase tracking-wider text-center bg-transparent border-none ${isComplete ? 'cursor-pointer' : 'cursor-default'
+                                    }`}
                                 initial={{ opacity: 0 }}
                                 animate={{ opacity: 1 }}
-                                transition={{ delay: 0.15, duration: 0.24, ease: [0.2, 0, 0.38, 0.9] }} // Carbon entrance-productive
-                                className="flex flex-col gap-spacing-01"
+                                transition={{ duration: 0.5 }}
+                                whileHover={isComplete ? {
+                                    scaleX: 1.00,
+                                    scaleY: 0.95,
+                                    transition: { duration: 0.3 }
+                                } : {}}
                             >
-                                <span>Status: {showChoice ? "Online" : "Booting"}</span>
-                                <span>Signal: {error ? "Err" : "Sync"}</span>
-                            </motion.div>
-                            <motion.div
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: 1 }}
-                                transition={{ delay: 0.3, duration: 0.24, ease: [0.2, 0, 0.38, 0.9] }}
-                                className="text-right flex flex-col gap-spacing-01"
-                            >
-                                <span>Ref: pseudo_mem</span>
-                                <span>v.2018.02.10</span>
-                            </motion.div>
-                        </div>
-
-                        {/* Large Counter */}
-                        <div className="relative pt-spacing-08">
-                            <motion.h1
-                                className="font-electrolize text-[140px] sm:text-[200px] leading-none tracking-tighter text-vermelion"
-                                initial={{ opacity: 0, scale: 0.95, filter: "blur(10px)" }}
-                                animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
-                                transition={{ duration: 0.7, ease: [0, 0, 0.38, 0.9] }} // Carbon entrance-expressive
-                            >
-                                {progress.toString().padStart(2, "0")}
-                                <span className="text-[20px] sm:text-[32px] absolute -top-4 -right-12 opacity-30 font-doto">%</span>
-                            </motion.h1>
-                        </div>
-
-                        {/* Lower Details */}
-                        <div className="w-full flex flex-col items-center gap-spacing-07 pt-spacing-10 border-t border-white/10">
-                            <div className="flex flex-col items-center gap-spacing-02">
-                                <span className="font-electrolize text-[10px] uppercase tracking-[0.5em] opacity-30">Spatial Analysis</span>
-                                <span className="font-doto text-micro md:text-caption tracking-[0.4em] opacity-80">
-                                    <ScrambleText text={locationString} delay={0.5} duration={1.5} />
-                                </span>
-                            </div>
-
-                            {/* Loading Bar or Choice Buttons */}
-                            {!showChoice ? (
-                                <div className="w-full h-px bg-white/5 relative overflow-hidden">
-                                    <motion.div
-                                        className="absolute inset-0 bg-vermelion"
-                                        initial={{ x: "-100%" }}
-                                        animate={{ x: `${progress - 100}%` }}
-                                        transition={{ ease: "linear" }}
-                                    />
-                                </div>
-                            ) : (
-                                <motion.div
-                                    initial={{ opacity: 0, y: 10 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    transition={{ duration: 0.5, ease: [0, 0, 0.38, 0.9] }} // Carbon entrance-expressive
-                                    className="w-full flex flex-col gap-spacing-05"
-                                >
-                                    <div className="flex flex-col items-center gap-spacing-05 w-full">
-                                        <motion.button
-                                            onClick={() => handleChoice(true)}
-                                            whileHover={{ scale: 1.05 }}
-                                            whileTap={{ scale: 0.95 }}
-                                            className="group relative px-spacing-08 py-spacing-05 bg-vermelion hover:bg-vermelion/90 text-black w-full flex items-center justify-center gap-spacing-03 rounded-none clip-path-slant transition-all"
+                                <span className="relative inline-block">
+                                    <span className="relative z-10">
+                                        {isComplete ? (
+                                            <ScrambleText
+                                                text="[ Initialize Memory ]"
+                                                trigger={isHovering}
+                                                duration={0.8}
+                                            />
+                                        ) : (
+                                            "[ Initialize Memory ]"
+                                        )}
+                                    </span>
+                                    {/* Gradient opacity overlay */}
+                                    {!isComplete && (
+                                        <motion.span
+                                            className="absolute inset-0 z-20"
+                                            style={{
+                                                backgroundImage: `linear-gradient(to right, transparent ${progress}%, rgba(0, 0, 0, 0.6) ${progress}%)`,
+                                                WebkitBackgroundClip: 'text',
+                                                backgroundClip: 'text',
+                                                WebkitTextFillColor: 'transparent',
+                                            }}
                                         >
-                                            <span className="font-electrolize uppercase tracking-widest">Initialize Memory</span>
-                                            <motion.span
-                                                animate={{ x: [0, 4, 0] }}
-                                                transition={{ duration: 0.7, ease: [0.2, 0, 0.38, 0.9], repeat: Infinity }} // Carbon standard-productive
-                                            >
-                                                →
-                                            </motion.span>
-
-                                            {/* Button Glitch Effect Overlay */}
-                                            <div className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 mix-blend-overlay transition-opacity" />
-                                        </motion.button>
-
-                                        <div className="flex flex-col items-center gap-spacing-02">
-                                            <span className="font-doto text-[9px] uppercase tracking-[0.2em] text-vermelion-100">
-                                                [ Audio Recommended ]
-                                            </span>
-
-                                            <button
-                                                onClick={() => handleChoice(false)}
-                                                className="font-doto text-[10px] uppercase tracking-widest text-white hover:text-white/80 transition-colors border-b border-transparent hover:border-white/20 pb-0.5"
-                                            >
-                                                Enter without audio
-                                            </button>
-                                        </div>
-                                    </div>
-                                </motion.div>
-                            )}
+                                            [ Initialize Memory ]
+                                        </motion.span>
+                                    )}
+                                </span>
+                            </motion.button>
                         </div>
+
+                        {/* Audio Toggle - shows when loading complete */}
+                        {isComplete && (
+                            <motion.button
+                                initial={{ opacity: 0, y: 10 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: 0.3, duration: 0.5 }}
+                                onClick={() => setAudioEnabled(!audioEnabled)}
+                                className="flex items-center  justify-center gap-2 font-doto text-xs uppercase tracking-widest"
+                            >
+                                <div className={`flex w-2 h-2 rounded-full transition-all ${audioEnabled ? 'bg-vermelion' : 'bg-white/20'}`} />
+                                <span className={audioEnabled ? 'text-vermelion' : 'text-white/60'}>
+                                    Audio {audioEnabled ? 'Enabled' : 'Disabled'}
+                                </span>
+                            </motion.button>
+                        )}
                     </div>
 
-                    {/* Dynamic Texture/Grain overlay */}
-                    <div className="absolute inset-0 pointer-events-none opacity-[0.09]  bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
+                    {/* Grain overlay */}
+                    <div className="absolute inset-0 pointer-events-none opacity-[0.09] bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
                 </motion.div>
             )}
         </AnimatePresence>

@@ -76,7 +76,7 @@ const config: Config = {
                 h5: ["20px", { lineHeight: "1.3", letterSpacing: "-0.01em", fontWeight: "400" }],
                 body: ["16px", { lineHeight: "1.5", fontWeight: "400" }],
                 caption: ["14px", { lineHeight: "1.4", fontWeight: "400" }],
-                micro: ["12px", { lineHeight: "1.2", fontWeight: "400" }],
+                micro: ["11px", { lineHeight: "1.2", fontWeight: "400" }],
             },
             spacing: {
                 "spacing-01": "2px",
