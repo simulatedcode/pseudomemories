@@ -50,7 +50,7 @@ export default function ProjectsPage() {
                 </div>
 
                 {/* Right: Horizontal Scroll Section */}
-                <div className="w-full md:w-[65%] h-[75vh] md:h-full overflow-hidden flex items-center relative bg-background">
+                <div className="w-full md:w-[65%] h-[70vh] md:h-full overflow-hidden flex items-center relative bg-background">
                     <motion.div
                         style={{ x }}
                         className="flex items-center gap-spacing-04 md:gap-spacing-06 pl-spacing-03 md:pl-spacing-06 pr-[50vw]"
@@ -61,19 +61,12 @@ export default function ProjectsPage() {
                                 className="relative flex-none group w-[70vw] md:w-[45vw] lg:w-[35vw] aspect-3/4 md:aspect-4/5"
                             >
                                 <div className="w-full h-full relative overflow-hidden">
-                                    {/* Image Placeholder
-                                    <Image
-                                        src={category.image}
-                                        alt={category.title}
-                                        fill
-                                        className="object-cover transition-transform duration-700 ease-[cubic-bezier(0.2,0,0.2,1)] group-hover:scale-105 grayscale group-hover:grayscale-0 opacity-80 group-hover:opacity-100"
-                                    />*/}
                                     {/* Image Placeholder */}
                                     <motion.div
                                         initial={{ opacity: 0, x: -20 }}
                                         animate={{ opacity: 1, x: 0 }}
                                         transition={{ duration: duration.slow, ease: easing.carbonExpressive }}
-                                        className="col-span-1 lg:col-span-5 relative aspect-3/4 lg:aspect-4/5 bg-zinc-900 border border-white/10 overflow-hidden group"
+                                        className="w-full h-full relative bg-zinc-900 border border-white/10 overflow-hidden group"
                                     >
                                         <div className="absolute inset-0 flex items-center justify-center text-white/20 font-doto uppercase tracking-widest text-micro group-hover:text-white/40 transition-colors">
                                             [ Portrait Placeholder ]
