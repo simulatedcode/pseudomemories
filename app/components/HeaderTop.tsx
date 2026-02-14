@@ -5,7 +5,6 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import { duration, easing } from "@/app/lib/motion-tokens";
 import { ScrambleText } from "./ui/ScrambleText";
-import { SystemMetrics } from "./SystemMetrics";
 import pkg from "../../package.json";
 
 interface HeaderTopProps {
@@ -15,30 +14,6 @@ interface HeaderTopProps {
 
 export function HeaderTop({ hoveredItem, setHoveredItem }: HeaderTopProps) {
     const [version] = useState(`v${pkg.version}`);
-    const [currentTime, setCurrentTime] = useState("");
-
-    useEffect(() => {
-        const updateTime = () => {
-            const now = new Date();
-            const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-
-            const formatter = new Intl.DateTimeFormat("en-US", {
-                month: "numeric",
-                day: "numeric",
-                hour: "2-digit",
-                minute: "2-digit",
-                hour12: true,
-                timeZone: userTimeZone,
-                timeZoneName: "short",
-            });
-
-            setCurrentTime(formatter.format(now));
-        };
-
-        updateTime();
-        const interval = setInterval(updateTime, 1000);
-        return () => clearInterval(interval);
-    }, []);
 
     return (
         <div

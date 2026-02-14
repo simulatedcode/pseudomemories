@@ -57,21 +57,21 @@ export function HUDBottomLeft({ hoveredItem, setHoveredItem }: HUDBottomLeftProp
                 <div className="flex flex-col gap-spacing-02">
                     <div className="flex items-center justify-between gap-spacing-05">
                         <span className="font-doto text-micro uppercase tracking-widest text-white">Date & Time</span>
-                        <span className="font-doto text-micro text-white">
+                        <span className="font-doto text-micro text-white" suppressHydrationWarning>
                             <ScrambleText text={currentTime} delay={2} />
                         </span>
                     </div>
                     <hr className="border-white/5" />
                     <div className="flex items-center justify-between gap-spacing-05">
                         <span className="font-doto text-micro uppercase tracking-widest text-white">Timezone</span>
-                        <span className="font-doto text-micro text-white">
+                        <span className="font-doto text-micro text-white" suppressHydrationWarning>
                             <ScrambleText text={timeZone} delay={2.1} />
                         </span>
                     </div>
                     <hr className="border-white/5" />
                     <div className="flex items-center justify-between gap-spacing-05">
                         <span className="font-doto text-micro uppercase tracking-widest text-white">Coordinate</span>
-                        <span className="font-doto text-micro text-white">
+                        <span className="font-doto text-micro text-white" suppressHydrationWarning>
                             <ScrambleText text={locationString} delay={2.2} />
                         </span>
                     </div>

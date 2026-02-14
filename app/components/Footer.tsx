@@ -2,8 +2,7 @@
 
 import React, { useState, useRef } from "react";
 import { motion, useInView, AnimatePresence, easeOut } from "framer-motion";
-import { ScrambleText } from "./ui/ScrambleText";
-import Link from "next/link";
+import { ScrambleText } from "./ui/ScrambleText"
 import { useIntro } from "../context/IntroContextCore";
 import pkg from "../../package.json";
 
@@ -60,26 +59,26 @@ export function Footer() {
     }, []);
 
     return (
-        <footer className="relative bottom-0 z-content w-full min-h-screen bg-background/80 backdrop-blur-lg from-background to-transparent flex flex-col justify-center items-center py-spacing-10">
-            <div className="w-full max-w-4xl px-spacing-08 flex flex-col gap-spacing-08">
+        <footer className="relative bottom-0 z-overlay w-full min-h-32 bg-background/80 backdrop-blur-lg flex flex-col justify-center items-center py-spacing-07">
+            <div className="w-full max-w-4xl px-spacing-04 flex flex-col gap-spacing-04 ">
 
                 {/* Header Section */}
-                <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-spacing-05 border-b border-white/10 pb-spacing-06">
+                <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-spacing-05 border-b border-white/10 pb-spacing-04">
                     <div className="flex flex-col gap-spacing-02">
-                        <h3 className="font-electrolize text-h4 uppercase tracking-[0.2em] text-offwhite-100">
+                        <h3 className="font-electrolize text-caption uppercase tracking-[0.2em] text-offwhite-100">
                             System Architecture
                         </h3>
-                        <p className="font-doto text-caption uppercase tracking-[0.3em] text-offwhite-100/60">
+                        <p className="font-doto text-micro uppercase tracking-[0.3em] text-offwhite-100/60">
                             {new Date().getFullYear()}.02.11 // v{pkg.version} // Active Protocol
                         </p>
                     </div>
 
-                    <div className="flex items-center gap-spacing-04">
-                        <div className="flex flex-col items-end">
-                            <span className="font-electrolize text-caption uppercase text-white/50">Status</span>
-                            <span className="flex items-center gap-spacing-03 font-doto text-micro uppercase text-white/50 tracking-widest">
+                    <div className="flex items-center gap-spacing-02">
+                        <div className="flex justify-end gap-spacing-02 items-center bg-white/5 border border-white/10 backdrop-blur-md p-spacing-02 px-2">
+                            <span className="font-electrolize text-micro uppercase text-white/50">Status</span>
+                            <span className="flex items-center gap-spacing-01 font-doto text-micro uppercase text-white/50 tracking-widest">
                                 <motion.div
-                                    className="w-2 h-2 rounded-full bg-ultramarine-600"
+                                    className="w-2 h-2 rounded-full bg-green-600 mr-spacing-01"
                                     animate={{ opacity: [0.5, 1, 0.5] }}
                                     transition={{ duration: 2, repeat: Infinity }}
                                 />
@@ -89,68 +88,8 @@ export function Footer() {
                     </div>
                 </div>
 
-                {/* Main Content Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-spacing-08">
-                    {/* Tech Stack / Specs */}
-                    <div className="flex flex-col gap-spacing-05">
-                        <h4 className="font-doto text-micro uppercase tracking-widest text-white/50 border-b border-white/5 pb-2">Technical Specifications</h4>
-                        <div className="flex flex-col gap-2">
-                            <div className="flex justify-between items-center border-b border-white/5 py-2">
-                                <span className="font-electrolize text-caption text-white/60">Core Framework</span>
-                                <span className="font-doto text-micro text-white">Next.js 15 (App Router)</span>
-                            </div>
-                            <div className="flex justify-between items-center border-b border-white/5 py-2">
-                                <span className="font-electrolize text-caption text-white/60">Rendering Engine</span>
-                                <span className="font-doto text-micro text-white">Three.js R160 + Fiber</span>
-                            </div>
-                            <div className="flex justify-between items-center border-b border-white/5 py-2">
-                                <span className="font-electrolize text-caption text-white/60">Physics/Motion</span>
-                                <span className="font-doto text-micro text-white">Framer Motion 12</span>
-                            </div>
-                            <div className="flex justify-between items-center border-b border-white/5 py-2">
-                                <span className="font-electrolize text-caption text-white/60">Styling System</span>
-                                <span className="font-doto text-micro text-white">TailwindCSS v4</span>
-                            </div>
-                            <div className="flex justify-between items-center border-b border-white/5 py-2">
-                                <span className="font-electrolize text-caption text-white/60">Geolocation</span>
-                                <span className="font-doto text-micro text-white">IP-Based Solar Calculation</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Navigation / Links */}
-                    <div className="flex flex-col gap-spacing-05">
-                        <h4 className="font-doto text-micro uppercase tracking-widest text-white/50 border-b border-white/5 pb-2">Communications</h4>
-                        <div className="flex flex-col gap-spacing-04">
-                            <Link
-                                href="/updates"
-                                className="group flex items-center justify-between p-spacing-04 border border-white/10 hover:bg-white/5 transition-colors"
-                            >
-                                <span className="font-electrolize text-body uppercase">Updates</span>
-                                <span className="font-doto text-micro text-white/50 group-hover:text-white transition-colors">→</span>
-                            </Link>
-                            <Link
-                                href="https://github.com/simulatedcode"
-                                target="_blank"
-                                className="group flex items-center justify-between p-spacing-04 border border-white/10 hover:bg-white/5 transition-colors"
-                            >
-                                <span className="font-electrolize text-body uppercase">Github Repository</span>
-                                <span className="font-doto text-micro text-white/50 group-hover:text-white transition-colors">→</span>
-                            </Link>
-                            <Link
-                                href="https://instagram.com/keppett"
-                                target="_blank"
-                                className="group flex items-center justify-between p-spacing-04 border border-white/10 hover:bg-white/5 transition-colors"
-                            >
-                                <span className="font-electrolize text-body uppercase">Instagram Connection</span>
-                                <span className="font-doto text-micro text-white/50 group-hover:text-white transition-colors">→</span>
-                            </Link>
-                        </div>
-                    </div>
-                </div>
-
                 {/* Footer Bottom */}
-                <div className="flex justify-between items-end pt-spacing-08 border-t border-white/10 mt-spacing-04 opacity-60">
+                <div className="flex justify-between items-end">
                     <div className="flex flex-col">
                         <span className="font-doto text-[10px] uppercase tracking-widest">
                             © {new Date().getFullYear()} Pseudo Memories

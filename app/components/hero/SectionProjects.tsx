@@ -65,7 +65,7 @@ export default function SectionProjects() {
             {/* Sticky Header - Direct child of section */}
             <motion.div
                 style={{ opacity: textOpacity }}
-                className="sticky top-24 z-50 px-12 pb-12 mix-blend-difference"
+                className="sticky top-24 z-50 px-spacing-10 pb-12 mix-blend-difference"
             >
                 <motion.div
                     variants={variants.staggerContainer}
@@ -204,7 +204,7 @@ export default function SectionProjects() {
                                         transition={{ delay: 0.4, duration: duration.instant, ease: easing.carbonSoft }}
                                         className="pt-8 flex items-center gap-4 shrink-0"
                                     >
-                                        <p className="font-doto text-micro text-white/60 uppercase tracking-widest">
+                                        <p className="font-doto text-micro text-white/60 uppercase tracking-widest" suppressHydrationWarning>
                                             Pseudo Memories © {new Date().getFullYear()}
                                         </p>
                                         <div className="h-px flex-1 bg-white/10" />

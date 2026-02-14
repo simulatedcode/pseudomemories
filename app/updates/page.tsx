@@ -146,7 +146,7 @@ export default function UpdatesPage() {
                     </div>
 
                     {/* Bottom border */}
-                    <div className="border-t border-white/10 mt-1" />
+                    <div className="border-t border-white/10 mt-1 pb-24" />
                 </div>
             </div>
 
