@@ -10,7 +10,7 @@ export function HUDTopRight() {
     const { isTransitioning } = useTransition();
 
     return (
-        <div className="fixed right-spacing-06 top-spacing-06 z-hud flex flex-col gap-spacing-01 pointer-events-none">
+        <div className="fixed right-spacing-07 top-spacing-07 z-hud flex flex-col gap-spacing-01 pointer-events-none">
             {/* Memory Box */}
             <motion.div
                 initial={{ opacity: 0, y: -20 }}

@@ -3,6 +3,7 @@ import { HUDNavRight } from "./HUDNavRight";
 import { HUDBottomLeft } from "./HUDBottomLeft";
 import { useState, useEffect } from "react";
 import { useLenis } from "lenis/react";
+import { HUDBottomRight } from "./HUDBottomRight";
 
 export function Header() {
     const [hoveredItem, setHoveredItem] = useState<string | null>(null);
@@ -37,6 +38,11 @@ export function Header() {
             />
 
             <HUDBottomLeft
+                hoveredItem={hoveredItem}
+                setHoveredItem={setHoveredItem}
+            />
+
+            <HUDBottomRight
                 hoveredItem={hoveredItem}
                 setHoveredItem={setHoveredItem}
             />

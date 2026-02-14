@@ -28,7 +28,13 @@ export function AudioProvider({ children }: { children: ReactNode }) {
     };
 
     const togglePlay = () => {
-        if (!audioRef.current || !audioEnabled) return;
+        if (!audioRef.current) return;
+
+        if (!audioEnabled) {
+            setAudioEnabled(true);
+            // The useEffect will handle the play() call
+            return;
+        }
 
         if (playing) {
             audioRef.current.pause();

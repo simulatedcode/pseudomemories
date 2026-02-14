@@ -25,11 +25,11 @@ export function HUDBottomLeft({ hoveredItem, setHoveredItem }: HUDBottomLeftProp
             const now = new Date();
             const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
             const formatter = new Intl.DateTimeFormat("en-US", {
-                month: "numeric",
+                month: "short",
                 day: "numeric",
                 hour: "2-digit",
                 minute: "2-digit",
-                hour12: true,
+                hour12: false, // Military time fits the aesthetic better
                 timeZone: userTimeZone
             });
             setCurrentTime(formatter.format(now));
@@ -43,7 +43,7 @@ export function HUDBottomLeft({ hoveredItem, setHoveredItem }: HUDBottomLeftProp
 
     return (
         <div className="fixed left-spacing-07 bottom-spacing-07 z-hud flex flex-col gap-spacing-03 pointer-events-none">
-            {/* Box 1: Time & Geo */}
+            {/* Box 1: Info Location */}
             <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: isTransitioning ? 0 : 1, y: isTransitioning ? 20 : 0 }}
@@ -52,25 +52,32 @@ export function HUDBottomLeft({ hoveredItem, setHoveredItem }: HUDBottomLeftProp
                     delay: isTransitioning ? 0 : 1.8,
                     ease: easing.entrance,
                 }}
-                className="pointer-events-auto bg-black/10 backdrop-blur-md border border-white/5 p-4 min-w-[180px]"
+                className="pointer-events-auto bg-black/10 backdrop-blur-md border border-white/5 flex flex-col p-3 min-w-[180px] gap-spacing-03"
             >
+                {/* Header */}
+                <div className="flex items-center justify-between pb-2 border-b border-white/5">
+                    <span className="font-doto text-micro uppercase tracking-widest text-white/60">Info Location</span>
+                    <div className="w-1.5 h-1.5 rounded-full bg-emerald-500/80 animate-pulse" />
+                </div>
+
+                {/* Content */}
                 <div className="flex flex-col gap-spacing-02">
                     <div className="flex items-center justify-between gap-spacing-05">
-                        <span className="font-doto text-micro uppercase tracking-widest text-white">Date & Time</span>
+                        <span className="font-doto text-micro uppercase tracking-widest text-white/40">Timestamp</span>
                         <span className="font-doto text-micro text-white" suppressHydrationWarning>
                             <ScrambleText text={currentTime} delay={2} />
                         </span>
                     </div>
-                    <hr className="border-white/5" />
+
                     <div className="flex items-center justify-between gap-spacing-05">
-                        <span className="font-doto text-micro uppercase tracking-widest text-white">Timezone</span>
+                        <span className="font-doto text-micro uppercase tracking-widest text-white/40">Zone</span>
                         <span className="font-doto text-micro text-white" suppressHydrationWarning>
                             <ScrambleText text={timeZone} delay={2.1} />
                         </span>
                     </div>
-                    <hr className="border-white/5" />
+
                     <div className="flex items-center justify-between gap-spacing-05">
-                        <span className="font-doto text-micro uppercase tracking-widest text-white">Coordinate</span>
+                        <span className="font-doto text-micro uppercase tracking-widest text-white/40">Coords</span>
                         <span className="font-doto text-micro text-white" suppressHydrationWarning>
                             <ScrambleText text={locationString} delay={2.2} />
                         </span>

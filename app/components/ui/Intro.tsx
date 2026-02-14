@@ -3,7 +3,6 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useIntro } from "../../context/IntroContextCore";
-import { useAudio } from "../../context/AudioContextCore";
 import { useGeo } from "../../context/GeoContextCore";
 import { usePathname } from "next/navigation";
 import { ScrambleText } from "./ScrambleText";
@@ -13,10 +12,8 @@ export default function Intro() {
     const [progress, setProgress] = useState(0);
     const [isComplete, setIsComplete] = useState(false);
     const [isVisible, setIsVisible] = useState(true);
-    const [audioEnabled, setAudioEnabled] = useState(false);
     const [isHovering, setIsHovering] = useState(false);
     const { setComplete } = useIntro();
-    const { setAudioEnabled: setGlobalAudio } = useAudio();
     const { latitude, longitude, error } = useGeo();
 
     // Loading progress based on geolocation
@@ -61,7 +58,6 @@ export default function Intro() {
     }, [latitude, longitude, error]);
 
     const handleProceed = () => {
-        setGlobalAudio(audioEnabled);
         setComplete(true);
         setIsVisible(false);
     };
@@ -129,22 +125,6 @@ export default function Intro() {
                                 </span>
                             </motion.button>
                         </div>
-
-                        {/* Audio Toggle - shows when loading complete */}
-                        {isComplete && (
-                            <motion.button
-                                initial={{ opacity: 0, y: 10 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ delay: 0.3, duration: 0.5 }}
-                                onClick={() => setAudioEnabled(!audioEnabled)}
-                                className="flex items-center  justify-center gap-2 font-doto text-xs uppercase tracking-widest"
-                            >
-                                <div className={`flex w-2 h-2 rounded-full transition-all ${audioEnabled ? 'bg-vermelion' : 'bg-white/20'}`} />
-                                <span className={audioEnabled ? 'text-vermelion' : 'text-white/60'}>
-                                    Audio {audioEnabled ? 'Enabled' : 'Disabled'}
-                                </span>
-                            </motion.button>
-                        )}
                     </div>
 
                     {/* Grain overlay */}
