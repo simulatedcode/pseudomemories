@@ -59,7 +59,7 @@ export function Footer() {
     }, []);
 
     return (
-        <footer className="relative bottom-0 z-overlay w-full min-h-32 bg-background/80 backdrop-blur-lg flex flex-col justify-center items-center py-spacing-07">
+        <footer className="relative bottom-0 z-content w-full min-h-32 bg-background/80 backdrop-blur-lg flex flex-col justify-center items-center py-spacing-07">
             <div className="w-full max-w-4xl px-spacing-04 flex flex-col gap-spacing-04 ">
 
                 {/* Header Section */}
