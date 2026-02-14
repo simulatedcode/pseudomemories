@@ -1,13 +1,7 @@
 "use client";
 
-import { createContext, useContext, useState, ReactNode } from "react";
-
-interface TransitionContextType {
-    isTransitioning: boolean;
-    setIsTransitioning: (value: boolean) => void;
-}
-
-const TransitionContext = createContext<TransitionContextType | undefined>(undefined);
+import { useState, ReactNode } from "react";
+import { TransitionContext } from "./TransitionContextCore";
 
 export function TransitionProvider({ children }: { children: ReactNode }) {
     const [isTransitioning, setIsTransitioning] = useState(false);
@@ -19,10 +13,5 @@ export function TransitionProvider({ children }: { children: ReactNode }) {
     );
 }
 
-export function useTransition() {
-    const context = useContext(TransitionContext);
-    if (!context) {
-        throw new Error("useTransition must be used within TransitionProvider");
-    }
-    return context;
-}
+// Re-export hook for convenience (optional, but good for backward compat if needed)
+export { useTransition } from "./TransitionContextCore"; 

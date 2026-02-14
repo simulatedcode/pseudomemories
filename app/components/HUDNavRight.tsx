@@ -6,23 +6,17 @@ import Link from "next/link";
 import { duration, easing } from "@/app/lib/motion-tokens";
 import { ScrambleText } from "./ui/ScrambleText";
 import { useTransition } from "../context/TransitionContextCore";
+import { navItems } from "@/app/data/navigation";
 
-interface HUDRightNavProps {
+interface HUDNavRightProps {
     hoveredItem: string | null;
     setHoveredItem: (item: string | null) => void;
 }
 
-const navItems = [
-    { label: "Home", href: "/" },
-    { label: "Projects", href: "/projects" },
-    { label: "Update", href: "/updates" },
-    { label: "Contact", href: "/contact" }
-];
-
-export function HUDRightNav({ hoveredItem, setHoveredItem }: HUDRightNavProps) {
+export function HUDNavRight({ hoveredItem, setHoveredItem }: HUDNavRightProps) {
     const { isTransitioning } = useTransition();
     return (
-        <div className="fixed right-12 top-1/2 -translate-y-1/2 z-hud flex flex-col items-end gap-6 pointer-events-none">
+        <div className="fixed right-spacing-07 top-1/2 -translate-y-1/2 z-hud flex flex-col items-end gap-spacing-06 pointer-events-none">
             {navItems.map((item, index) => (
                 <motion.div
                     key={item.label}
@@ -39,7 +33,7 @@ export function HUDRightNav({ hoveredItem, setHoveredItem }: HUDRightNavProps) {
                         href={item.href}
                         onMouseEnter={() => setHoveredItem(item.label)}
                         onMouseLeave={() => setHoveredItem(null)}
-                        className="group flex items-center gap-4 transition-all"
+                        className="group flex items-center gap-spacing-05 transition-all"
                     >
                         <motion.span
                             initial={{ opacity: 0, x: 10 }}

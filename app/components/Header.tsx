@@ -1,15 +1,8 @@
 import { HeaderTop } from "./HeaderTop";
-import { HUDRightNav } from "./HUDRightNav";
+import { HUDNavRight } from "./HUDNavRight";
 import { HUDBottomLeft } from "./HUDBottomLeft";
-import { MenuOverlay } from "./MenuOverlay";
 import { useState, useEffect } from "react";
 import { useLenis } from "lenis/react";
-
-const menuLinks = [
-    { label: "Home", href: "/", desc: "Return to main interface" },
-    { label: "Documentation", href: "/documentation", desc: "Technical specifications" },
-    { label: "Changelog", href: "/changelog", desc: "System updates log" },
-];
 
 export function Header() {
     const [hoveredItem, setHoveredItem] = useState<string | null>(null);
@@ -38,7 +31,7 @@ export function Header() {
                 setHoveredItem={setHoveredItem}
             />
 
-            <HUDRightNav
+            <HUDNavRight
                 hoveredItem={hoveredItem}
                 setHoveredItem={setHoveredItem}
             />
@@ -46,14 +39,6 @@ export function Header() {
             <HUDBottomLeft
                 hoveredItem={hoveredItem}
                 setHoveredItem={setHoveredItem}
-            />
-
-            <MenuOverlay
-                isMenuOpen={isMenuOpen}
-                setIsMenuOpen={setIsMenuOpen}
-                hoveredItem={hoveredItem}
-                setHoveredItem={setHoveredItem}
-                menuLinks={menuLinks}
             />
         </>
     );

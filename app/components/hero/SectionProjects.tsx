@@ -6,81 +6,8 @@ import Image from "next/image";
 import { useLenis } from "lenis/react";
 import { createPortal } from "react-dom";
 import { Plus } from "lucide-react";
-
-const projects = [
-    {
-        id: 1,
-        title: "Ohm",
-        category: "Ethereal Sketch",
-        image: "/projects/ohm.jpg",
-        pos: 1,
-        description: "A spiritual ascent captured in charcoal, exploring the boundary between the physical and the infinite.",
-        year: "2025"
-    },
-    {
-        id: 2,
-        title: "stay unknow Nº.5",
-        category: "Minimalist Line",
-        image: "/projects/stay-unknow-05.jpg",
-        pos: 4,
-        description: "Raw, unrefined strokes mapping the silent majesty of peaks that refuse to be fully known.",
-        year: "2025",
-    },
-    {
-        id: 3,
-        title: "Systen ultra",
-        category: "sketch",
-        image: "/projects/systen-ultra-02.jpg",
-        pos: 6,
-        description: "A rhythmic layering of ocean blues and atmospheric clouds, frozen in a moment of perpetual stillness.",
-        year: "2020",
-    },
-    {
-        id: 4,
-        title: "Shine on",
-        category: "Graphite Terrain",
-        image: "/projects/landscape-01.jpg",
-        pos: 7,
-        description: "Detailed geological textures documenting the slow, tectonic shifts of a memory being reconstructed.",
-        year: "2025",
-    },
-    {
-        id: 5,
-        title: "Landscape Nº.2",
-        category: "Framed Void",
-        image: "/projects/landscape-02.jpg",
-        pos: 9,
-        description: "A reductive landscape study where the horizon is merely a suggestion within a digital blue frame.",
-        year: "2025",
-    },
-    {
-        id: 6,
-        title: "Where are you",
-        category: "Fragmentary Form",
-        image: "/projects/where-are-you.jpg",
-        pos: 12,
-        description: "A solitary object standing in a minimalist expanse, questioning its own presence in a fading reality.",
-        year: "2025",
-    },
-    {
-        id: 7,
-        title: "Stay Unknow Nº.2",
-        category: "Shadow Works",
-        image: "/projects/sketsa-yang-hilang.jpg",
-        pos: 14,
-        description: "A lonely silhouette traversing a vibrant pink void, leaving behind nothing but a long, dark memory.",
-        year: "2025",
-    },
-    {
-        id: 8,
-        title: "Systen ultra Nº.1",
-        category: "Blue Synthesis",
-        image: "/projects/systen-ultra-01.jpg",
-        pos: 16,
-        description: "Exploring the chaotic beauty of fluid dynamics and cellular expansion in a hyper-saturated cobalt field.",
-        year: "2025",
-    }
-];
+import { duration, easing } from "@/app/lib/motion-tokens";
+import { projects } from "@/app/data/projects";
 
 export default function SectionProjects() {
     const [selectedId, setSelectedId] = useState<number | null>(null);
@@ -88,13 +15,13 @@ export default function SectionProjects() {
     const containerRef = useRef<HTMLElement>(null);
     const lenis = useLenis();
 
-    const { scrollYProgress } = useScroll({
+    const { scrollYProgress: fadeProgress } = useScroll({
         target: containerRef,
-        offset: ["start start", "end end"]
+        offset: ["start 0.1", "center 0.8"]
     });
 
-    // Sticky text wrapper - stays visible until section ends
-    const textOpacity = useTransform(scrollYProgress, [0, 0.9, 1], [1, 1, 0]);
+    const headerFade = useTransform(fadeProgress, [0, 1], [1, 0]);
+    const textOpacity = headerFade;
 
     useEffect(() => {
         setMounted(true);
@@ -125,7 +52,7 @@ export default function SectionProjects() {
             },
         },
         fadeDrift: {
-            hidden: { opacity: 0, y: 10 },
+            hidden: { opacity: 0, y: 30 },
             visible: { opacity: 1, y: 0 },
         },
     };
@@ -147,26 +74,27 @@ export default function SectionProjects() {
                     viewport={{ once: true, margin: "-10%" }}
                     className="flex flex-col gap-4 pointer-events-none"
                 >
+                    {/* heading project title  */}
                     <motion.div
                         variants={variants.fadeDrift}
-                        transition={{ duration: 0.5, ease: [0, 0, 0.38, 0.9] }}
+                        transition={{ duration: duration.slow, ease: easing.carbonExpressive }}
                         className="pointer-events-auto"
                     >
                         <p className="text-body font-doto uppercase tracking-widest text-white mb-4">
                             Project Preview
                         </p>
-                        <h4 className="font-electrolize text-h3 md:text-h2 max-w-2xl">
+                        <h3 className="font-electrolize text-h3 md:text-h2 max-w-2xl">
                             Selection of sketches highlighting from fragmented memories.
-                        </h4>
+                        </h3>
                     </motion.div>
                 </motion.div>
             </motion.div>
 
             {/* Grid - Scrolls past sticky header */}
-            <div className="relative z-0 grid grid-cols-4 sm:grid-cols-6 lg:grid-cols-12 gap-0 md:gap-1 px-12">
+            <div className="relative z-0 grid grid-cols-4 sm:grid-cols-6 lg:grid-cols-12 gap-0 md:gap-1 px-spacing-10">
                 {gridItems.map((project, index) => {
                     if (!project) {
-                        return <div key={`empty-${index}`} className="hidden lg:block col-span-3 aspect-4/3" />;
+                        return <div key={`empty-${index}`} className="hidden lg:block col-span-3 aspect-video" />;
                     }
 
                     return (
@@ -177,27 +105,27 @@ export default function SectionProjects() {
                             initial={{ opacity: 0, y: 30 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
-                            transition={{ duration: 0.5, ease: [0, 0, 0.38, 0.9], delay: (index % 4) * 0.07 }}
-                            className="col-span-full sm:col-span-3 lg:col-span-3 group cursor-pointer"
+                            transition={{ duration: duration.slow, ease: easing.carbonExpressive, delay: (index % 4) * 0.07 }}
+                            className="col-span-full sm:col-span-2 lg:col-span-3 group cursor-pointer"
                         >
                             <div className="relative aspect-4/3 overflow-hidden bg-white/5">
                                 <Image
                                     src={project.image}
                                     alt={project.title}
                                     fill
-                                    className="object-cover transition-all duration-300 ease-[cubic-bezier(0.2,0,0.38,0.9)] scale-160 group-hover:scale-170 grayscale group-hover:grayscale-0 opacity-80 group-hover:opacity-100"
+                                    className="object-cover object-center transition-all duration-300 ease-[cubic-bezier(0.2,0,0.38,0.9)] scale-160 group-hover:scale-100 grayscale group-hover:grayscale-0 opacity-80 group-hover:opacity-100"
                                 />
-                                <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-[cubic-bezier(0.2,0,0.38,0.9)]" />
+                                <div className="absolute inset-0 bg-linear-to-t from-black/90 via-background/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-[cubic-bezier(0.2,0,0.38,0.9)]" />
 
                                 <div className="absolute inset-0 p-6 flex flex-col justify-end opacity-0 group-hover:opacity-100 transition-all duration-300 ease-[cubic-bezier(0,0,0.38,0.9)] translate-y-4 group-hover:translate-y-0">
                                     <div className="flex justify-between items-end">
                                         <div>
-                                            <p className="font-doto text-micro uppercase tracking-wider text-white/60 mb-0">
+                                            <p className="font-doto text-micro uppercase tracking-wider text-white/80 mb-0">
                                                 {project.category}
                                             </p>
-                                            <h3 className="font-iawriter text-h3 text-white">
+                                            <h4 className="font-iawriter text-h4 text-white">
                                                 {project.title}
-                                            </h3>
+                                            </h4>
                                         </div>
                                     </div>
                                 </div>
@@ -218,29 +146,29 @@ export default function SectionProjects() {
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             exit={{ opacity: 0 }}
-                            transition={{ duration: 0.24, ease: [0.2, 0, 0.38, 0.9] }}
-                            className="fixed inset-0 z-9999 flex items-center justify-center p-0 md:p-0"
+                            transition={{ duration: duration.instant, ease: easing.carbonSoft }}
+                            className="fixed inset-0 z-modal flex items-center justify-center p-0 md:p-0"
                         >
                             <motion.div
                                 initial={{ opacity: 0 }}
                                 animate={{ opacity: 1 }}
                                 exit={{ opacity: 0 }}
-                                transition={{ duration: 0.24, ease: [0.2, 0, 0.38, 0.9] }}
+                                transition={{ duration: duration.instant, ease: easing.carbonSoft }}
                                 onClick={() => setSelectedId(null)}
                                 className="absolute inset-0 bg-background/80 backdrop-blur-lg cursor-pointer"
                             />
                             <motion.div
                                 layoutId={`project-${selectedId}`}
-                                className="relative w-[95dvw] max-w-screen h-[90dvh] grid grid-cols-1 lg:grid-cols-3 bg-background overflow-hidden border border-white/10"
+                                className="relative w-[95dvw] max-w-screen h-[90dvh] grid grid-cols-1 lg:grid-cols-3 bg-zinc-900 overflow-hidden border border-white/10"
                             >
-                                <div className="lg:col-span-1 p-8 md:p-10 flex flex-col justify-between overflow-hidden border-r border-white/5">
+                                <div className="lg:col-span-1 p-6 md:p-10 flex flex-col justify-between overflow-hidden border-r border-white/5">
                                     <div className="flex flex-col h-full overflow-y-auto pr-4 scrollbar-hide">
                                         <div className="space-y-8 lg:space-y-8">
                                             <div className="overflow-hidden">
                                                 <motion.p
                                                     initial={{ y: "100%" }}
                                                     animate={{ y: 0 }}
-                                                    transition={{ delay: 0.15, duration: 0.3, ease: [0, 0, 0.38, 0.9] }}
+                                                    transition={{ delay: 0.15, duration: duration.quick, ease: easing.carbonExpressive }}
                                                     className="font-doto text-body uppercase tracking-widest text-white/80 mb-6"
                                                 >
                                                     {selectedProject.category} — {selectedProject.year}
@@ -250,7 +178,7 @@ export default function SectionProjects() {
                                                 <motion.h2
                                                     initial={{ y: "100%" }}
                                                     animate={{ y: 0 }}
-                                                    transition={{ delay: 0.2, duration: 0.3, ease: [0, 0, 0.38, 0.9] }}
+                                                    transition={{ delay: 0.2, duration: duration.quick, ease: easing.carbonExpressive }}
                                                     className="font-electrolize text-h2 md:text-h1 leading-none tracking-tighter mb-4"
                                                 >
                                                     {selectedProject.title}
@@ -262,7 +190,7 @@ export default function SectionProjects() {
                                                 <motion.p
                                                     initial={{ y: "20%", opacity: 0 }}
                                                     animate={{ y: 0, opacity: 1 }}
-                                                    transition={{ delay: 0.3, duration: 0.3, ease: [0.2, 0, 0.38, 0.9] }}
+                                                    transition={{ delay: 0.3, duration: duration.quick, ease: easing.carbonSoft }}
                                                     className="font-iawriter text-body text-white/80 leading-relaxed"
                                                 >
                                                     {selectedProject.description}
@@ -273,7 +201,7 @@ export default function SectionProjects() {
                                     <motion.div
                                         initial={{ opacity: 0 }}
                                         animate={{ opacity: 1 }}
-                                        transition={{ delay: 0.4, duration: 0.24, ease: [0.2, 0, 0.38, 0.9] }}
+                                        transition={{ delay: 0.4, duration: duration.instant, ease: easing.carbonSoft }}
                                         className="pt-8 flex items-center gap-4 shrink-0"
                                     >
                                         <p className="font-doto text-micro text-white/60 uppercase tracking-widest">
@@ -287,7 +215,7 @@ export default function SectionProjects() {
                                         <motion.button
                                             initial={{ opacity: 0, y: -10 }}
                                             animate={{ opacity: 1, y: 0 }}
-                                            transition={{ delay: 0.3, duration: 0.24, ease: [0, 0, 0.38, 0.9] }}
+                                            transition={{ delay: 0.3, duration: duration.instant, ease: easing.carbonExpressive }}
                                             onClick={() => setSelectedId(null)}
                                             className="text-white hover:text-vermelion transition-all flex items-center gap-2 group"
                                         >
@@ -298,7 +226,7 @@ export default function SectionProjects() {
                                         <motion.div
                                             initial={{ opacity: 0, scale: 1.05, filter: "blur(10px)" }}
                                             animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
-                                            transition={{ delay: 0.2, duration: 0.5, ease: [0, 0, 0.38, 0.9] }}
+                                            transition={{ delay: 0.2, duration: duration.slow, ease: easing.carbonExpressive }}
                                             className="relative w-full aspect-video overflow-hidden"
                                         >
                                             <Image

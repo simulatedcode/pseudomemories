@@ -1,4 +1,9 @@
 export const duration = {
+    // Quick UI feedback (0.24s) for modals, overlays
+    instant: 0.24,
+    // Fast content reveals (0.3s)
+    quick: 0.3,
+    // Standard fast timing (0.6s)
     fast: 0.6,
     // Base cinematic timing (0.8s) for standard elements
     slow: 0.8,
@@ -15,6 +20,10 @@ export const easing = {
     soft: [0.32, 0.72, 0, 1] as const,
     // Gentle entrance for content
     entrance: [0.4, 0, 0.6, 1] as const,
+    // Carbon Design System - expressive entrance
+    carbonExpressive: [0, 0, 0.38, 0.9] as const,
+    // Carbon Design System - soft variant
+    carbonSoft: [0.2, 0, 0.38, 0.9] as const,
 };
 
 export const variants = {

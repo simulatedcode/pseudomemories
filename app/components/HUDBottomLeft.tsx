@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import { duration, easing } from "@/app/lib/motion-tokens";
 import { ScrambleText } from "./ui/ScrambleText";
 import { useGeo } from "../context/GeoContextCore";
-import { useTransition } from "../context/TransitionContext";
+import { useTransition } from "../context/TransitionContextCore";
 
 interface HUDBottomLeftProps {
     hoveredItem: string | null;
@@ -42,7 +42,7 @@ export function HUDBottomLeft({ hoveredItem, setHoveredItem }: HUDBottomLeftProp
     }, []);
 
     return (
-        <div className="fixed left-12 bottom-10 z-[100] flex flex-col gap-2 pointer-events-none">
+        <div className="fixed left-spacing-07 bottom-spacing-07 z-hud flex flex-col gap-spacing-03 pointer-events-none">
             {/* Box 1: Time & Geo */}
             <motion.div
                 initial={{ opacity: 0, y: 20 }}
@@ -54,22 +54,22 @@ export function HUDBottomLeft({ hoveredItem, setHoveredItem }: HUDBottomLeftProp
                 }}
                 className="pointer-events-auto bg-black/10 backdrop-blur-md border border-white/5 p-4 min-w-[180px]"
             >
-                <div className="flex flex-col gap-1">
-                    <div className="flex items-center justify-between gap-4">
+                <div className="flex flex-col gap-spacing-02">
+                    <div className="flex items-center justify-between gap-spacing-05">
                         <span className="font-doto text-micro uppercase tracking-widest text-white">Date & Time</span>
                         <span className="font-doto text-micro text-white">
                             <ScrambleText text={currentTime} delay={2} />
                         </span>
                     </div>
                     <hr className="border-white/5" />
-                    <div className="flex items-center justify-between gap-4">
+                    <div className="flex items-center justify-between gap-spacing-05">
                         <span className="font-doto text-micro uppercase tracking-widest text-white">Timezone</span>
                         <span className="font-doto text-micro text-white">
                             <ScrambleText text={timeZone} delay={2.1} />
                         </span>
                     </div>
                     <hr className="border-white/5" />
-                    <div className="flex items-center justify-between gap-4">
+                    <div className="flex items-center justify-between gap-spacing-05">
                         <span className="font-doto text-micro uppercase tracking-widest text-white">Coordinate</span>
                         <span className="font-doto text-micro text-white">
                             <ScrambleText text={locationString} delay={2.2} />

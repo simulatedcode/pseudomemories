@@ -3,14 +3,14 @@
 import { motion } from "framer-motion";
 import { duration, easing } from "@/app/lib/motion-tokens";
 import { useSystemMetrics } from "../hooks/useSystemMetrics";
-import { useTransition } from "../context/TransitionContext";
+import { useTransition } from "../context/TransitionContextCore";
 
 export function HUDTopRight() {
     const { memory, gpu } = useSystemMetrics();
     const { isTransitioning } = useTransition();
 
     return (
-        <div className="fixed right-10 top-8 z-[100] flex flex-col gap-1 pointer-events-none">
+        <div className="fixed right-spacing-06 top-spacing-06 z-hud flex flex-col gap-spacing-01 pointer-events-none">
             {/* Memory Box */}
             <motion.div
                 initial={{ opacity: 0, y: -20 }}
@@ -22,7 +22,7 @@ export function HUDTopRight() {
                 }}
                 className="pointer-events-auto"
             >
-                <div className="flex gap-4">
+                <div className="flex gap-spacing-05">
                     <span className="font-doto text-micro text-white/60 uppercase tracking-widest">Mem</span>
                     <span className="font-doto text-micro text-white">
                         {memory}%
@@ -41,7 +41,7 @@ export function HUDTopRight() {
                 }}
                 className="pointer-events-auto "
             >
-                <div className="flex gap-2">
+                <div className="flex gap-spacing-03">
                     <span className="font-doto text-micro text-white/60 uppercase tracking-widest">GPU</span>
                     <span className="font-doto text-micro text-white uppercase tracking-widest">
                         {gpu}%
