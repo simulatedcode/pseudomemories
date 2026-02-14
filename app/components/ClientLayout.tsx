@@ -5,7 +5,6 @@ import { Header } from "./Header";
 import { Footer } from "./Footer";
 import PageTransition from "./ui/PageTransition";
 import Intro from "./ui/Intro";
-import { AudioTransmitMobile } from "./ui/AudioTransmitMobile";
 import LenisScroll from "./LenisScroll";
 import { GeoProvider } from "../context/GeoContext";
 import { AudioProvider } from "../context/AudioContext";
@@ -22,7 +21,6 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
                     <IntroProvider>
                         <GeoProvider>
                             <Intro />
-                            <AudioTransmitMobile />
                             <HUDTopRight />
                             <LenisScroll>
                                 <Header />
