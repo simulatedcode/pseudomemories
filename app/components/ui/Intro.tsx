@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useIntro } from "../../context/IntroContextCore";
 import { usePathname } from "next/navigation";
 import pkg from "../../../package.json";
+import { duration, easing } from "../../lib/motion-tokens";
 
 const SEQUENCE = [
     { text: "Archive accessed.", delay: 400 },
@@ -135,7 +136,7 @@ export default function Intro() {
                     initial={{ opacity: 1 }}
                     exit={{
                         clipPath: "inset(0 0 100% 0)",
-                        transition: { duration: 0.8, ease: [0.76, 0, 0.24, 1] },
+                        transition: { duration: duration.slow, ease: easing.soft },
                     }}
                     className="fixed inset-0 z-1000 bg-background/5 flex items-center justify-center font-mono text-vermelion-500/80 overflow-hidden"
                 >
@@ -186,7 +187,7 @@ export default function Intro() {
                             <motion.div
                                 initial={{ opacity: 0, scale: 0.95, y: "-45%" }}
                                 animate={{ opacity: 1, scale: 1, y: "-50%" }}
-                                transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                                transition={{ duration: duration.slow, ease: easing.soft }}
                                 className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20 w-[80%] max-w-md p-10 border border-vermelion-500/20 bg-background/90 backdrop-blur-2xl text-center shadow-[0_0_100px_rgba(0,0,0,0.8)]"
                             >
                                 <div className="text-micro opacity-40 tracking-[0.3em] mb-8 animate-pulse">
