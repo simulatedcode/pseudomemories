@@ -6,6 +6,7 @@ import { CustomCursor } from "./components/CustomCursor";
 import "./globals.css";
 import { Metadata } from "next";
 import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 const electrolize = Electrolize({
   subsets: ["latin"],
@@ -70,6 +71,7 @@ export default function RootLayout({
         </ClientLayout>
         <div className="fixed inset-0 pointer-events-none opacity-[0.08] z-10 bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
         <Analytics />
+        <SpeedInsights />
       </body>
     </html >
   );
