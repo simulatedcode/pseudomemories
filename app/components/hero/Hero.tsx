@@ -3,7 +3,7 @@
 import { useEffect, useState, Suspense } from "react";
 import { Canvas } from "@react-three/fiber";
 import { Html } from "@react-three/drei";
-import { motion, useScroll, useTransform, useSpring } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import Loader from "../ui/Loader";
 import { CharacterSprite, HeroCharacterProps } from "./HeroCharacter";
 
@@ -90,17 +90,9 @@ function Grid({ yOffset }: GridProps) {
 export default function Hero(props: HeroCharacterProps) {
     const { scrollYProgress } = useScroll();
 
-    // Matching softer spring from page.tsx
-    const smoothY = useSpring(scrollYProgress, {
-        stiffness: 40,
-        damping: 30,
-        mass: 1,
-        restDelta: 0.001
-    });
-
     // Slowed down slide-up speed (-60% instead of -100%)
-    const yOffset = useTransform(smoothY, [0, 1], ["0%", "-60%"]);
-    const heroOpacity = useTransform(smoothY, [0, 0.7], [1, 0]);
+    const yOffset = useTransform(scrollYProgress, [0, 1], ["0%", "-60%"]);
+    const heroOpacity = useTransform(scrollYProgress, [0, 0.7], [1, 0]);
 
     return (
         <>

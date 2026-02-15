@@ -2,7 +2,8 @@
 
 import dynamic from "next/dynamic";
 import { useIntro } from "@/app/context/IntroContextCore";
-import { motion, AnimatePresence, useScroll, useSpring, useTransform } from "framer-motion";
+import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
+import { duration, easing } from "@/app/lib/motion-tokens";
 
 /* Effects */
 const DustStar = dynamic(() => import("@/app/components/hero/DustStar"), { ssr: false });
@@ -10,21 +11,14 @@ const SectionProjects = dynamic(() => import("@/app/components/hero/SectionProje
 
 /* Hero (Grid + Character merged) */
 const Hero = dynamic(() => import("@/app/components/hero/Hero"), { ssr: false });
-const SectionSlide = dynamic(() => import("@/app/components/hero/SectionSlide"), { ssr: false });
+import { HUDFrame } from "./components/ui/HUDFrame";
 
 export default function Home() {
   const { isComplete } = useIntro();
   const { scrollYProgress } = useScroll();
 
-  // Softer spring for more "luxurious" movement
-  const smoothY = useSpring(scrollYProgress, {
-    stiffness: 40,
-    damping: 30,
-    mass: 1,
-    restDelta: 0.001
-  });
-
-  const bgY = useTransform(smoothY, [0, 1], ["0%", "-10%"]);
+  // Softer spring replaced with linear scroll for "fixed" feel
+  const bgY = useTransform(scrollYProgress, [0, 1], ["0%", "-10%"]);
 
   return (
     <div className="relative max-w-full mx-auto text-foreground font-sans selection:bg-inverse flex flex-col">
@@ -34,9 +28,20 @@ export default function Home() {
         initial={{ y: "100%", opacity: 0 }}
         animate={isComplete ? { y: 0, opacity: 1 } : { y: "100%", opacity: 0 }}
         style={{ y: bgY }}
-        transition={{ duration: 1.5, ease: [0.76, 0, 0.24, 1], delay: 0.8 }}
+        transition={{ duration: duration.cinematic, ease: easing.memoryFade, delay: 0.8 }}
         className="pointer-events-none fixed inset-0 z-0 bg-linear-to-b from-vermelion-800 via-vermelion-500 to-cyan-200"
-      />
+      >
+        {/* HUD Scanline/Line Pattern */}
+        <div
+          className="absolute inset-0 opacity-[0.03]"
+          style={{
+            backgroundImage: `repeating-linear-gradient(0deg, transparent, transparent 1px, #fff 1px, #fff 2px)`,
+            backgroundSize: '100% 4px'
+          }}
+        />
+      </motion.div>
+
+      <HUDFrame />
 
       <DustStar />
 
@@ -46,7 +51,7 @@ export default function Home() {
             key="hero"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 1.6, delay: 1.4 }}
+            transition={{ duration: duration.cinematic, ease: easing.entrance, delay: 1.4 }}
             className="fixed inset-0 z-10 pointer-events-none"
           >
             <Hero x={204} anchor="bottom" />
@@ -63,7 +68,6 @@ export default function Home() {
         {isComplete && (
           <>
             <SectionProjects />
-            <SectionSlide />
           </>
         )}
       </div>

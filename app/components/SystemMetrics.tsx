@@ -33,7 +33,7 @@ export function SystemMetrics({ className }: { className?: string }) {
                 <div className="p-2 sm:p-0">
                     <MemoryIcon />
                 </div>
-                <span className="font-doto cursor-default text-body uppercase tracking-[0.2em] hidden sm:inline">
+                <span className="font-doto cursor-default text-micro uppercase tracking-[0.2em] hidden sm:inline" suppressHydrationWarning>
                     MEM: {memory}%
                 </span>
             </motion.div>
@@ -43,7 +43,7 @@ export function SystemMetrics({ className }: { className?: string }) {
                 <div className="p-2 sm:p-0">
                     <GPUIcon />
                 </div>
-                <span className="font-doto cursor-default text-body uppercase tracking-[0.2em] hidden sm:inline">
+                <span className="font-doto cursor-default text-micro uppercase tracking-[0.2em] hidden sm:inline" suppressHydrationWarning>
                     GPU: {gpu}%
                 </span>
             </motion.div>

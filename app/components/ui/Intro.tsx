@@ -1,164 +1,239 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { useGeo } from "../../context/GeoContextCore";
-import { useAudio } from "../../context/AudioContextCore";
-import { useIntro } from "../../context/IntroContextCore";
 import { usePathname } from "next/navigation";
 import { ScrambleText } from "./ScrambleText";
+import { useIntro } from "@/app/context/IntroContextCore";
+import { duration, easing } from "../../lib/motion-tokens";
+import pkg from "../../../package.json";
 
-export default function Intro() {
-    const pathname = usePathname();
-    const [progress, setProgress] = useState(0);
-    const [showChoice, setShowChoice] = useState(false);
-    const [isVisible, setIsVisible] = useState(true);
-    const { latitude, longitude, error } = useGeo();
-    const { setAudioEnabled, playAudio } = useAudio();
-    const { setComplete } = useIntro();
+const TYPE_SPEED = 25;
 
-    useEffect(() => {
-        const interval = setInterval(() => {
-            setProgress((prev) => {
-                const next = prev + Math.floor(Math.random() * 10) + 1;
-                if (next >= 100) {
-                    clearInterval(interval);
-                    setTimeout(() => setShowChoice(true), 800);
-                    return 100;
-                }
-                return next;
-            });
-        }, 120);
+const SEQUENCE = [
+  { text: "TRANSMISSION LINK ESTABLISHED.", delay: 600 },
+  { text: "SOURCE NODE: TEMPORAL ARCHIVE.", delay: 600 },
+  { text: "MESSAGE ORIGIN: INDEX COLLAPSE.", delay: 800 },
+  { text: "PRESENT NODE DETECTED.", delay: 600 },
+  { text: "MEMORY MODEL FLAGGED AS INCOMPLETE.", delay: 800 },
+  { text: "ANCHOR YEAR CORRUPTED.", delay: 700 },
+  { text: "LANDSCAPE ARCHIVE DISTORTED.", delay: 700 },
+  { text: "COLONIAL FRAMING PERSISTENT.", delay: 800 },
+  { text: "RECONSTRUCTION CAUSED TIMELINE DRIFT.", delay: 900 },
+  { text: "PSEUDO MEMORY PROPAGATION CONFIRMED.", delay: 900 },
+  { text: "MEMORY RECONSTRUCTION...", delay: 1200 },
+];
 
-        return () => clearInterval(interval);
-    }, []);
+const TIMELINE = [
+  2097,
+  2097,
+  2097,
+  2026,
+  2026,
+  1930,
+  1930,
+  1930,
+  2097,
+  2097,
+  1979,
+];
 
-    const handleChoice = (withAudio: boolean) => {
-        setAudioEnabled(withAudio);
-        setComplete(true);
-        setTimeout(() => setIsVisible(false), 300);
+function generateHex(index: number) {
+  const seed = 4096 + index * 137;
+  return "0x" + seed.toString(16).toUpperCase().padStart(4, "0");
+}
+
+function TypewriterText({
+  text,
+  showCursor,
+}: {
+  text: string;
+  showCursor: boolean;
+}) {
+  const [displayedText, setDisplayedText] = useState("");
+
+  useEffect(() => {
+    let i = 0;
+    let cancelled = false;
+
+    setDisplayedText("");
+
+    const typeNext = () => {
+      if (cancelled) return;
+      if (i >= text.length) return;
+
+      const char = text.charAt(i);
+      setDisplayedText((prev) => prev + char);
+      i++;
+
+      let delay = TYPE_SPEED;
+
+      // Pause slightly at punctuation
+      if (char === "." || char === ":") delay = 250;
+      if (char === ",") delay = 150;
+      if (char === " ") delay = TYPE_SPEED + 10;
+
+      setTimeout(typeNext, delay);
     };
 
-    const locationString = error || `${latitude.toFixed(4)}°N ${longitude.toFixed(4)}°E`;
+    typeNext();
 
-    // Only render intro on the homepage
-    if (pathname !== "/") return null;
+    return () => {
+      cancelled = true;
+    };
+  }, [text]);
+  return (
+    <span className="whitespace-pre-line inline-block">
+      {displayedText}
+      {showCursor && (
+        <motion.span
+          animate={{ opacity: [0, 1, 0] }}
+          transition={{ duration: 0.8, repeat: Infinity }}
+          className="inline-block w-2 h-4 bg-vermelion-500 ml-1 align-middle"
+        />
+      )}
+    </span>
+  );
+}
 
-    return (
-        <AnimatePresence>
-            {isVisible && (
-                <motion.div
-                    initial={{ opacity: 1 }}
-                    exit={{
-                        clipPath: "inset(0 0 100% 0)",
-                        transition: { duration: 0.5, ease: [0.2, 0, 1, 0.9] } // Carbon exit-productive
-                    }}
-                    style={{ willChange: "clip-path" }}
-                    className="fixed h-dvh w-screen top-0 left-0 z-1000 bg-vermelion-500/10 flex flex-col items-center justify-center text-offwhite-100 selection:bg-white/10"
-                >
-                    <div className="flex flex-col items-center gap-spacing-09 max-w-md w-full px-spacing-08 relative z-10">
-                        {/* Upper Details */}
-                        <div className="w-full flex justify-between font-doto text-[10px] tracking-[0.3em] opacity-40 uppercase">
-                            <motion.div
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: 1 }}
-                                transition={{ delay: 0.15, duration: 0.24, ease: [0.2, 0, 0.38, 0.9] }} // Carbon entrance-productive
-                                className="flex flex-col gap-spacing-01"
-                            >
-                                <span>Status: {showChoice ? "Online" : "Booting"}</span>
-                                <span>Signal: {error ? "Err" : "Sync"}</span>
-                            </motion.div>
-                            <motion.div
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: 1 }}
-                                transition={{ delay: 0.3, duration: 0.24, ease: [0.2, 0, 0.38, 0.9] }}
-                                className="text-right flex flex-col gap-spacing-01"
-                            >
-                                <span>Ref: pseudo_mem</span>
-                                <span>v.2018.02.10</span>
-                            </motion.div>
-                        </div>
+export default function IntroLoader() {
+  const pathname = usePathname();
+  const { setComplete } = useIntro();
+  const [hoveredItem, setHoveredItem] = useState<string | null>(null);
 
-                        {/* Large Counter */}
-                        <div className="relative pt-spacing-08">
-                            <motion.h1
-                                className="font-electrolize text-[140px] sm:text-[200px] leading-none tracking-tighter text-vermelion"
-                                initial={{ opacity: 0, scale: 0.95, filter: "blur(10px)" }}
-                                animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
-                                transition={{ duration: 0.7, ease: [0, 0, 0.38, 0.9] }} // Carbon entrance-expressive
-                            >
-                                {progress.toString().padStart(2, "0")}
-                                <span className="text-[20px] sm:text-[32px] absolute -top-4 -right-12 opacity-30 font-doto">%</span>
-                            </motion.h1>
-                        </div>
+  const [displayedLines, setDisplayedLines] = useState<
+    { text: string; id: string; year: number; hex: string }[]
+  >([]);
 
-                        {/* Lower Details */}
-                        <div className="w-full flex flex-col items-center gap-spacing-07 pt-spacing-10 border-t border-white/10">
-                            <div className="flex flex-col items-center gap-spacing-02">
-                                <span className="font-electrolize text-[10px] uppercase tracking-[0.5em] opacity-30">Spatial Analysis</span>
-                                <span className="font-doto text-micro md:text-caption tracking-[0.4em] opacity-80">
-                                    <ScrambleText text={locationString} delay={0.5} duration={1.5} />
-                                </span>
-                            </div>
+  const [isComplete, setIsComplete] = useState(false);
+  const [isVisible, setIsVisible] = useState(true);
 
-                            {/* Loading Bar or Choice Buttons */}
-                            {!showChoice ? (
-                                <div className="w-full h-px bg-white/5 relative overflow-hidden">
-                                    <motion.div
-                                        className="absolute inset-0 bg-vermelion"
-                                        initial={{ x: "-100%" }}
-                                        animate={{ x: `${progress - 100}%` }}
-                                        transition={{ ease: "linear" }}
-                                    />
-                                </div>
-                            ) : (
-                                <motion.div
-                                    initial={{ opacity: 0, y: 10 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    transition={{ duration: 0.5, ease: [0, 0, 0.38, 0.9] }} // Carbon entrance-expressive
-                                    className="w-full flex flex-col gap-spacing-05"
-                                >
-                                    <div className="flex flex-col items-center gap-spacing-05 w-full">
-                                        <motion.button
-                                            onClick={() => handleChoice(true)}
-                                            whileHover={{ scale: 1.05 }}
-                                            whileTap={{ scale: 0.95 }}
-                                            className="group relative px-spacing-08 py-spacing-05 bg-vermelion hover:bg-vermelion/90 text-black w-full flex items-center justify-center gap-spacing-03 rounded-none clip-path-slant transition-all"
-                                        >
-                                            <span className="font-electrolize uppercase tracking-widest">Initialize Memory</span>
-                                            <motion.span
-                                                animate={{ x: [0, 4, 0] }}
-                                                transition={{ duration: 0.7, ease: [0.2, 0, 0.38, 0.9], repeat: Infinity }} // Carbon standard-productive
-                                            >
-                                                →
-                                            </motion.span>
+  useEffect(() => {
+    let mounted = true;
 
-                                            {/* Button Glitch Effect Overlay */}
-                                            <div className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 mix-blend-overlay transition-opacity" />
-                                        </motion.button>
+    async function processSequence() {
+      for (let i = 0; i < SEQUENCE.length; i++) {
+        if (!mounted) return;
 
-                                        <div className="flex flex-col items-center gap-spacing-02">
-                                            <span className="font-doto text-[9px] uppercase tracking-[0.2em] text-vermelion-100">
-                                                [ Audio Recommended ]
-                                            </span>
+        const item = SEQUENCE[i];
+        const year = TIMELINE[i] || 2097;
+        const hex = generateHex(i);
 
-                                            <button
-                                                onClick={() => handleChoice(false)}
-                                                className="font-doto text-[10px] uppercase tracking-widest text-white hover:text-white/80 transition-colors border-b border-transparent hover:border-white/20 pb-0.5"
-                                            >
-                                                Enter without audio
-                                            </button>
-                                        </div>
-                                    </div>
-                                </motion.div>
-                            )}
-                        </div>
+        setDisplayedLines((prev) => [
+          ...prev,
+          {
+            text: item.text,
+            id: `line-${i}`,
+            year,
+            hex,
+          },
+        ]);
+
+        await new Promise((resolve) =>
+          setTimeout(resolve, item.delay + item.text.length * TYPE_SPEED)
+        );
+      }
+
+      if (mounted) setIsComplete(true);
+    }
+
+    processSequence();
+
+    return () => {
+      mounted = false;
+    };
+  }, []);
+
+  const handleProceed = () => {
+    setIsVisible(false);
+    setComplete(true);
+  };
+
+  if (pathname !== "/") return null;
+
+  return (
+    <AnimatePresence>
+      {isVisible && (
+        <motion.div
+          initial={{ opacity: 1 }}
+          exit={{
+            clipPath: "inset(0 0 100% 0)",
+            transition: { duration: 0.8, ease: [0.76, 0, 0.24, 1] },
+          }}
+          className="fixed inset-0 z-1000 bg-background/5 flex items-center justify-center font-mono text-vermelion-500/80 overflow-hidden"
+        >
+          <div className="max-w-3xl w-full p-8 border border-white/5 backdrop-blur-md bg-white/5 relative">
+            <div className="flex justify-between text-xs opacity-60 border-b border-vermelion-500/20 pb-2 mb-4 tracking-widest">
+              <span>ARCHIVE_REPROCESS_PROTOCOL_V{pkg.version}</span>
+              <span className="animate-pulse"><ScrambleText text='STATE: RECEIVING_SIGNAL' /></span>
+            </div>
+
+            <div className="flex flex-col gap-2 min-h-85 leading-tight tracking-widest">
+              {displayedLines.map((line, index) => {
+                const isCurrent = index === displayedLines.length - 1;
+                const isFinal = index === SEQUENCE.length - 1;
+                const showCursor =
+                  (isCurrent && !isComplete) || (isComplete && isFinal);
+
+                return (
+                  <div key={line.id} className="flex gap-4 items-start">
+                    <div className="w-1 h-2 mt-2 shrink-0 bg-emerald-500/20" />
+
+                    <div className="flex gap-3 items-baseline">
+
+                      {/* YEAR */}
+                      <span className="font-mono text-micro md:text-xs opacity-60 tabular-nums min-w-[5ch]">
+                        <ScrambleText text={String(line.year)} />
+                      </span>
+
+                      {/* HEX */}
+                      <span className="font-mono text-[11px] opacity-40 tabular-nums min-w-[7ch] tracking-wide">
+                        [{line.hex}]
+                      </span>
+
+                      {/* MESSAGE */}
+                      <span className="font-doto text-micro md:text-caption leading-relaxed">
+                        <TypewriterText text={line.text} showCursor={showCursor} />
+                      </span>
+
                     </div>
+                  </div>);
+              })}
+            </div>
 
-                    {/* Dynamic Texture/Grain overlay */}
-                    <div className="absolute inset-0 pointer-events-none opacity-[0.09]  bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
-                </motion.div>
+            {isComplete && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: duration.slow, ease: easing.soft }}
+                className="mt-8 text-center"
+              >
+                <button
+                  onClick={handleProceed}
+                  onMouseEnter={() => setHoveredItem("text")}
+                  onMouseLeave={() => setHoveredItem(null)}
+                  className="group relative px-8 py-4 border border-vermelion-500/30 hover:border-vermelion-500 transition-all duration-200 tracking-[0.25em] text-xs font-mono cursor-pointer"
+                >
+                  <ScrambleText
+                    text="[ INITIALIZE_MEMORY_SEQUENCE ]" trigger={hoveredItem === "text"} />
+                </button>
+              </motion.div>
             )}
-        </AnimatePresence>
-    );
+          </div>
+
+          <motion.div
+            className="absolute inset-0 pointer-events-none"
+            animate={{ y: ["0%", "2%"] }}
+            transition={{ duration: 6, repeat: Infinity, ease: "linear" }}
+            style={{
+              background:
+                "linear-gradient(rgba(0,0,0,0)_50%, rgba(0,0,0,0.15)_50%)",
+              backgroundSize: "100% 3px",
+              opacity: 0.15,
+            }}
+          />
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
 }

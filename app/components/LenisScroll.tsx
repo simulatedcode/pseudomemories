@@ -1,9 +1,11 @@
 import { useRef, useEffect } from "react";
 import { ReactLenis, useLenis } from "lenis/react";
 import { useIntro } from "../context/IntroContextCore";
+import { usePathname } from "next/navigation";
 
 function LenisControl({ stopped }: { stopped: boolean }) {
     const lenis = useLenis();
+    const pathname = usePathname();
 
     useEffect(() => {
         if (!lenis) return;

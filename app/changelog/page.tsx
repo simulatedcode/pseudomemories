@@ -1,12 +1,12 @@
-import ReactMarkdown from "react-markdown";
+import ChangelogViewer from "./components/ChangelogViewer";
 
 export default async function ChangelogPage() {
     const res = await fetch(
-        "https://raw.githubusercontent.com/simulatedcode/pseudomemories/main-v1/CHANGELOG.md",
+        "https://raw.githubusercontent.com/simulatedcode/pseudomemories/main/CHANGELOG.md",
         { next: { revalidate: 300 } }
     );
 
     const markdown = await res.text();
 
-    return <ReactMarkdown>{markdown}</ReactMarkdown>;
+    return <ChangelogViewer content={markdown} />;
 }

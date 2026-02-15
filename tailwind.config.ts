@@ -1,6 +1,5 @@
 import type { Config } from "tailwindcss";
 import typography from "@tailwindcss/typography";
-import { IBM_Plex_Mono, Pixelify_Sans } from "next/font/google";
 
 const config: Config = {
     content: [
@@ -36,6 +35,19 @@ const config: Config = {
                     900: "#043443",
                     950: "#021318",
                 },
+                "ultramarine": {
+                    50: "#E6EBFF",
+                    100: "#B9C8FE",
+                    200: "#8BA4FD",
+                    300: "#5E81FD",
+                    400: "#315DFC",
+                    500: "#0437F2",
+                    600: "#032FCE",
+                    700: "#0225A1",
+                    800: "#021A74",
+                    900: "#011046",
+                    950: "#000619",
+                },
                 "offwhite": {
                     50: "#F7F6ED",
                     100: "#E8E3CA",
@@ -64,7 +76,7 @@ const config: Config = {
                 h5: ["20px", { lineHeight: "1.3", letterSpacing: "-0.01em", fontWeight: "400" }],
                 body: ["16px", { lineHeight: "1.5", fontWeight: "400" }],
                 caption: ["14px", { lineHeight: "1.4", fontWeight: "400" }],
-                micro: ["12px", { lineHeight: "1.2", fontWeight: "400" }],
+                micro: ["11px", { lineHeight: "1.2", fontWeight: "400" }],
             },
             spacing: {
                 "spacing-01": "2px",
@@ -82,13 +94,14 @@ const config: Config = {
                 "spacing-13": "160px",
             },
             zIndex: {
-                "100": "100",
-                "110": "110",
-                "490": "490",
-                "500": "500",
-                "999": "999",
-                "1000": "1000",
-                "9999": "9999",
+                base: "0",
+                content: "10",
+                header: "100",
+                hud: "100",
+                overlay: "500",
+                modal: "1000",
+                intro: "1000",
+                tooltip: "2000",
             },
         },
     },

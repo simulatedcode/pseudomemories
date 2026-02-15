@@ -4,22 +4,33 @@ import { motion, AnimatePresence } from "framer-motion";
 import { usePathname } from "next/navigation";
 import { ReactNode, useState, useEffect } from "react";
 import { ScrambleText } from "./ScrambleText";
+import { duration, easing } from "@/app/lib/motion-tokens";
+import { useLenis } from "lenis/react";
+import { useTransition } from "@/app/context/TransitionContext";
 
 export default function PageTransition({ children }: { children: ReactNode }) {
     const pathname = usePathname();
     const [displayPath, setDisplayPath] = useState(pathname);
     const [isTransitioning, setIsTransitioning] = useState(false);
+    const { setIsTransitioning: setGlobalTransition } = useTransition();
+
+    const lenis = useLenis();
 
     useEffect(() => {
         if (pathname !== displayPath) {
             setIsTransitioning(true);
+            setGlobalTransition(true);
             const timer = setTimeout(() => {
                 setDisplayPath(pathname);
                 setIsTransitioning(false);
-            }, 800);
+                setGlobalTransition(false);
+                if (lenis) {
+                    lenis.scrollTo(0, { immediate: true });
+                }
+            }, 1000);
             return () => clearTimeout(timer);
         }
-    }, [pathname, displayPath]);
+    }, [pathname, displayPath, lenis, setGlobalTransition]);
 
     const getRouteLabel = (path: string) => {
         if (path === "/" || path === "") return "MEMORY_ROOT";
@@ -31,12 +42,26 @@ export default function PageTransition({ children }: { children: ReactNode }) {
             <AnimatePresence mode="wait">
                 <motion.div
                     key={pathname}
-                    initial={{ opacity: 0, y: -50 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -50 }}
+                    initial={{
+                        opacity: 0,
+                        y: 100,
+                        scale: 0.95
+                    }}
+                    animate={{
+                        opacity: 1,
+                        y: 0,
+                        scale: 1
+                    }}
+                    exit={{
+                        opacity: 0,
+                        y: -50,
+                        scale: 1.02
+                    }}
                     transition={{
-                        duration: 0.5,
-                        ease: [0, 0, 0.38, 0.9] // Carbon entrance-expressive
+                        duration: 0.8,
+                        ease: [0.22, 1, 0.36, 1], // Smooth easing
+                        opacity: { duration: 0.6 },
+                        scale: { duration: 0.8 }
                     }}
                     className="w-full relative z-10 min-h-screen"
                 >
@@ -62,13 +87,13 @@ export default function PageTransition({ children }: { children: ReactNode }) {
                                     className="absolute inset-0 bg-vermelion"
                                     initial={{ x: "-100%" }}
                                     animate={{ x: "0%" }}
-                                    transition={{ duration: 0.5, ease: [0, 0, 0.38, 0.9] }} // Carbon entrance-expressive
+                                    transition={{ duration: 0.8, ease: [0, 0, 0.38, 0.9] }}
                                 />
                             </div>
-                            <h4 className="font-electrolize text-h4 sm:text-h3 tracking-[0.3em] text-offwhite-100 flex items-center gap-4">
-                                <span className="text-vermelion opacity-40">[</span>
+                            <h4 className="font-electrolize text-body sm:text-h4 tracking-[0.3em] text-offwhite-100 flex items-center gap-4">
+                                <span className="text-vermelion opacity-60">[</span>
                                 <ScrambleText text={getRouteLabel(pathname)} duration={0.8} />
-                                <span className="text-vermelion opacity-40">]</span>
+                                <span className="text-vermelion opacity-60">]</span>
                             </h4>
                         </div>
                     </motion.div>
