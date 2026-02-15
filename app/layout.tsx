@@ -71,7 +71,7 @@ export default function RootLayout({
         <ClientLayout>
           {children}
         </ClientLayout>
-        <div className="fixed inset-0 pointer-events-none opacity-[0.08] z-10 bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
+        <div className="fixed inset-0 pointer-events-none opacity-[0.09] z-10 bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
       </body>
     </html >
   );
