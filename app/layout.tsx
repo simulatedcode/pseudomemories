@@ -54,6 +54,8 @@ export const metadata: Metadata = {
   },
 };
 
+import { HUDFrame } from "./components/ui/HUDFrame";
+
 export default function RootLayout({
   children,
 }: {
@@ -69,6 +71,7 @@ export default function RootLayout({
         <Analytics />
         <CustomCursor />
         <ClientLayout>
+          <HUDFrame />
           {children}
         </ClientLayout>
         <div className="fixed inset-0 pointer-events-none opacity-[0.09] z-10 bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />

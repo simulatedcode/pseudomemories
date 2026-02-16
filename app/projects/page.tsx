@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, useScroll, useTransform } from "framer-motion";
-import Image from "next/image";
+import Link from "next/link";
 import { useRef } from "react";
 import { duration, easing } from "@/app/lib/motion-tokens";
 import { categories } from "@/app/data/category";
@@ -56,8 +56,9 @@ export default function ProjectsPage() {
                         className="flex items-center gap-spacing-04 md:gap-spacing-06 pl-spacing-03 md:pl-spacing-06 pr-[50vw]"
                     >
                         {categories.map((category, index) => (
-                            <div
+                            <Link
                                 key={category.id}
+                                href={`/projects/${category.id}`}
                                 className="relative flex-none group w-[70vw] md:w-[45vw] lg:w-[35vw] aspect-3/4 md:aspect-4/5"
                             >
                                 <div className="w-full h-full relative overflow-hidden">
@@ -101,7 +102,7 @@ export default function ProjectsPage() {
                                         {String(index + 1).padStart(2, '0')}
                                     </div>
                                 </div>
-                            </div>
+                            </Link>
                         ))}
                     </motion.div>
                 </div>
