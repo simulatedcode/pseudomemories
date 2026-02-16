@@ -4,13 +4,13 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { duration, easing } from "@/app/lib/motion-tokens";
-import { Project } from "@/app/data/projects";
-import { Category } from "@/app/data/category";
+import { ImgCategory } from "@/app/data/img_category";
 import { ScrambleText } from "@/app/components/ui/ScrambleText";
+import { Gallery } from "@/app/data/gallery";
 
 interface CategoryClientProps {
-    category: Category;
-    categoryProjects: Project[];
+    category: ImgCategory;
+    categoryProjects: Gallery[];
     slug: string;
 }
 

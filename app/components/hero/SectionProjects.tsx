@@ -5,7 +5,7 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import Image from "next/image";
 import { useLenis } from "lenis/react";
 import { duration, easing } from "@/app/lib/motion-tokens";
-import { projects } from "@/app/data/projects";
+import { selectedProjects, SelectedProject } from "@/app/data/selected_project";
 import ProjectModal from "@/app/components/ui/ProjectModal";
 
 export default function SectionProjects() {
@@ -21,7 +21,7 @@ export default function SectionProjects() {
     const headerFade = useTransform(fadeProgress, [0, 1], [1, 0]);
     const textOpacity = headerFade;
 
-    const selectedProject = projects.find(p => p.id === selectedId);
+    const selectedProject = selectedProjects.find((p: SelectedProject) => p.id === selectedId);
 
     useEffect(() => {
         if (!lenis) return;
@@ -34,7 +34,7 @@ export default function SectionProjects() {
     }, [selectedId, lenis]);
 
     const gridItems = Array.from({ length: 16 }, (_, i) => {
-        const project = projects.find(p => p.pos === i + 1);
+        const project = selectedProjects.find((p: SelectedProject) => p.pos === i + 1);
         return project || null;
     });
 

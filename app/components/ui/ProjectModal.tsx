@@ -6,10 +6,10 @@ import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
 import { Plus } from "lucide-react";
 import { duration, easing } from "@/app/lib/motion-tokens";
-import { Project } from "@/app/data/projects";
+import { SelectedProject } from "@/app/data/selected_project";
 
 interface ProjectModalProps {
-    project: Project | null;
+    project: SelectedProject | null;
     onClose: () => void;
 }
 

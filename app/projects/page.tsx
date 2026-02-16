@@ -4,7 +4,7 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import Link from "next/link";
 import { useRef } from "react";
 import { duration, easing } from "@/app/lib/motion-tokens";
-import { categories } from "@/app/data/category";
+import { img_categories } from "@/app/data/img_category";
 import { ScrambleText } from "@/app/components/ui/ScrambleText";
 
 export default function ProjectsPage() {
@@ -19,7 +19,7 @@ export default function ProjectsPage() {
 
     return (
         // Outer container provides the scrollable height
-        <div ref={containerRef} className="relative z-content w-full" style={{ height: `${categories.length * 50 + 100}vh` }}>
+        <div ref={containerRef} className="relative z-content w-full" style={{ height: `${img_categories.length * 50 + 100}vh` }}>
 
             {/* Sticky Viewport */}
             <div className="fixed top-0 h-screen w-full overflow-hidden flex flex-col md:flex-row bg-background">
@@ -55,7 +55,7 @@ export default function ProjectsPage() {
                         style={{ x }}
                         className="flex items-center gap-spacing-04 md:gap-spacing-06 pl-spacing-03 md:pl-spacing-06 pr-[50vw]"
                     >
-                        {categories.map((category, index) => (
+                        {img_categories.map((category, index) => (
                             <Link
                                 key={category.id}
                                 href={`/projects/${category.id}`}

@@ -1,4 +1,4 @@
-export interface Project {
+export interface SelectedProject {
     id: number;
     title: string;
     category: string;
@@ -8,77 +8,77 @@ export interface Project {
     year: string;
 }
 
-export const projects: Project[] = [
+export const selectedProjects: SelectedProject[] = [
     {
         id: 1,
-        title: "Experimental Sketch 01",
+        title: "Systen Ultra Nº.1",
         category: "sketch",
-        image: "/projects/sketch-01.jpg",
+        image: "/projects/selected/systen-ultra-01.jpg",
         pos: 1,
         description: "A preliminary study exploring digital brushstrokes and fragmented forms.",
         year: "2025",
     },
     {
         id: 2,
-        title: "Watercolor Study 01",
+        title: "Systen Ultra Nº.2",
         category: "watercolor",
-        image: "/projects/watercolor-01.jpg",
+        image: "/projects/selected/systen-ultra-02.jpg",
         pos: 4,
         description: "Organic fluid compositions investigating the diffusion of digital pigments.",
         year: "2025",
     },
     {
         id: 3,
-        title: "Print Process 01",
-        category: "printing",
-        image: "/projects/printing-01.jpg",
+        title: "Sketsa yang hilang",
+        category: "sketch",
+        image: "/projects/selected/sketsa-yang-hilang.jpg",
         pos: 6,
-        description: "Technical printing experiment utilizing dithered patterns and halftone screens.",
+        description: "A study of missing lines and shapes in a digital environment.",
         year: "2025",
     },
     {
         id: 4,
-        title: "Abstract Fragment",
-        category: "other",
-        image: "/projects/other-01.jpg",
+        title: "Stay Unknown",
+        category: "sketch",
+        image: "/projects/selected/stay-unknow-05.jpg",
         pos: 7,
-        description: "Uncategorized visual experiment focusing on digital noise and static.",
+        description: "A study of missing lines and shapes in a digital environment.",
         year: "2025",
     },
     {
         id: 5,
         title: "Sketch 02: Void",
         category: "sketch",
-        image: "/projects/sketch-02.jpg",
+        image: "/projects/selected/where-are-you.jpg",
         pos: 9,
         description: "An exploration of negative space and minimalist line work.",
         year: "2025",
     },
     {
         id: 6,
-        title: "Watercolor 02: Flow",
-        category: "watercolor",
-        image: "/projects/watercolor-02.jpg",
+        title: "landscape: Flow",
+        category: "sketch",
+        image: "/projects/selected/landscape-01.jpg",
         pos: 10,
-        description: "Higher contrast study of liquid dynamics in a virtual environment.",
+        description: "A study of lines and shapes in a digital environment.",
         year: "2025",
     },
     {
         id: 7,
-        title: "Printing 02: Offset",
+        title: "Panorama",
         category: "printing",
-        image: "/projects/printing-02.jpg",
+        image: "/projects/selected/panorama.jpg",
         pos: 12,
         description: "Simulating mechanical errors and ink bleeding in digital prints.",
         year: "2025",
     },
     {
         id: 8,
-        title: "Sketch 03: Neural",
+        title: "Ohm's Law",
         category: "sketch",
-        image: "/projects/sketch-03.jpg",
+        image: "/projects/selected/ohm.jpg",
         pos: 2,
-        description: "Visualizing neural pathways through intricate ink-style sketches.",
+        description: "Visualizing Ohm's Law through intricate ink-style sketches.",
         year: "2025",
     },
 ];
