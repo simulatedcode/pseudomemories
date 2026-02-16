@@ -2,6 +2,31 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.2.1](https://github.com/simulatedcode/pseudomemories/compare/v0.1.2...v0.2.1) (2026-02-16)
+
+
+### Features
+
+* Add contact and history pages, remove the updates page and HUD navigation, and update general navigation and dependencies. ([bbe64f5](https://github.com/simulatedcode/pseudomemories/commit/bbe64f582646788dd9a9a07ff5b4891d223119d4))
+* Add responsive mobile menu trigger, adjust project section padding, and update project modal image aspect ratios. ([3637073](https://github.com/simulatedcode/pseudomemories/commit/36370730de0cdcdaa9cd5492497326fc38162dd3))
+* Add scanlines effect and cyan hover styles to project displays and client layout, with minor padding and border adjustments. ([e780427](https://github.com/simulatedcode/pseudomemories/commit/e780427d0b0e5380eb540ee7c768c725921d016d))
+* Enhance intro sequence with new messages, timeline data, and an improved typewriter effect. ([f3c44b0](https://github.com/simulatedcode/pseudomemories/commit/f3c44b00f5e42c232e56dde8221d6ca15a5bb997))
+* enhance project display with new content, a dedicated modal, and dynamic detail pages. ([6672d29](https://github.com/simulatedcode/pseudomemories/commit/6672d298134604171ee7ad2ffc28efcd6199b440))
+* Implement a minimize/maximize feature for the HUDBottomRight audio transmit component. ([bf93d63](https://github.com/simulatedcode/pseudomemories/commit/bf93d63e74c3a9db38ba2c8f1a2973f2efc0c7e6))
+* Implement a new cinematic motion design system with reusable tokens and guidelines, applying them to header and menu components. ([82c0594](https://github.com/simulatedcode/pseudomemories/commit/82c05945f5ff373a498c191af9219ae4bfec1630))
+* Implement mobile responsiveness for HUD elements and hero character positioning, and refactor motion easing to use tokens. ([0724052](https://github.com/simulatedcode/pseudomemories/commit/0724052d55a06d385b7e286ed58e842056d97cf5))
+* implement new HUD navigation, refactor transition context, and refine HUD styling and layout. ([e72d248](https://github.com/simulatedcode/pseudomemories/commit/e72d24849bdd79449e9e5fc49c85e1a32b34410a))
+* Implement page transition context and UI, add updates page, and refine HUD elements and footer styling. ([7ba0f6a](https://github.com/simulatedcode/pseudomemories/commit/7ba0f6adc59cd2387d46d9d4933bb71069991e98))
+* Implement real-time microphone audio analysis with dedicated hooks and contexts, integrating visualizations into HUD components. ([41d7d32](https://github.com/simulatedcode/pseudomemories/commit/41d7d32b754e33bcd10048cea83b024cac488fe5))
+* integrate Vercel Analytics for usage tracking ([5eb7f32](https://github.com/simulatedcode/pseudomemories/commit/5eb7f324e4ef2191d9356941caf525e04daa26e0))
+* integrate Vercel Speed Insights for performance monitoring. ([b296a83](https://github.com/simulatedcode/pseudomemories/commit/b296a83bf36a8adda186dffae7c9901aed19c887))
+* introduce dedicated About and Projects pages, refactor the footer, and address hydration warnings across components ([bdb661d](https://github.com/simulatedcode/pseudomemories/commit/bdb661d63146ef58bc7d4822340033b4d0ecd94d))
+* Introduce new CSS variables and utility, and refactor component backgrounds and colors to use them. ([efbd890](https://github.com/simulatedcode/pseudomemories/commit/efbd8904116419ba41159feb628170541669904d))
+* Introduce new menu overlay and HUD components, replacing old menu and hero sections and updating the core layout. ([1069fc2](https://github.com/simulatedcode/pseudomemories/commit/1069fc21ec276df406b8494d379baa8321ff1b2e))
+* Revamp intro with a typewriter-style archive narrative, replacing the geolocation progress display. ([250d7fc](https://github.com/simulatedcode/pseudomemories/commit/250d7fc70d8aa82d8372c7c3e31407f451e86b99))
+* Rework intro sequence messages and display logic, introducing new timeline data and hex generation. ([2d75274](https://github.com/simulatedcode/pseudomemories/commit/2d75274c4f2f26f47077aa649034b288f9c0d5de))
+* Update HUD bottom components to display icon-based map/compass and time/date elements, removing hover states. ([7d141cf](https://github.com/simulatedcode/pseudomemories/commit/7d141cfbb9d27bb63b177709d83ccfaa69be63a1))
+
 ### [0.1.2](https://github.com/simulatedcode/pseudomemories/compare/v0.1.1...v0.1.2) (2026-02-12)
 
 
