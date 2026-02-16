@@ -22,10 +22,10 @@ export default function ProjectsPage() {
         <div ref={containerRef} className="relative z-content w-full" style={{ height: `${img_categories.length * 50 + 100}vh` }}>
 
             {/* Sticky Viewport */}
-            <div className="fixed top-0 h-screen w-full overflow-hidden flex flex-col md:flex-row bg-background">
+            <div className="fixed top-0 h-screen w-full overflow-hidden flex flex-col md:flex-row bg-background mt-12 px-3">
 
                 {/* Left: Pinned Sidebar */}
-                <div className="w-full md:w-[35%] h-[30vh] md:h-full flex flex-col justify-center px-spacing-08 md:px-spacing-10 py-8 md:py-0 border-b md:border-b-0 md:border-r border-white/10 z-20 bg-background/80 backdrop-blur-sm">
+                <div className="w-full md:w-[35%] h-[30vh] md:h-full flex flex-col justify-center px-6 md:px-spacing-10 py-8 md:py-0 border-b md:border-b-0 md:border-r border-white/10 z-20 bg-background/80 backdrop-blur-sm">
                     <motion.div
                         initial={{ opacity: 0, y: 30 }}
                         animate={{ opacity: 1, y: 0 }}
@@ -50,16 +50,16 @@ export default function ProjectsPage() {
                 </div>
 
                 {/* Right: Horizontal Scroll Section */}
-                <div className="w-full md:w-[65%] h-[70vh] md:h-full overflow-hidden flex items-center relative bg-background">
+                <div className="w-screen md:w-[65%] h-[60vh] md:h-full overflow-hidden flex items-center relative bg-background">
                     <motion.div
                         style={{ x }}
-                        className="flex items-center gap-spacing-04 md:gap-spacing-06 pl-spacing-03 md:pl-spacing-06 pr-[50vw]"
+                        className="flex items-center gap-spacing-04 md:gap-spacing-06 pl-spacing-06 md:pl-spacing-08 pr-[230vw] md:pr-[50vw] mask-to-r"
                     >
                         {img_categories.map((category, index) => (
                             <Link
                                 key={category.id}
                                 href={`/projects/${category.id}`}
-                                className="relative flex-none group w-[70vw] md:w-[45vw] lg:w-[35vw] aspect-3/4 md:aspect-4/5"
+                                className="relative flex-none group w-[82vw] md:w-[45vw] lg:w-[35vw] aspect-4/5 md:aspect-4/5"
                             >
                                 <div className="w-full h-full relative overflow-hidden">
                                     {/* Image Placeholder */}
@@ -67,7 +67,7 @@ export default function ProjectsPage() {
                                         initial={{ opacity: 0, x: -20 }}
                                         animate={{ opacity: 1, x: 0 }}
                                         transition={{ duration: duration.slow, ease: easing.carbonExpressive }}
-                                        className="w-full h-full relative bg-zinc-900 border border-white/10 overflow-hidden group"
+                                        className="w-full h-full relative bg-zinc-900 border border-white/10 overflow-hidden"
                                     >
                                         <div className="absolute inset-0 flex items-center justify-center text-white/20 font-doto uppercase tracking-widest text-micro group-hover:text-white/40 transition-colors">
                                             [ Portrait Placeholder ]

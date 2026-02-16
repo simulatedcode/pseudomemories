@@ -12,9 +12,9 @@ export default function AboutPage() {
 
     return (
         <div ref={containerRef} className="relative w-full min-h-screen">
-            <div className="fixed top-0 h-screen w-full overflow-hidden flex flex-col md:flex-row bg-background">
+            <div className="fixed top-0 h-screen w-full overflow-hidden flex flex-col md:flex-row bg-background ">
                 {/* Left: Pinned Headers */}
-                <div className="w-full md:w-[32%] h-[35vh] md:h-full flex flex-col justify-center px-spacing-08 md:px-spacing-10 py-8 md:py-0 border-b md:border-b-0 md:border-r border-white/10 z-20 bg-background/80 backdrop-blur-sm">
+                <div className="w-full md:w-[32%] h-[60vh] md:h-full flex flex-col justify-center px-6 md:px-spacing-10 py-8 md:py-0 border-b md:border-b-0 md:border-r border-white/10 z-20 bg-background/80 backdrop-blur-sm">
                     <motion.div
                         initial={{ opacity: 0, y: 30 }}
                         animate={{ opacity: 1, y: 0 }}
@@ -24,7 +24,7 @@ export default function AboutPage() {
                     </motion.div>
 
                     {/* Portrait Placeholder */}
-                    <div className="w-full aspect-3/4 bg-zinc-900 border border-white/10 relative overflow-hidden group mt-8 md:mt-12 mb-8">
+                    <div className="w-full aspect-4/3 md:aspect-3/4 bg-zinc-900 border border-white/10 relative overflow-hidden group mt-20 sm:mt-14 md:mt-12">
                         <div className="absolute inset-0 flex items-center justify-center text-white/20 font-doto uppercase tracking-widest text-micro">
                             {/* Image Placeholder */}
                             <motion.div
@@ -47,15 +47,15 @@ export default function AboutPage() {
                 </div>
 
                 {/* Right: Scrollable Content */}
-                <div className="w-full md:w-[68%] h-[70vh] md:h-full overflow-y-auto no-scrollbar flex flex-col justify-center px-spacing-08 md:px-spacing-10 py-12 md:py-0">
+                <div className="w-full md:w-[68%] h-[70vh] md:h-full overflow-y-auto no-scrollbar flex flex-col justify-center px-spacing-08 md:px-spacing-12 py-8 md:py-0">
                     {/* header */}
                     <motion.div
                         initial={{ opacity: 0, y: 30 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: duration.slow, ease: easing.carbonExpressive }}
-                        className="flex flex-col gap-6"
+                        className="flex flex-col gap-6 mt-[14svh] md:mt-2"
                     >
-                        <span className="font-doto text-micro uppercase tracking-widest text-cyan block items-center gap-2">
+                        <span className="font-doto text-micro uppercase tracking-widest text-cyan block items-center gap-2 mt-18">
                             <span className="w-2 h-2 inline-block rounded-full bg-cyan mr-2 animate-pulse" />
                             Profile
                         </span>
@@ -75,9 +75,9 @@ export default function AboutPage() {
                         className="max-w-2xl space-y-12"
                     >
 
-                        <div className="space-y-8 font-iawriter text-body text-offwhite-100/60 leading-relaxed">
+                        <div className="space-y-8 font-iawriter text-caption md:text-body text-offwhite-100/60 leading-relaxed">
                             <p>
-                                Muhammad Fahriza Ansyari (b.1998) is a designer, illustrator and also as a screen printer. Now based in Yogyakarta, he runs a commercial studio called <span className="text-white">Simulasi</span>.
+                                Muhammad Fahriza Ansyari (b.1984) is a designer, illustrator and also as a screen printer. Now based in Yogyakarta, he runs a commercial studio called <span className="text-white">Simulasi</span>.
                             </p>
                             <p>
                                 In his artistic practice, he focuses on exploring screen printing techniques with landscape illustrations that reflect the liminality of spatial experience. He is also an active member of a printmaking collective called <span className="text-white">Krack! Studio</span>.

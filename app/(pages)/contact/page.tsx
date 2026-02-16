@@ -69,7 +69,7 @@ export default function ContactPage() {
         <div ref={containerRef} style={{ height: "140vh" }} className="relative z-content w-full">
             <div className="fixed top-0 h-screen w-full overflow-hidden flex flex-col md:flex-row bg-background">
                 {/* Left: Fixed Sidebar - Unchanged */}
-                <div className="w-full md:w-[35%] h-[30vh] md:h-full flex flex-col justify-center px-spacing-08 md:px-spacing-10 py-8 md:py-0 border-b md:border-b-0 md:border-r border-white/10 z-20 bg-background/80 backdrop-blur-sm relative">
+                <div className="w-full md:w-[35%] h-[30vh] md:h-full flex flex-col justify-center px-6 md:px-spacing-10 py-8 md:py-0 border-b md:border-b-0 md:border-r border-white/10 z-20 bg-background/80 backdrop-blur-sm relative">
                     <motion.div
                         initial={{ opacity: 0, y: 30 }}
                         animate={{ opacity: 1, y: 0 }}
@@ -90,7 +90,7 @@ export default function ContactPage() {
                 </div>
 
                 {/* Right: Scrollable Content */}
-                <div className="w-full md:w-[65%] h-[70vh] md:h-full overflow-hidden flex flex-col px-spacing-08 md:px-spacing-10 py-12 md:py-24">
+                <div className="w-full md:w-[65%] h-[70vh] md:h-full overflow-hidden flex flex-col px-6 md:px-spacing-10 py-12 md:py-24">
                     <motion.div
                         style={{ y }}
                         initial={{ opacity: 0, x: 20 }}
@@ -194,7 +194,7 @@ export default function ContactPage() {
                                     className={`
                                         group flex items-center justify-center gap-4 w-full md:w-auto md:self-start px-8 py-4 
                                         border border-white/20 bg-white/5 hover:bg-cyan/10 hover:border-cyan/50 hover:text-cyan 
-                                        transition-all duration-300 font-electrolize text-button uppercase tracking-widest mt-12
+                                        transition-all duration-300 font-electrolize text-caption uppercase tracking-widest mt-12
                                         ${formState === "submitting" ? "opacity-50 cursor-not-allowed" : ""}
                                     `}
                                 >

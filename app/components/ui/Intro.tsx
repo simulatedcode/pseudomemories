@@ -162,13 +162,13 @@ export default function IntroLoader() {
           }}
           className="fixed inset-0 z-1000 bg-background/5 flex items-center justify-center font-mono text-vermelion-500/80 overflow-hidden"
         >
-          <div className="max-w-3xl w-full p-8 border border-white/5 backdrop-blur-md bg-white/5 relative">
-            <div className="flex justify-between text-xs opacity-60 border-b border-vermelion-500/20 pb-2 mb-4 tracking-widest">
+          <div className="max-w-3xl w-full p-6 md:p-8 border border-white/5 backdrop-blur-md bg-white/5 relative mx-4 md:mx-0">
+            <div className="flex flex-col md:flex-row justify-between text-[10px] md:text-xs opacity-60 border-b border-vermelion-500/20 pb-2 mb-4 tracking-widest gap-2">
               <span>ARCHIVE_REPROCESS_PROTOCOL_V{pkg.version}</span>
               <span className="animate-pulse"><ScrambleText text='STATE: RECEIVING_SIGNAL' /></span>
             </div>
 
-            <div className="flex flex-col gap-2 min-h-85 leading-tight tracking-widest">
+            <div className="flex flex-col gap-2 min-h-72 md:min-h-80 leading-tight tracking-widest">
               {displayedLines.map((line, index) => {
                 const isCurrent = index === displayedLines.length - 1;
                 const isFinal = index === SEQUENCE.length - 1;
@@ -176,10 +176,10 @@ export default function IntroLoader() {
                   (isCurrent && !isComplete) || (isComplete && isFinal);
 
                 return (
-                  <div key={line.id} className="flex gap-4 items-start">
+                  <div key={line.id} className="flex gap-2 md:gap-4 items-start">
                     <div className="w-1 h-2 mt-2 shrink-0 bg-emerald-500/20" />
 
-                    <div className="flex gap-3 items-baseline">
+                    <div className="flex gap-2 md:gap-3 items-baseline">
 
                       {/* YEAR */}
                       <span className="font-mono text-micro md:text-xs opacity-60 tabular-nums min-w-[5ch]">
@@ -192,7 +192,7 @@ export default function IntroLoader() {
                       </span>
 
                       {/* MESSAGE */}
-                      <span className="font-doto text-micro md:text-caption leading-relaxed">
+                      <span className="font-doto text-micro md:text-caption leading-tight md:leading-relaxed">
                         <TypewriterText text={line.text} showCursor={showCursor} />
                       </span>
 
@@ -212,7 +212,7 @@ export default function IntroLoader() {
                   onClick={handleProceed}
                   onMouseEnter={() => setHoveredItem("text")}
                   onMouseLeave={() => setHoveredItem(null)}
-                  className="group relative px-8 py-4 border border-vermelion-500/30 hover:border-vermelion-500 transition-all duration-200 tracking-[0.25em] text-xs font-mono cursor-pointer"
+                  className="group relative px-4 md:px-8 py-3 md:py-4 border border-vermelion-500/30 hover:border-vermelion-500 transition-all duration-200 tracking-wider md:tracking-[0.25em] text-[10px] md:text-xs font-mono cursor-pointer w-full md:w-auto"
                 >
                   <ScrambleText
                     text="[ INITIALIZE_MEMORY_SEQUENCE ]" trigger={hoveredItem === "text"} />
