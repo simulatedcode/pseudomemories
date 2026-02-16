@@ -11,10 +11,12 @@ type PositionValue = number | string;
 export interface HeroCharacterProps {
     x?: PositionValue;
     y?: PositionValue;
+    mobileX?: PositionValue;
+    mobileY?: PositionValue;
     anchor?: "center" | "bottom" | "top" | "left" | "right";
 }
 
-export function CharacterSprite({ x = 204, y = -540, anchor = "center" }: HeroCharacterProps) {
+export function CharacterSprite({ x = 204, y = -540, mobileX, mobileY, anchor = "center" }: HeroCharacterProps) {
     const texture = useTexture("/raden_.png");
     const { viewport, size } = useThree();
 
@@ -55,14 +57,17 @@ export function CharacterSprite({ x = 204, y = -540, anchor = "center" }: HeroCh
         return 0;
     };
 
-    const posX = parseCoord(x, viewport.width, size.width);
+    const finalX = (isMobile && mobileX !== undefined) ? mobileX : x;
+    const finalY = (isMobile && mobileY !== undefined) ? mobileY : y;
+
+    const posX = parseCoord(finalX, viewport.width, size.width);
     const horizonPercent = isMobile ? 0.40 : isTablet ? 0.50 : 0.60;
     const horizonY = isMobile ? 80 : 112;
     const horizonPos = (1 - (horizonY / 220)) * horizonPercent; // Horizon from bottom relative to screen height
 
     // If y is provided as a number/string, use it, otherwise target the horizon
-    const posY = y !== undefined
-        ? parseCoord(y, viewport.height, size.height)
+    const posY = finalY !== undefined
+        ? parseCoord(finalY, viewport.height, size.height)
         : (horizonPos - 0.5) * viewport.height;
 
     // Default to anchoring at bottom for character placement on the horizon

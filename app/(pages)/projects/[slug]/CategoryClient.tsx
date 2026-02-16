@@ -24,9 +24,9 @@ export default function CategoryClient({ category, categoryProjects, slug }: Cat
             <div className="fixed inset-0 pointer-events-none z-0 opacity-10"
                 style={{ backgroundImage: 'radial-gradient(circle, #fff 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
 
-            <div className="relative z-10 container mx-auto px-spacing-10">
+            <div className="relative z-10 container mx-auto px-8 md:px-spacing-12">
                 {/* Header Section */}
-                <header className="mb-24 flex flex-col md:flex-row md:items-end justify-between gap-8">
+                <header className="mb-12 md:mb-24 flex flex-col md:flex-row md:items-end justify-between gap-4 md:gap-6">
                     <motion.div
                         initial={{ opacity: 0, x: -30 }}
                         animate={{ opacity: 1, x: 0 }}
@@ -68,7 +68,7 @@ export default function CategoryClient({ category, categoryProjects, slug }: Cat
                 </header>
 
                 {/* Gallery Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-8 gap-y-16">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-8 gap-y-4">
                     {categoryProjects.map((project, index) => (
                         <motion.div
                             key={project.id}
@@ -129,7 +129,7 @@ export default function CategoryClient({ category, categoryProjects, slug }: Cat
             </div>
 
             {/* Background HUD Decor */}
-            <div className="fixed bottom-10 right-10 pointer-events-none opacity-20 hidden lg:block">
+            <div className="fixed bottom-6 right-6 md:bottom-10 md:right-10 pointer-events-none opacity-20 hidden md:block">
                 <div className="font-doto text-micro text-right text-cyan space-y-2 uppercase">
                     <div className="flex items-center justify-end gap-2">
                         <div className="w-20 h-1 bg-cyan/20 overflow-hidden relative">

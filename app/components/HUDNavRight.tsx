@@ -55,7 +55,7 @@ export function HUDNavRight({ hoveredItem, setHoveredItem }: HUDNavRightProps) {
     }, [analyser, isListening]);
 
     return (
-        <div className="fixed right-spacing-07 top-1/2 -translate-y-1/2 z-hud flex flex-col items-end gap-spacing-06 pointer-events-none">
+        <div className="hidden md:flex fixed right-spacing-07 top-1/2 -translate-y-1/2 z-hud flex-col items-end gap-spacing-06 pointer-events-none">
             {navItems.map((item, index) => {
                 const audioScale = 1 + (audioLevels[index] || 0) * 0.5; // Scale up to 1.5x
                 const audioOpacity = 0.4 + (audioLevels[index] || 0) * 0.6; // Opacity 0.4 to 1.0
