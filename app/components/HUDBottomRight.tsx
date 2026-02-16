@@ -33,7 +33,8 @@ export function HUDBottomRight({ hoveredItem, setHoveredItem }: HUDBottomRightPr
                     opacity: isTransitioning ? 0 : 1,
                     y: isTransitioning ? 20 : 0,
                     width: isMinimized ? "40px" : "230px",
-                    height: isMinimized ? "40px" : "auto"
+                    height: isMinimized ? "40px" : "112px",
+                    borderColor: isListening ? "rgba(255, 255, 255, 0.2)" : "rgba(255, 255, 255, 0.05)"
                 }}
                 transition={{
                     opacity: {
@@ -59,9 +60,12 @@ export function HUDBottomRight({ hoveredItem, setHoveredItem }: HUDBottomRightPr
                     layout: {
                         duration: 0.4,
                         ease: [0.4, 0, 0.2, 1]
+                    },
+                    borderColor: {
+                        duration: 0.3
                     }
                 }}
-                className={`pointer-events-auto backdrop-blur-md border flex flex-col transition-all duration-300 group cursor-pointer ${statusBg} ${isMinimized ? "p-0 items-center justify-center min-w-0" : "p-2 min-w-[230px]"}`}
+                className={`pointer-events-auto backdrop-blur-md border flex flex-col group cursor-pointer bg-black/10 ${isMinimized ? "p-0 items-center justify-center min-w-0" : "p-2 min-w-[230px]"}`}
                 onClick={(e) => {
                     // If clicking the container in minimized state, maximize it
                     if (isMinimized) {
@@ -72,7 +76,7 @@ export function HUDBottomRight({ hoveredItem, setHoveredItem }: HUDBottomRightPr
                 {/* Header */}
                 <motion.div
                     layout="position"
-                    className={`flex items-center justify-between transition-all duration-300 ${isMinimized ? "h-0 opacity-0 overflow-hidden mb-0" : "mb-2"}`}
+                    className={`flex items-center justify-between ${isMinimized ? "h-0 opacity-0 overflow-hidden mb-0" : "mb-2"}`}
                 >
                     <button
                         onClick={(e) => {
@@ -83,10 +87,10 @@ export function HUDBottomRight({ hoveredItem, setHoveredItem }: HUDBottomRightPr
                         aria-label="Minimize Audio Transmit"
                     >
                         <div className="flex items-center gap-2">
-                            <span className={`font-doto text-[10px] uppercase tracking-widest transition-colors ${isListening ? "text-white/60" : "text-white/40"}`}>
+                            <span className={`font-doto text-[10px] uppercase tracking-widest ${isListening ? "text-white/60" : "text-white/40"}`}>
                                 Audio Transmit
                             </span>
-                            <div className={`w-1.5 h-1.5 rounded-full animate-pulse transition-colors ${error ? "bg-vermelion" : isListening ? "bg-emerald-500/80" : "bg-vermelion/80"}`} />
+                            <div className={`w-1.5 h-1.5 rounded-full animate-pulse ${error ? "bg-vermelion" : isListening ? "bg-emerald-500/80" : "bg-vermelion/80"}`} />
                         </div>
                         <div className="text-white/40 group-hover/btn:text-white transition-colors">
                             <Minus size={10} />
@@ -98,7 +102,7 @@ export function HUDBottomRight({ hoveredItem, setHoveredItem }: HUDBottomRightPr
                 <motion.div
                     layout
                     onClick={(e) => { e.stopPropagation(); if (isMinimized) setIsMinimized(false); else toggleAudio(); }}
-                    className={`relative overflow-hidden border transition-all duration-300 ${isListening ? "border-white/10 bg-black/10" : "border-white/5 bg-black/5"} ${isMinimized ? "h-full w-full pointer-events-auto border-0" : "h-12 w-full"}`}
+                    className={`relative overflow-hidden border ${isListening ? "border-white/10 bg-black/10" : "border-white/5 bg-black/5"} ${isMinimized ? "h-full w-full pointer-events-auto border-0" : "h-12 w-full"}`}
                 >
                     {/* Grid Background */}
                     <div

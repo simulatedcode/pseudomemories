@@ -55,7 +55,7 @@ export function HUDBottomLeft({ hoveredItem, setHoveredItem }: HUDBottomLeftProp
                     opacity: isTransitioning ? 0 : 1,
                     y: isTransitioning ? 20 : 0,
                     width: isMinimized ? "40px" : "230px",
-                    height: isMinimized ? "40px" : "auto"
+                    height: isMinimized ? "40px" : "112px"
                 }}
                 transition={{
                     opacity: {
@@ -83,12 +83,12 @@ export function HUDBottomLeft({ hoveredItem, setHoveredItem }: HUDBottomLeftProp
                         ease: [0.4, 0, 0.2, 1]
                     }
                 }}
-                className={`pointer-events-auto bg-black/10 backdrop-blur-md border border-white/5 flex flex-col transition-all duration-300 ${isMinimized ? "p-0 items-center justify-center min-w-0" : "p-3 gap-spacing-03 min-w-[230px]"}`}
+                className={`pointer-events-auto bg-black/10 backdrop-blur-md border border-white/5 flex flex-col ${isMinimized ? "p-0 items-center justify-center min-w-0" : "p-3 gap-spacing-03 min-w-[230px]"}`}
             >
                 {/* Header */}
                 <motion.div
                     layout="position"
-                    className={`flex items-center border-white/5 transition-all duration-300 ${isMinimized ? "p-0 pb-0 border-b-0" : "pb-2 border-b"}`}
+                    className={`flex items-center border-white/5 ${isMinimized ? "p-0 pb-0 border-b-0" : "pb-2 border-b"}`}
                 >
                     <button
                         onClick={() => setIsMinimized(!isMinimized)}
@@ -96,7 +96,32 @@ export function HUDBottomLeft({ hoveredItem, setHoveredItem }: HUDBottomLeftProp
                         aria-label={isMinimized ? "Maximize Info" : "Minimize Info"}
                     >
                         <div className="flex items-center gap-2">
-                            <div className={`w-1.5 h-1.5 rounded-full animate-pulse transition-colors duration-300 ${statusColor}`} />
+                            <AnimatePresence mode="wait">
+                                {isMinimized ? (
+                                    <motion.div
+                                        key="icon"
+                                        initial={{ opacity: 0, scale: 0.8 }}
+                                        animate={{ opacity: 1, scale: 1 }}
+                                        exit={{ opacity: 0, scale: 0.8 }}
+                                        transition={{ duration: 0.2 }}
+                                    >
+                                        <MapPin
+                                            size={14}
+                                            className={`transition-colors duration-300 ${error ? "text-vermelion" : "text-emerald-500/80"}`}
+                                        />
+                                    </motion.div>
+                                ) : (
+                                    <motion.div
+                                        key="dot"
+                                        initial={{ opacity: 0, scale: 0.8 }}
+                                        animate={{ opacity: 1, scale: 1 }}
+                                        exit={{ opacity: 0, scale: 0.8 }}
+                                        transition={{ duration: 0.2 }}
+                                        className={`w-1.5 h-1.5 rounded-full animate-pulse ${statusColor}`}
+                                    />
+                                )}
+                            </AnimatePresence>
+
                             <AnimatePresence mode="wait">
                                 {!isMinimized && (
                                     <motion.span
