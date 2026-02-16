@@ -8,6 +8,7 @@ import { Metadata } from "next";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 
+
 const electrolize = Electrolize({
   subsets: ["latin"],
   weight: ["400"],
@@ -54,6 +55,8 @@ export const metadata: Metadata = {
   },
 };
 
+import { HUDFrame } from "./components/ui/HUDFrame";
+
 export default function RootLayout({
   children,
 }: {
@@ -65,8 +68,11 @@ export default function RootLayout({
         className={`${electrolize.variable} ${doto.variable} ${ibmplexmono.variable} ${iawriter.variable} antialiased`}
       >
         <GoogleAnalytics />
+        <SpeedInsights />
+        <Analytics />
         <CustomCursor />
         <ClientLayout>
+          <HUDFrame />
           {children}
         </ClientLayout>
         <div className="fixed inset-0 pointer-events-none opacity-[0.08] z-10 bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />

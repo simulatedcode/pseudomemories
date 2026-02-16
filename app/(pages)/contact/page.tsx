@@ -5,6 +5,7 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { duration, easing } from "@/app/lib/motion-tokens";
 import { ScrambleText } from "@/app/components/ui/ScrambleText";
 import { ArrowUpRight, Send, Check, AlertCircle } from "lucide-react";
+import { HUDFrame } from "@/app/components/ui/HUDFrame";
 
 export default function ContactPage() {
     const containerRef = useRef<HTMLDivElement>(null);

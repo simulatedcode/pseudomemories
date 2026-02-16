@@ -11,7 +11,6 @@ const SectionProjects = dynamic(() => import("@/app/components/hero/SectionProje
 
 /* Hero (Grid + Character merged) */
 const Hero = dynamic(() => import("@/app/components/hero/Hero"), { ssr: false });
-import { HUDFrame } from "./components/ui/HUDFrame";
 
 export default function Home() {
   const { isComplete } = useIntro();
@@ -40,8 +39,6 @@ export default function Home() {
           }}
         />
       </motion.div>
-
-      <HUDFrame />
 
       <DustStar />
 
