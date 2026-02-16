@@ -105,6 +105,7 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
                                     <Plus className="h-12 w-12 transition-all hover:rotate-45 cursor-pointer" />
                                 </motion.button>
                             </div>
+
                             <div className="flex-1 relative flex items-end justify-end overflow-hidden">
                                 <motion.div
                                     initial={{ opacity: 0, scale: 1.05, filter: "blur(10px)" }}
@@ -121,6 +122,9 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
                                     />
                                     <div className="absolute inset-0 border border-white/5 pointer-events-none" />
                                 </motion.div>
+                                {/* Scanlines effect */}
+                                <div className="absolute inset-0 pointer-events-none opacity-[2.15] group-hover:opacity-[2.25] transition-opacity duration-300"
+                                    style={{ background: 'repeating-linear-gradient(0deg, transparent 0px, transparent 1px, rgba(0,0,0,0.5) 1px, rgba(0,0,0,0.5) 2px)' }} />
                             </div>
                             <div className="absolute inset-0 bg-linear-to-bl from-zinc-950/20 via-transparent to-transparent pointer-events-none" />
                         </div>
