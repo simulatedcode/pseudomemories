@@ -20,6 +20,16 @@ export function HUDBottomRight({ hoveredItem, setHoveredItem }: HUDBottomRightPr
     const { isListening, error, toggleAudio, analyser } = useAudioAnalysis();
     const [isMinimized, setIsMinimized] = useState(false);
 
+    useEffect(() => {
+        const checkMobile = () => {
+            setIsMinimized(window.innerWidth < 768);
+        };
+
+        checkMobile();
+        window.addEventListener("resize", checkMobile);
+        return () => window.removeEventListener("resize", checkMobile);
+    }, []);
+
     const activeColor = isListening ? "#F2653A" : "#cccccc";
     const statusBg = isListening ? "bg-black/10 border-white/20" : "bg-black/10 border-white/5";
 

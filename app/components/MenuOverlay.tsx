@@ -4,7 +4,7 @@ import React from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Plus } from "lucide-react";
 import Link from "next/link";
-import { duration } from "@/app/lib/motion-tokens";
+import { duration, easing } from "@/app/lib/motion-tokens";
 import { ScrambleText } from "./ui/ScrambleText";
 
 interface MenuOverlayProps {
@@ -41,7 +41,7 @@ export function MenuOverlay({
                         initial={{ y: "-100%", opacity: 0 }}
                         animate={{ y: 0, opacity: 1 }}
                         exit={{ y: "-100%", opacity: 0 }}
-                        transition={{ duration: 0.5, ease: [0, 0, 0.38, 0.9] }} // Carbon entrance-expressive
+                        transition={{ duration: 0.5, ease: easing.carbonExpressive }} // Unify with carbonExpressive token
                         className="fixed top-0 left-0 right-0 z-60 pt-[72px]" // Offset for header height
                     >
                         <div className="relative mx-auto max-w-7xl px-8">
@@ -69,7 +69,7 @@ export function MenuOverlay({
                                         <motion.div
                                             initial={{ opacity: 0, x: -20 }}
                                             animate={{ opacity: 1, x: 0 }}
-                                            transition={{ delay: 0.2, duration: 0.3, ease: [0.2, 0, 0.38, 0.9] }}
+                                            transition={{ delay: 0.2, duration: duration.quick, ease: easing.carbonExpressive }}
                                             className="flex flex-col gap-2"
                                         >
                                             <span className="font-doto text-micro uppercase tracking-widest text-white/50">
@@ -83,7 +83,7 @@ export function MenuOverlay({
                                         <motion.button
                                             initial={{ opacity: 0, rotate: -90 }}
                                             animate={{ opacity: 1, rotate: 0 }}
-                                            transition={{ delay: 0.3, duration: 0.24, ease: [0, 0, 0.38, 0.9] }}
+                                            transition={{ delay: 0.3, duration: duration.instant, ease: easing.carbonExpressive }}
                                             onClick={() => setIsMenuOpen(false)}
                                             className="group p-4 hover:bg-white/5 transition-colors border border-white/10"
                                         >
@@ -101,7 +101,7 @@ export function MenuOverlay({
                                                 transition={{
                                                     delay: 0.3 + index * 0.07,
                                                     duration: 0.5,
-                                                    ease: [0, 0, 0.38, 0.9] // Carbon entrance-expressive
+                                                    ease: easing.carbonExpressive
                                                 }}
                                                 onMouseEnter={() => setHoveredItem(link.label)}
                                                 onMouseLeave={() => setHoveredItem(null)}
@@ -125,7 +125,7 @@ export function MenuOverlay({
                                                                     scale: hoveredItem === link.label ? [1, 1.5, 1] : 1,
                                                                     opacity: hoveredItem === link.label ? [0.5, 1, 0.5] : 0.5
                                                                 }}
-                                                                transition={{ duration: 0.7, ease: [0.2, 0, 0.38, 0.9], repeat: hoveredItem === link.label ? Infinity : 0 }}
+                                                                transition={{ duration: 0.7, ease: easing.carbonExpressive, repeat: hoveredItem === link.label ? Infinity : 0 }}
                                                             />
                                                             <span className="font-doto text-micro uppercase tracking-widest text-vermelion/80">
                                                                 {link.desc}
@@ -157,7 +157,7 @@ export function MenuOverlay({
                                     <motion.div
                                         initial={{ opacity: 0 }}
                                         animate={{ opacity: 1 }}
-                                        transition={{ delay: 0.6, duration: 0.24, ease: [0.2, 0, 0.38, 0.9] }}
+                                        transition={{ delay: 0.6, duration: duration.instant, ease: easing.carbonExpressive }}
                                         className="mt-12 pt-6 border-t border-white/5 flex items-center justify-between"
                                     >
                                         <div className="flex items-center gap-4">
@@ -165,7 +165,7 @@ export function MenuOverlay({
                                                 <motion.div
                                                     className="w-2 h-2 rounded-full bg-cyan"
                                                     animate={{ opacity: [1, 0.3, 1] }}
-                                                    transition={{ duration: 0.7, ease: [0.2, 0, 0.38, 0.9], repeat: Infinity }}
+                                                    transition={{ duration: 0.7, ease: easing.carbonExpressive, repeat: Infinity }}
                                                 />
                                                 <span className="font-doto text-micro uppercase tracking-widest text-white/50">
                                                     System Online

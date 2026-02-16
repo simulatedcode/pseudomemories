@@ -31,16 +31,27 @@ export function HUDBottomLeft({ hoveredItem, setHoveredItem }: HUDBottomLeftProp
                 day: "numeric",
                 hour: "2-digit",
                 minute: "2-digit",
-                hour12: false, // Military time fits the aesthetic better
+                hour12: false,
                 timeZone: userTimeZone
             });
             setCurrentTime(formatter.format(now));
             setTimeZone(userTimeZone);
         };
 
+        const checkMobile = () => {
+            setIsMinimized(window.innerWidth < 768);
+        };
+
         updateTime();
+        checkMobile();
+
         const interval = setInterval(updateTime, 1000);
-        return () => clearInterval(interval);
+        window.addEventListener("resize", checkMobile);
+
+        return () => {
+            clearInterval(interval);
+            window.removeEventListener("resize", checkMobile);
+        };
     }, []);
 
     const statusColor = error ? "bg-vermelion" : "bg-emerald-500/80";
