@@ -4,11 +4,20 @@ import { HUDBottomLeft } from "./HUDBottomLeft";
 import { useState, useEffect } from "react";
 import { useLenis } from "lenis/react";
 import { HUDBottomRight } from "./HUDBottomRight";
+import { MenuOverlay } from "./MenuOverlay";
+import { MobileMenuTrigger } from "./MobileMenuTrigger";
+import { navItems } from "../data/navigation";
 
 export function Header() {
   const [hoveredItem, setHoveredItem] = useState<string | null>(null);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const lenis = useLenis();
+
+  const menuLinks = navItems.map(item => ({
+    label: item.label,
+    href: item.href,
+    desc: "Navigation"
+  }));
 
   // Menu overflow effect
   useEffect(() => {
@@ -45,6 +54,19 @@ export function Header() {
       <HUDBottomRight
         hoveredItem={hoveredItem}
         setHoveredItem={setHoveredItem}
+      />
+
+      <MobileMenuTrigger
+        isMenuOpen={isMenuOpen}
+        setIsMenuOpen={setIsMenuOpen}
+      />
+
+      <MenuOverlay
+        isMenuOpen={isMenuOpen}
+        setIsMenuOpen={setIsMenuOpen}
+        hoveredItem={hoveredItem}
+        setHoveredItem={setHoveredItem}
+        menuLinks={menuLinks}
       />
     </>
   );

@@ -59,13 +59,13 @@ export default function SectionProjects() {
             {/* Sticky Header - Direct child of section */}
             <motion.div
                 style={{ opacity: textOpacity }}
-                className="sticky top-24 z-50 px-spacing-10 pb-12 mix-blend-difference"
+                className="sticky top-24 z-50 px-spacing-08 md:px-spacing-10 pb-12 mix-blend-difference"
             >
                 <motion.div
                     variants={variants.staggerContainer}
                     initial="hidden"
                     whileInView="visible"
-                    viewport={{ once: true, margin: "-10%" }}
+                    viewport={{ once: true, margin: "-20%" }}
                     className="flex flex-col gap-4 pointer-events-none"
                 >
                     {/* heading project title  */}
@@ -85,7 +85,7 @@ export default function SectionProjects() {
             </motion.div>
 
             {/* Grid - Scrolls past sticky header */}
-            <div className="relative z-0 grid grid-cols-4 sm:grid-cols-6 lg:grid-cols-12 gap-0 md:gap-1 px-spacing-10">
+            <div className="relative z-0 grid grid-cols-4 sm:grid-cols-6 lg:grid-cols-12 gap-0 md:gap-1 px-spacing-08 md:px-spacing-10">
                 {gridItems.map((project, index) => {
                     if (!project) {
                         return <div key={`empty-${index}`} className="hidden lg:block col-span-3 aspect-video" />;

@@ -110,7 +110,7 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
                                     initial={{ opacity: 0, scale: 1.05, filter: "blur(10px)" }}
                                     animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
                                     transition={{ delay: 0.2, duration: duration.slow, ease: easing.carbonExpressive }}
-                                    className="relative w-full aspect-video overflow-hidden"
+                                    className="relative w-full aspect-4/3 lg:aspect-video overflow-hidden"
                                 >
                                     <Image
                                         src={project.image}
