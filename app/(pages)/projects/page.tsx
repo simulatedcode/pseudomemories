@@ -22,7 +22,7 @@ export default function ProjectsPage() {
         <div ref={containerRef} className="relative z-content w-full" style={{ height: `${img_categories.length * 50 + 100}vh` }}>
 
             {/* Sticky Viewport */}
-            <div className="fixed top-0 h-screen w-full overflow-hidden flex flex-col md:flex-row bg-background mt-12 px-3">
+            <div className="fixed top-0 h-screen w-full overflow-hidden flex flex-col md:flex-row bg-background px-3">
 
                 {/* Left: Pinned Sidebar */}
                 <div className="w-full md:w-[35%] h-[30vh] md:h-full flex flex-col justify-center px-6 md:px-spacing-10 py-8 md:py-0 border-b md:border-b-0 md:border-r border-white/10 z-20 bg-background/80 backdrop-blur-sm">
@@ -78,9 +78,12 @@ export default function ProjectsPage() {
                                         <div className="absolute bottom-0 left-0 w-4 h-4 border-l border-b border-white/30" />
                                         <div className="absolute bottom-0 right-0 w-4 h-4 border-r border-b border-white/30" />
                                     </motion.div>
+                                    {/* Scanlines effect */}
+                                    <div className="absolute inset-0 pointer-events-none opacity-[1.15] group-hover:opacity-[1.25] transition-opacity duration-300"
+                                        style={{ background: 'repeating-linear-gradient(0deg, transparent 0px, transparent 1px, rgba(0,0,0,0.5) 1px, rgba(0,0,0,0.5) 2px)' }} />
 
-                                    {/* Overlay Gradient */}
-                                    <div className="absolute inset-0 bg-linear-to-t from-black/90 via-transparent to-transparent opacity-60 group-hover:opacity-80 transition-opacity duration-500" />
+                                    {/* Cyan Hover Overlay & Border */}
+                                    <div className="absolute inset-0 border-[0.08px] border-transparent group-hover:border-cyan/40 bg-cyan/0 group-hover:bg-cyan/5 transition-all duration-300 pointer-events-none" />
 
                                     {/* Content Overlay */}
                                     <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-500">

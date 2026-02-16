@@ -94,12 +94,12 @@ export function HUDBottomLeft({ hoveredItem, setHoveredItem }: HUDBottomLeftProp
                         ease: [0.4, 0, 0.2, 1]
                     }
                 }}
-                className={`pointer-events-auto bg-black/10 backdrop-blur-md border border-white/5 flex flex-col ${isMinimized ? "p-0 items-center justify-center min-w-0" : "p-3 gap-spacing-03 min-w-[230px]"}`}
+                className={`pointer-events-auto bg-black/10 backdrop-blur-md border border-white/10 flex flex-col ${isMinimized ? "p-0 items-center justify-center min-w-0" : "p-3 gap-spacing-03 min-w-[230px]"}`}
             >
                 {/* Header */}
                 <motion.div
                     layout="position"
-                    className={`flex items-center border-white/5 ${isMinimized ? "p-0 pb-0 border-b-0" : "pb-2 border-b"}`}
+                    className={`flex items-center border-white/10 ${isMinimized ? "p-0 pb-0 border-b-0" : "pb-2 border-b"}`}
                 >
                     <button
                         onClick={() => setIsMinimized(!isMinimized)}

@@ -90,7 +90,7 @@ export default function ContactPage() {
                 </div>
 
                 {/* Right: Scrollable Content */}
-                <div className="w-full md:w-[65%] h-[70vh] md:h-full overflow-hidden flex flex-col px-6 md:px-spacing-10 py-12 md:py-24">
+                <div className="w-full md:w-[65%] h-[70vh] md:h-full overflow-hidden flex flex-col px-6 md:px-spacing-12 py-12 md:py-24">
                     <motion.div
                         style={{ y }}
                         initial={{ opacity: 0, x: 20 }}

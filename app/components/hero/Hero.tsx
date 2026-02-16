@@ -111,6 +111,7 @@ export default function Hero(props: HeroCharacterProps) {
                         <CharacterSprite {...props} />
                     </Suspense>
                 </Canvas>
+
             </motion.div>
         </>
     );
