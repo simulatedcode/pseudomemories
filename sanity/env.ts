@@ -19,7 +19,7 @@ function assertValue<T>(v: T | undefined, errorMessage: string): T {
       // During server-side build, pre-rendering, or initial server-side execution,
       // don't crash if environment variables are missing.
       console.warn(`⚠️ Warning: ${errorMessage}. This is expected during build time if variables are not in .env.`);
-      return 'BUILD_TIME_PLACEHOLDER' as unknown as T;
+      return 'build-time-placeholder' as unknown as T;
     }
     throw new Error(errorMessage)
   }
