@@ -2,13 +2,13 @@ import { initializeApp } from "firebase/app";
 import { getAnalytics, isSupported } from "firebase/analytics";
 
 const firebaseConfig = {
-    apiKey: "AIzaSyDLnMXiy1uUAX7bTkpvdVfgu5hd8Oew8z8",
-    authDomain: "pseudomemories.firebaseapp.com",
-    projectId: "pseudomemories",
-    storageBucket: "pseudomemories.firebasestorage.app",
-    messagingSenderId: "286946769473",
-    appId: "1:286946769473:web:ec51006e75b50f09b9e4c0",
-    measurementId: "G-WDSQ57Z9G3"
+    apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
+    authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
+    projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+    storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
+    messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+    appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
+    measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID
 };
 
 // Initialize Firebase
