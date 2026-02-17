@@ -7,9 +7,6 @@ import "./globals.css";
 import { Metadata } from "next";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/react";
-import { VisualEditing } from "next-sanity/visual-editing";
-import { SanityLive } from "@/sanity/lib/live";
-import { draftMode } from "next/headers";
 
 
 const electrolize = Electrolize({
@@ -65,7 +62,6 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const { isEnabled } = await draftMode();
   return (
     <html lang="en" suppressHydrationWarning>
       <body
@@ -80,8 +76,6 @@ export default async function RootLayout({
         <div className="fixed inset-0 pointer-events-none opacity-[0.08] z-10 bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
         <Analytics />
         <SpeedInsights />
-        {isEnabled && <VisualEditing />}
-        <SanityLive />
       </body>
     </html>
   );
