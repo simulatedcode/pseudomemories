@@ -7,7 +7,7 @@ import { ScrambleText } from "./ScrambleText";
 import { useIntro } from "@/app/context/IntroContextCore";
 import { duration, easing } from "@/app/lib/motion-tokens";
 
-const TYPE_SPEED = 25;
+const TYPE_SPEED = 40;
 
 const SEQUENCE = [
   { text: "TRANSMISSION LINK ESTABLISHED.", delay: 600 },
@@ -68,8 +68,8 @@ function TypewriterText({
       let delay = TYPE_SPEED;
 
       // Pause slightly at punctuation
-      if (char === "." || char === ":") delay = 250;
-      if (char === ",") delay = 150;
+      if (char === "." || char === ":") delay = 150;
+      if (char === ",") delay = 100;
       if (char === " ") delay = TYPE_SPEED + 10;
 
       setTimeout(typeNext, delay);

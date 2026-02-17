@@ -27,10 +27,10 @@ export default function SectionProjects() {
 
     const { scrollYProgress: fadeProgress } = useScroll({
         target: containerRef,
-        offset: ["start 0.1", "center 0.8"]
+        offset: ["start start", "end 0.8"]
     });
 
-    const headerFade = useTransform(fadeProgress, [0, 1], [1, 0]);
+    const headerFade = useTransform(fadeProgress, [0, 0.8, 1], [1, 1, 0]);
     const textOpacity = headerFade;
 
     const selectedProject = projects.find((p: SelectedProject) => p.id === selectedId);
@@ -54,7 +54,7 @@ export default function SectionProjects() {
         staggerContainer: {
             hidden: {},
             visible: {
-                transition: { staggerChildren: 1 },
+                transition: { staggerChildren: 0.86 },
             },
         },
         fadeDrift: {
@@ -66,7 +66,7 @@ export default function SectionProjects() {
     return (
         <section
             ref={containerRef}
-            className="relative w-full py-24 bg-linear-to-t from-background/80 via-background/50 mask-to-b backdrop-blur-lg text-white"
+            className="relative w-full py-24 bg-linear-to-t from-background/80 via-background/50 mask-to-b backdrop-blur-lg"
         >
             {/* Sticky Header - Direct child of section */}
             <motion.div
@@ -77,7 +77,7 @@ export default function SectionProjects() {
                     variants={variants.staggerContainer}
                     initial="hidden"
                     whileInView="visible"
-                    viewport={{ once: true, margin: "-20%" }}
+                    viewport={{ once: true, margin: "-28%" }}
                     className="flex flex-col gap-4 pointer-events-none"
                 >
                     {/* heading project title  */}
@@ -86,10 +86,10 @@ export default function SectionProjects() {
                         transition={{ duration: duration.slow, ease: easing.carbonExpressive }}
                         className="pointer-events-auto"
                     >
-                        <p className="text-body font-doto uppercase tracking-widest text-white mb-4">
+                        <p className="text-body font-doto uppercase tracking-widest mix-blend-difference text-white mb-4">
                             Project Preview
                         </p>
-                        <h3 className="font-electrolize text-h3 md:text-h2 max-w-2xl">
+                        <h3 className="font-electrolize text-h3 md:text-h2 mix-blend-difference max-w-2xl">
                             Selection of sketches highlighting from fragmented memories.
                         </h3>
                     </motion.div>

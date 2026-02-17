@@ -43,7 +43,7 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
                     />
                     <motion.div
                         layoutId={`project-${project.id}`}
-                        className="relative w-[95dvw] max-w-screen h-[90dvh] grid grid-cols-1 lg:grid-cols-3 bg-zinc-900 overflow-hidden border border-white/10"
+                        className="relative w-[95dvw] max-w-screen h-[90dvh] grid grid-cols-1 lg:grid-cols-3 bg-background overflow-hidden border border-white/10"
                     >
                         <div className="lg:col-span-1 p-6 md:p-10 flex flex-col justify-between overflow-hidden border-r border-white/5">
                             <div className="flex flex-col h-full overflow-y-auto pr-4 scrollbar-hide">
@@ -108,11 +108,12 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
                             </div>
 
                             <div className="flex-1 relative flex items-end justify-end overflow-hidden">
+
                                 <motion.div
                                     initial={{ opacity: 0, scale: 1.05, filter: "blur(10px)" }}
                                     animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
                                     transition={{ delay: 0.2, duration: duration.slow, ease: easing.carbonExpressive }}
-                                    className="relative w-full aspect-4/3 lg:aspect-video overflow-hidden"
+                                    className="relative w-full aspect-3/4 md:aspect-4/3 lg:aspect-video overflow-hidden"
                                 >
                                     <Image
                                         src={urlFor(project.image).url()}
@@ -121,13 +122,13 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
                                         className="object-cover"
                                         loading="lazy"
                                     />
+                                    {/* Scanlines effect */}
+                                    <div className="absolute inset-0 pointer-events-none opacity-[2.15] group-hover:opacity-[2.25] transition-opacity duration-300"
+                                        style={{ background: 'repeating-linear-gradient(0deg, transparent 0px, transparent 1px, rgba(0,0,0,0.5) 1px, rgba(0,0,0,0.5) 2px)' }} />
                                     <div className="absolute inset-0 border border-white/5 pointer-events-none" />
                                 </motion.div>
-                                {/* Scanlines effect */}
-                                <div className="absolute inset-0 pointer-events-none opacity-[2.15] group-hover:opacity-[2.25] transition-opacity duration-300"
-                                    style={{ background: 'repeating-linear-gradient(0deg, transparent 0px, transparent 1px, rgba(0,0,0,0.5) 1px, rgba(0,0,0,0.5) 2px)' }} />
                             </div>
-                            <div className="absolute inset-0 bg-linear-to-bl from-zinc-950/20 via-transparent to-transparent pointer-events-none" />
+                            <div className="absolute inset-0 pointer-events-none" />
                         </div>
                     </motion.div>
                 </motion.div>
