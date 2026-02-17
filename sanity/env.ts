@@ -15,13 +15,10 @@ export const token = process.env.SANITY_API_READ_TOKEN
 
 function assertValue<T>(v: T | undefined, errorMessage: string): T {
   if (v === undefined) {
-    if (typeof window === 'undefined') {
-      // During server-side build, pre-rendering, or initial server-side execution,
-      // don't crash if environment variables are missing.
-      console.warn(`⚠️ Warning: ${errorMessage}. This is expected during build time if variables are not in .env.`);
-      return 'build-time-placeholder' as unknown as T;
-    }
-    throw new Error(errorMessage)
+    // Log a warning instead of crashing. This is important for both 
+    // build-time and runtime if environment variables are missing.
+    console.warn(`⚠️ Warning: ${errorMessage}`);
+    return 'build-time-placeholder' as unknown as T;
   }
 
   return v

@@ -15,7 +15,9 @@ export default function GoogleAnalytics() {
           function gtag(){dataLayer.push(arguments);}
           gtag('js', new Date());
 
-          gtag('config', 'G-WDSQ57Z9G3');
+          gtag('config', 'G-WDSQ57Z9G3', {
+            cookie_domain: 'none'
+          });
         `}
             </Script>
         </>
