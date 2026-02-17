@@ -5,8 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { usePathname } from "next/navigation";
 import { ScrambleText } from "./ScrambleText";
 import { useIntro } from "@/app/context/IntroContextCore";
-import { duration, easing } from "../../lib/motion-tokens";
-import pkg from "../../../package.json";
+import { duration, easing } from "@/app/lib/motion-tokens";
 
 const TYPE_SPEED = 25;
 
@@ -164,7 +163,7 @@ export default function IntroLoader() {
         >
           <div className="max-w-3xl w-full p-6 md:p-8 border border-white/5 backdrop-blur-md bg-white/5 relative mx-4 md:mx-0">
             <div className="flex flex-col md:flex-row justify-between text-[10px] md:text-xs opacity-60 border-b border-vermelion-500/20 pb-2 mb-4 tracking-widest gap-2">
-              <span>ARCHIVE_REPROCESS_PROTOCOL_V{pkg.version}</span>
+              <span>ARCHIVE_REPROCESS_PROTOCOL_V0.2.1</span>
               <span className="animate-pulse"><ScrambleText text='STATE: RECEIVING_SIGNAL' /></span>
             </div>
 

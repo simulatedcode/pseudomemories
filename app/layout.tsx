@@ -5,8 +5,8 @@ import ClientLayout from "./components/ClientLayout";
 import { CustomCursor } from "./components/CustomCursor";
 import "./globals.css";
 import { Metadata } from "next";
-import { Analytics } from "@vercel/analytics/next";
-import { SpeedInsights } from "@vercel/speed-insights/next";
+import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/react";
 import { VisualEditing } from "next-sanity/visual-editing";
 import { SanityLive } from "@/sanity/lib/live";
 import { draftMode } from "next/headers";
@@ -72,8 +72,6 @@ export default async function RootLayout({
         className={`${electrolize.variable} ${doto.variable} ${ibmplexmono.variable} ${iawriter.variable} antialiased`}
       >
         <GoogleAnalytics />
-        <SpeedInsights />
-        <Analytics />
         <CustomCursor />
         <ClientLayout>
           <HUDFrame />
@@ -85,6 +83,6 @@ export default async function RootLayout({
         {isEnabled && <VisualEditing />}
         <SanityLive />
       </body>
-    </html >
+    </html>
   );
 }
