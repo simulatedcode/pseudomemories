@@ -15,9 +15,15 @@ export const token = process.env.SANITY_API_READ_TOKEN
 
 function assertValue<T>(v: T | undefined, errorMessage: string): T {
   if (v === undefined) {
-    // Log a warning instead of crashing. This is important for both 
-    // build-time and runtime if environment variables are missing.
-    console.warn(`⚠️ Warning: ${errorMessage}`);
+    // Use a more prominent error message for production troubleshooting
+    console.error(
+      `🔴 Sanity Configuration Error: ${errorMessage}\n\n` +
+      `To fix this, please follow these steps:\n` +
+      `1. Go to your project settings in Sanity.io and get your Project ID.\n` +
+      `2. Go to your Vercel Dashboard -> Project Settings -> Environment Variables.\n` +
+      `3. Add 'NEXT_PUBLIC_SANITY_PROJECT_ID' and 'NEXT_PUBLIC_SANITY_DATASET'.\n` +
+      `4. Trigger a new deployment on Vercel.\n`
+    );
     return 'build-time-placeholder' as unknown as T;
   }
 

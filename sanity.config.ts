@@ -15,6 +15,8 @@ import { schema } from './sanity/schemaTypes'
 import { structure } from './sanity/structure'
 
 export default defineConfig({
+  name: 'default',
+  title: 'Pseudo Memories',
   basePath: '/system',
   projectId,
   dataset,
