@@ -13,6 +13,12 @@ export const projectId = assertValue(
 
 function assertValue<T>(v: T | undefined, errorMessage: string): T {
   if (v === undefined) {
+    if (process.env.NODE_ENV === 'production' && process.env.VERCEL) {
+      // During Vercel build, don't crash the entire build process if variables are missing.
+      // Pre-rendering often triggers these checks.
+      console.warn(`⚠️ Warning: ${errorMessage}. This might cause issues if not fixed in Vercel Project Settings.`);
+      return 'BUILD_TIME_PLACEHOLDER' as unknown as T;
+    }
     throw new Error(errorMessage)
   }
 

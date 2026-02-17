@@ -11,6 +11,8 @@ import { client } from "@/sanity/lib/client";
 import { ALL_CATEGORIES_QUERY } from "@/sanity/lib/queries";
 import { urlFor } from "@/sanity/lib/image";
 
+export const dynamic = "force-dynamic";
+
 export default function ProjectsPage() {
     const [categories, setCategories] = useState<ImgCategory[]>([]);
     const containerRef = useRef<HTMLDivElement>(null);
