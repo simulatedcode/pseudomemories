@@ -2,7 +2,7 @@ export interface SelectedProject {
     id: number;
     title: string;
     category: string;
-    image: string;
+    image: any;
     pos: number;
     description: string;
     year: string;

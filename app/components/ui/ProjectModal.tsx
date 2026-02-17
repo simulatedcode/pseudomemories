@@ -7,6 +7,7 @@ import Image from "next/image";
 import { Plus } from "lucide-react";
 import { duration, easing } from "@/app/lib/motion-tokens";
 import { SelectedProject } from "@/app/data/selected_project";
+import { urlFor } from "@/sanity/lib/image";
 
 interface ProjectModalProps {
     project: SelectedProject | null;
@@ -114,7 +115,7 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
                                     className="relative w-full aspect-4/3 lg:aspect-video overflow-hidden"
                                 >
                                     <Image
-                                        src={project.image}
+                                        src={urlFor(project.image).url()}
                                         alt={project.title}
                                         fill
                                         className="object-cover"

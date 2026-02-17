@@ -5,13 +5,25 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import Image from "next/image";
 import { useLenis } from "lenis/react";
 import { duration, easing } from "@/app/lib/motion-tokens";
-import { selectedProjects, SelectedProject } from "@/app/data/selected_project";
+import { SelectedProject } from "@/app/data/selected_project";
 import ProjectModal from "@/app/components/ui/ProjectModal";
+import { client } from "@/sanity/lib/client";
+import { ALL_PROJECTS_QUERY } from "@/sanity/lib/queries";
+import { urlFor } from "@/sanity/lib/image";
 
 export default function SectionProjects() {
+    const [projects, setProjects] = useState<SelectedProject[]>([]);
     const [selectedId, setSelectedId] = useState<number | null>(null);
     const containerRef = useRef<HTMLElement>(null);
     const lenis = useLenis();
+
+    useEffect(() => {
+        const fetchProjects = async () => {
+            const data = await client.fetch(ALL_PROJECTS_QUERY);
+            setProjects(data);
+        };
+        fetchProjects();
+    }, []);
 
     const { scrollYProgress: fadeProgress } = useScroll({
         target: containerRef,
@@ -21,7 +33,7 @@ export default function SectionProjects() {
     const headerFade = useTransform(fadeProgress, [0, 1], [1, 0]);
     const textOpacity = headerFade;
 
-    const selectedProject = selectedProjects.find((p: SelectedProject) => p.id === selectedId);
+    const selectedProject = projects.find((p: SelectedProject) => p.id === selectedId);
 
     useEffect(() => {
         if (!lenis) return;
@@ -34,7 +46,7 @@ export default function SectionProjects() {
     }, [selectedId, lenis]);
 
     const gridItems = Array.from({ length: 16 }, (_, i) => {
-        const project = selectedProjects.find((p: SelectedProject) => p.pos === i + 1);
+        const project = projects.find((p: SelectedProject) => p.pos === i + 1);
         return project || null;
     });
 
@@ -106,7 +118,7 @@ export default function SectionProjects() {
 
                             <div className="relative aspect-4/3 overflow-hidden bg-white/5">
                                 <Image
-                                    src={project.image}
+                                    src={urlFor(project.image).url()}
                                     alt={project.title}
                                     fill
                                     className="object-cover object-center transition-all duration-300 ease-[cubic-bezier(0.2,0,0.38,0.9)] scale-160 group-hover:scale-100 grayscale group-hover:grayscale-0 opacity-80 group-hover:opacity-100"

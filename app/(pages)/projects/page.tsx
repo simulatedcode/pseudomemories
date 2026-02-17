@@ -2,13 +2,27 @@
 
 import { motion, useScroll, useTransform } from "framer-motion";
 import Link from "next/link";
-import { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
+import Image from "next/image";
 import { duration, easing } from "@/app/lib/motion-tokens";
-import { img_categories } from "@/app/data/img_category";
+import { ImgCategory } from "@/app/data/img_category";
 import { ScrambleText } from "@/app/components/ui/ScrambleText";
+import { client } from "@/sanity/lib/client";
+import { ALL_CATEGORIES_QUERY } from "@/sanity/lib/queries";
+import { urlFor } from "@/sanity/lib/image";
 
 export default function ProjectsPage() {
+    const [categories, setCategories] = useState<ImgCategory[]>([]);
     const containerRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        const fetchCategories = async () => {
+            const data = await client.fetch(ALL_CATEGORIES_QUERY);
+            setCategories(data);
+        };
+        fetchCategories();
+    }, []);
+
     const { scrollYProgress } = useScroll({
         target: containerRef,
     });
@@ -19,7 +33,7 @@ export default function ProjectsPage() {
 
     return (
         // Outer container provides the scrollable height
-        <div ref={containerRef} className="relative z-content w-full" style={{ height: `${img_categories.length * 50 + 100}vh` }}>
+        <div ref={containerRef} className="relative z-content w-full" style={{ height: `${categories.length * 50 + 100}vh` }}>
 
             {/* Sticky Viewport */}
             <div className="fixed top-0 h-screen w-full overflow-hidden flex flex-col md:flex-row bg-background px-3">
@@ -55,7 +69,7 @@ export default function ProjectsPage() {
                         style={{ x }}
                         className="flex items-center gap-spacing-04 md:gap-spacing-06 pl-spacing-06 md:pl-spacing-08 pr-[230vw] md:pr-[50vw] mask-to-r"
                     >
-                        {img_categories.map((category, index) => (
+                        {categories.map((category, index) => (
                             <Link
                                 key={category.id}
                                 href={`/projects/${category.id}`}
@@ -69,9 +83,12 @@ export default function ProjectsPage() {
                                         transition={{ duration: duration.slow, ease: easing.carbonExpressive }}
                                         className="w-full h-full relative bg-zinc-900 border border-white/10 overflow-hidden"
                                     >
-                                        <div className="absolute inset-0 flex items-center justify-center text-white/20 font-doto uppercase tracking-widest text-micro group-hover:text-white/40 transition-colors">
-                                            [ Portrait Placeholder ]
-                                        </div>
+                                        <Image
+                                            src={urlFor(category.image).url()}
+                                            alt={category.title}
+                                            fill
+                                            className="object-cover transition-transform duration-500 group-hover:scale-110"
+                                        />
                                         {/* Decorative corners */}
                                         <div className="absolute top-0 left-0 w-4 h-4 border-l border-t border-white/30" />
                                         <div className="absolute top-0 right-0 w-4 h-4 border-r border-t border-white/30" />

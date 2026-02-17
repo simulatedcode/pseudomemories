@@ -6,11 +6,11 @@ import Link from "next/link";
 import { duration, easing } from "@/app/lib/motion-tokens";
 import { ImgCategory } from "@/app/data/img_category";
 import { ScrambleText } from "@/app/components/ui/ScrambleText";
-import { Gallery } from "@/app/data/gallery";
+import { urlFor } from "@/sanity/lib/image";
 
 interface CategoryClientProps {
     category: ImgCategory;
-    categoryProjects: Gallery[];
+    categoryProjects: any[];
     slug: string;
 }
 
@@ -79,7 +79,7 @@ export default function CategoryClient({ category, categoryProjects, slug }: Cat
                         >
                             <div className="relative aspect-4/5 overflow-hidden bg-white/5 border border-white/10 transition-colors group-hover:border-cyan/50">
                                 <Image
-                                    src={project.image}
+                                    src={urlFor(project.image).url()}
                                     alt={project.title}
                                     fill
                                     className="object-cover transition-all duration-700 ease-out grayscale opacity-60 group-hover:grayscale-0 group-hover:opacity-100 group-hover:scale-105"

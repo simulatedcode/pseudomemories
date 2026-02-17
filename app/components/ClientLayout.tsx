@@ -12,24 +12,28 @@ import { IntroProvider } from "../context/IntroContext";
 import { TransitionProvider } from "../context/TransitionContext";
 import { HUDTopRight } from "./HUDTopRight";
 import { AudioAnalysisProvider } from "../context/AudioAnalysisContext";
+import { usePathname } from "next/navigation";
 
 export default function ClientLayout({ children }: { children: React.ReactNode }) {
+    const pathname = usePathname();
+    const isSystemPage = pathname?.startsWith('/system');
+
     return (
         <TransitionProvider>
             <AudioProvider>
                 <AudioAnalysisProvider>
                     <IntroProvider>
                         <GeoProvider>
-                            <Intro />
-                            <HUDTopRight />
+                            {!isSystemPage && <Intro />}
+                            {!isSystemPage && <HUDTopRight />}
                             <LenisScroll>
-                                <Header />
+                                {!isSystemPage && <Header />}
                                 <PageTransition>
                                     <div className="relative min-h-screen w-full flex flex-col">
                                         <main className="relative overflow-x-hidden">
                                             {children}
                                         </main>
-                                        <Footer />
+                                        {!isSystemPage && <Footer />}
                                     </div>
                                     {/* Scanlines effect */}
                                     <div className="absolute inset-0 pointer-events-none opacity-[0.64] transition-opacity duration-300"
