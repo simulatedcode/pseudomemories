@@ -108,7 +108,7 @@ export function CharacterSprite({ x = 204, y = -540, mobileX, mobileY, anchor = 
 
 export default function HeroCharacter(props: HeroCharacterProps) {
     const { scrollYProgress } = useScroll();
-    const yOffset = useTransform(scrollYProgress, [0, 1], [0, -100]);
+    const yOffset = 0;
 
     return (
         <motion.div
@@ -124,14 +124,14 @@ export default function HeroCharacter(props: HeroCharacterProps) {
                 <Suspense fallback={<Html center><Loader /></Html>}>
                     <CharacterSprite {...props} />
                     {/* Bloom disabled for performance */}
-                    {/* <EffectComposer enableNormalPass={false}>
+                    <EffectComposer enableNormalPass={false}>
                         <Bloom
                             luminanceThreshold={5.5}
                             mipmapBlur
                             intensity={1.2}
                             radius={0.5}
                         />
-                    </EffectComposer> */}
+                    </EffectComposer>
                 </Suspense>
             </Canvas>
         </motion.div>

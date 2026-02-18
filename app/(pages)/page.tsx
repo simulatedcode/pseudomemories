@@ -7,6 +7,7 @@ import { duration, easing } from "@/app/lib/motion-tokens";
 
 /* Effects */
 const DustStar = dynamic(() => import("@/app/components/hero/DustStar"), { ssr: false });
+const SectionIntro = dynamic(() => import("@/app/components/hero/SectionIntro"), { ssr: false });
 const SectionProjects = dynamic(() => import("@/app/components/hero/SectionProjects"), { ssr: false });
 
 /* Hero (Grid + Character merged) */
@@ -17,7 +18,7 @@ export default function Home() {
   const { scrollYProgress } = useScroll();
 
   // Softer spring replaced with linear scroll for "fixed" feel
-  const bgY = useTransform(scrollYProgress, [0, 1], ["0%", "-10%"]);
+  const bgY = useTransform(scrollYProgress, [0, 1], ["0%", "0%"]);
 
   return (
     <div className="relative max-w-full mx-auto text-foreground font-sans selection:bg-inverse flex flex-col">
@@ -51,7 +52,7 @@ export default function Home() {
             transition={{ duration: duration.cinematic, ease: easing.entrance, delay: 1.4 }}
             className="fixed inset-0 z-10 pointer-events-none"
           >
-            <Hero x="64%" y="2%" mobileX="92%" mobileY="2%" anchor="bottom" />
+            <Hero x="62%" y="2%" mobileX="92%" mobileY="2%" anchor="bottom" />
           </motion.div>
         )}
       </AnimatePresence>
@@ -64,6 +65,7 @@ export default function Home() {
         {/* Sections: No delay/fade here to prevent gaps */}
         {isComplete && (
           <>
+            <SectionIntro />
             <SectionProjects />
           </>
         )}

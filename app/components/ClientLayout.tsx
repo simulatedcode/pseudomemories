@@ -33,12 +33,12 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
                                         <main className="relative overflow-x-hidden">
                                             {children}
                                         </main>
-                                        {!isSystemPage && <Footer />}
                                     </div>
                                     {/* Scanlines effect */}
                                     <div className="absolute inset-0 pointer-events-none opacity-[0.64] transition-opacity duration-300"
                                         style={{ background: 'repeating-linear-gradient(0deg, transparent 0px, transparent 1px, rgba(0,0,0,0.5) 1px, rgba(0,0,0,0.5) 2px)' }} />
                                 </PageTransition>
+                                {!isSystemPage && <Footer />}
                             </LenisScroll>
                         </GeoProvider>
                     </IntroProvider>

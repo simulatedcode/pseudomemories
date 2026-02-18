@@ -59,8 +59,8 @@ export function Footer() {
     }, []);
 
     return (
-        <footer className="relative hidden md:flex bottom-0 z-content w-full min-h-32 bg-background/80 backdrop-blur-lg flex-col justify-center items-center py-spacing-07">
-            <div className="w-full max-w-4xl px-spacing-04 flex flex-col gap-spacing-04 ">
+        <footer className="fixed hidden md:flex bottom-0 z-content w-full min-h-32 flex-col justify-center items-center py-spacing-07">
+            <div className="w-full max-w-4xl px-spacing-04 py-spacing-04 flex flex-col gap-spacing-04 border border-white/10 bg-background/5 backdrop-blur-md ">
 
                 {/* Header Section */}
                 <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-spacing-05 border-b border-white/10 pb-spacing-04">
@@ -100,7 +100,7 @@ export function Footer() {
                     </div>
                     <div>
                         <span className="font-doto text-[10px] uppercase tracking-widest text-white/80">
-                            REF: {refId}
+                            Last version: {refId}
                         </span>
                     </div>
                 </div>

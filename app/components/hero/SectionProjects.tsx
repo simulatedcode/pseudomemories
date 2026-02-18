@@ -27,10 +27,12 @@ export default function SectionProjects() {
 
     const { scrollYProgress: fadeProgress } = useScroll({
         target: containerRef,
-        offset: ["start start", "end 0.8"]
+        offset: ["start end", "end start"]
     });
 
-    const headerFade = useTransform(fadeProgress, [0, 0.8, 1], [1, 1, 0]);
+    const headerFade = useTransform(fadeProgress, [0, 0.6, 1], [1, 1, 0]);
+    const headerY = useTransform(fadeProgress, [0, 0.25, 1], [160, 0, -120]);
+    const gridY = useTransform(fadeProgress, [0, 0.15, 0.8, 1], [240, 180, 0, -100]);
     const textOpacity = headerFade;
 
     const selectedProject = projects.find((p: SelectedProject) => p.id === selectedId);
@@ -54,7 +56,7 @@ export default function SectionProjects() {
         staggerContainer: {
             hidden: {},
             visible: {
-                transition: { staggerChildren: 0.86 },
+                transition: { staggerChildren: 0.5 },
             },
         },
         fadeDrift: {
@@ -66,18 +68,18 @@ export default function SectionProjects() {
     return (
         <section
             ref={containerRef}
-            className="relative w-full py-24 bg-linear-to-t from-background/80 via-background/50 mask-to-b backdrop-blur-lg"
+            className="relative w-full pt-spacing-10 pb-12 bg-linear-to-t from-background/80 via-background/50 mask-to-b backdrop-blur-lg"
         >
             {/* Sticky Header - Direct child of section */}
             <motion.div
-                style={{ opacity: textOpacity }}
+                style={{ opacity: textOpacity, y: headerY }}
                 className="sticky top-24 z-50 px-spacing-08 md:px-spacing-10 pb-12 mix-blend-difference"
             >
                 <motion.div
                     variants={variants.staggerContainer}
                     initial="hidden"
                     whileInView="visible"
-                    viewport={{ once: true, margin: "-28%" }}
+                    viewport={{ once: true, margin: "-10%" }}
                     className="flex flex-col gap-4 pointer-events-none"
                 >
                     {/* heading project title  */}
@@ -97,7 +99,10 @@ export default function SectionProjects() {
             </motion.div>
 
             {/* Grid - Scrolls past sticky header */}
-            <div className="relative z-0 grid grid-cols-4 sm:grid-cols-6 lg:grid-cols-12 gap-0 md:gap-1 px-spacing-08 md:px-spacing-10">
+            <motion.div
+                style={{ y: gridY }}
+                className="relative z-0 grid grid-cols-4 sm:grid-cols-6 lg:grid-cols-12 gap-0 md:gap-1 px-spacing-08 md:px-spacing-10"
+            >
                 {gridItems.map((project, index) => {
                     if (!project) {
                         return <div key={`empty-${index}`} className="hidden lg:block col-span-3 aspect-video" />;
@@ -153,7 +158,7 @@ export default function SectionProjects() {
                         </motion.div>
                     );
                 })}
-            </div>
+            </motion.div>
 
             <ProjectModal
                 project={selectedProject || null}

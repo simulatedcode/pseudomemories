@@ -91,7 +91,7 @@ export default function Hero(props: HeroCharacterProps) {
     const { scrollYProgress } = useScroll();
 
     // Slowed down slide-up speed (-60% instead of -100%)
-    const yOffset = useTransform(scrollYProgress, [0, 1], ["0%", "-60%"]);
+    const yOffset = "0%";
     const heroOpacity = useTransform(scrollYProgress, [0, 0.7], [1, 0]);
 
     return (

@@ -47,23 +47,25 @@ export function HeaderTop({ hoveredItem, setHoveredItem }: HeaderTopProps) {
 
       {/* Version */}
       <motion.div
-        initial={{ opacity: 0, x: -20 }}
+        initial={{ opacity: 0, x: -30 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{
           duration: duration.medium,
           ease: easing.entrance,
           delay: 0.4
         }}
-        className="pointer-events-auto font-doto text-micro uppercase tracking-[0.2em] text-white/80 hover:text-white/90 transition-opacity cursor-default"
+        className="pointer-events-auto font-doto text-micro uppercase tracking-widest text-white/80 hover:text-white/90 transition-opacity cursor-default"
         onMouseEnter={() => setHoveredItem("Version")}
         onMouseLeave={() => setHoveredItem(null)}
       >
-        <ScrambleText
-          text={version}
-          delay={1.8}
-          duration={1.5}
-          trigger={hoveredItem === "Version"}
-        />
+        <span className="flex gap-spacing-02">Last version:
+          <ScrambleText
+            text={version}
+            delay={1.8}
+            duration={1.5}
+            trigger={hoveredItem === "Version"}
+          />
+        </span>
       </motion.div>
     </div>
   );
