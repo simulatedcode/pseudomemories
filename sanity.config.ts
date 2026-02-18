@@ -1,7 +1,7 @@
 'use client'
 
 /**
- * This configuration is used to for the Sanity Studio that’s mounted on the `/app/system/[[...tool]]/page.tsx` route
+ * This configuration is used to for the Sanity Studio that’s mounted on the `/app/syslog/[[...tool]]/page.tsx` route
  */
 
 import { visionTool } from '@sanity/vision'
@@ -15,8 +15,8 @@ import { structure } from './sanity/structure'
 
 export default defineConfig({
   name: 'default',
-  title: 'Pseudo Memories',
-  basePath: '/system',
+  title: 'Memories Log',
+  basePath: '/syslog',
   projectId,
   dataset,
   // Add and edit the content schema in the './sanity/schemaTypes' folder

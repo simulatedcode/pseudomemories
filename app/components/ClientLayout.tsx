@@ -16,7 +16,7 @@ import { usePathname } from "next/navigation";
 
 export default function ClientLayout({ children }: { children: React.ReactNode }) {
     const pathname = usePathname();
-    const isSystemPage = pathname?.startsWith('/system');
+    const isSystemPage = pathname?.startsWith('/syslog');
 
     return (
         <TransitionProvider>
