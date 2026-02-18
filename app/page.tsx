@@ -2,8 +2,14 @@
 
 import dynamic from "next/dynamic";
 import { useIntro } from "@/app/context/IntroContextCore";
-import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
 import { duration, easing } from "@/app/lib/motion-tokens";
+import { useRef } from "react";
+import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { HUDScanline } from "./components/ui/HUDScanline";
+
+gsap.registerPlugin(ScrollTrigger);
 
 /* Effects */
 const DustStar = dynamic(() => import("@/app/components/hero/DustStar"), { ssr: false });
@@ -15,50 +21,69 @@ const Hero = dynamic(() => import("@/app/components/hero/Hero"), { ssr: false })
 
 export default function Home() {
   const { isComplete } = useIntro();
-  const { scrollYProgress } = useScroll();
+  const bgRef = useRef<HTMLDivElement>(null);
+  const heroContainerRef = useRef<HTMLDivElement>(null);
+  const mainRef = useRef<HTMLDivElement>(null);
 
-  // Softer spring replaced with linear scroll for "fixed" feel
-  const bgY = useTransform(scrollYProgress, [0, 1], ["0%", "0%"]);
+  useGSAP(() => {
+    if (!isComplete) return;
+
+    // Background Entrance
+    if (bgRef.current) {
+      gsap.fromTo(bgRef.current,
+        { y: "100%", opacity: 0 },
+        { y: "0%", opacity: 1, duration: duration.cinematic, ease: easing.memoryFade, delay: 0.8 }
+      );
+    }
+
+    // Hero Entrance
+    if (heroContainerRef.current) {
+      gsap.fromTo(heroContainerRef.current,
+        { opacity: 0 },
+        { opacity: 1, duration: duration.cinematic, ease: easing.entrance, delay: 1.4 }
+      );
+
+      // Scrollytelling: Fade out Hero as we scroll
+      ScrollTrigger.create({
+        trigger: mainRef.current,
+        start: "top top",
+        end: "25% top", // Fade out over first 25% of scroll
+        scrub: true,
+        onUpdate: (self) => {
+          if (heroContainerRef.current) {
+            // Opacity goes from 1 to 0
+            gsap.set(heroContainerRef.current, { opacity: 1 - self.progress });
+          }
+        }
+      });
+    }
+
+  }, [isComplete]);
 
   return (
-    <div className="relative max-w-full mx-auto text-foreground font-sans selection:bg-inverse flex flex-col">
+    <div ref={mainRef} className="relative max-w-full  mx-auto text-foreground font-sans selection:bg-inverse flex flex-col">
 
       {/* Gradient Background */}
-      <motion.div
-        initial={{ y: "100%", opacity: 0 }}
-        animate={isComplete ? { y: 0, opacity: 1 } : { y: "100%", opacity: 0 }}
-        style={{ y: bgY }}
-        transition={{ duration: duration.cinematic, ease: easing.memoryFade, delay: 0.8 }}
-        className="pointer-events-none fixed inset-0 z-0 bg-linear-to-b from-vermelion-800 via-vermelion-500 to-cyan-200"
+      <div
+        ref={bgRef}
+        className="pointer-events-none fixed inset-0 z-base bg-linear-to-b from-vermelion-800 via-vermelion-500 to-cyan-200 opacity-0 translate-y-full"
       >
-        {/* HUD Scanline/Line Pattern */}
-        <div
-          className="absolute inset-0 opacity-[0.03]"
-          style={{
-            backgroundImage: `repeating-linear-gradient(0deg, transparent, transparent 1px, #fff 1px, #fff 2px)`,
-            backgroundSize: '100% 4px'
-          }}
-        />
-      </motion.div>
+        <HUDScanline />
+      </div>
 
       <DustStar />
 
-      <AnimatePresence>
-        {isComplete && (
-          <motion.div
-            key="hero"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: duration.cinematic, ease: easing.entrance, delay: 1.4 }}
-            className="fixed inset-0 z-10 pointer-events-none"
-          >
-            <Hero x="64%" y="2%" mobileX="92%" mobileY="2%" anchor="bottom" />
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {isComplete && (
+        <div
+          ref={heroContainerRef}
+          className="fixed inset-0 z-10 pointer-events-none opacity-0"
+        >
+          <Hero x="64%" y="2%" mobileX="92%" mobileY="2%" anchor="bottom" />
+        </div>
+      )}
 
       {/* Main Content Flow */}
-      <div className="relative z-20">
+      <div className="relative z-content">
         {/* Hero Spacer */}
         <div className="h-screen w-full pointer-events-none" />
 

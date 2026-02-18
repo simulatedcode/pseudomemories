@@ -1,13 +1,14 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import React, { useState, useEffect, useRef } from "react";
 import { duration, easing } from "@/app/lib/motion-tokens";
 import { useTransition } from "../context/TransitionContextCore";
 import { SineWaveform } from "./ui/SineWaveform";
 import { useAudioAnalysis } from "../context/AudioAnalysisContextCore";
 import { useAudio } from "../context/AudioContextCore";
 import { Minus } from "lucide-react";
+import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
 
 interface HUDBottomRightProps {
     hoveredItem: string | null;
@@ -19,6 +20,16 @@ export function HUDBottomRight({ hoveredItem, setHoveredItem }: HUDBottomRightPr
     const { audioEnabled, playing: isBgAudioPlaying, togglePlay: toggleBgAudio } = useAudio();
     const { isListening, error, toggleAudio, analyser } = useAudioAnalysis();
     const [isMinimized, setIsMinimized] = useState(false);
+
+    // Refs
+    const containerRef = useRef<HTMLDivElement>(null);
+    const headerRef = useRef<HTMLDivElement>(null);
+    const audioVisualizerRef = useRef<HTMLDivElement>(null);
+    const footerRef = useRef<HTMLDivElement>(null);
+    const minimizedButtonRef = useRef<HTMLButtonElement>(null);
+
+    // Using a ref to track mount to avoid initial double-render issues or animations
+    const mounted = useRef(false);
 
     useEffect(() => {
         const checkMobile = () => {
@@ -33,60 +44,94 @@ export function HUDBottomRight({ hoveredItem, setHoveredItem }: HUDBottomRightPr
     const activeColor = isListening ? "#F2653A" : "#cccccc";
     const statusBg = isListening ? "bg-black/10 border-white/20" : "bg-black/10 border-white/5";
 
+    // Entrance Animation
+    useGSAP(() => {
+        if (!containerRef.current) return;
+
+        const targetOpacity = isTransitioning ? 0 : 1;
+        const targetY = isTransitioning ? 20 : 0;
+
+        gsap.to(containerRef.current, {
+            opacity: targetOpacity,
+            y: targetY,
+            duration: isTransitioning ? 0.3 : duration.medium,
+            delay: isTransitioning ? 0 : 2.0,
+            ease: easing.entrance
+        });
+    }, [isTransitioning]);
+
+    // Minimize/Maximize Animation
+    useGSAP(() => {
+        if (!mounted.current) {
+            mounted.current = true;
+            // Set initial state without animation if needed, or just let it play
+            if (isMinimized) {
+                gsap.set(containerRef.current, { width: "40px", height: "40px" });
+                gsap.set([headerRef.current, footerRef.current], { opacity: 0, display: "none" });
+                gsap.set(minimizedButtonRef.current, { opacity: 1, display: "flex" });
+                // We keep visualizer visible but maybe styled differently? 
+                // Actually in previous code, visualizer was always there, just resized.
+            }
+            return;
+        }
+
+        const tl = gsap.timeline({
+            defaults: { ease: "power2.inOut", duration: 0.4 }
+        });
+
+        if (isMinimized) {
+            // Collapse
+            tl.to([headerRef.current, footerRef.current], { opacity: 0, duration: 0.2, display: "none" })
+                .to(containerRef.current, { width: "40px", height: "40px" }, "<")
+                .to(minimizedButtonRef.current, { opacity: 1, display: "flex", duration: 0.2 }, "-=0.1");
+        } else {
+            // Expand
+            tl.to(minimizedButtonRef.current, { opacity: 0, display: "none", duration: 0.2 })
+                .to(containerRef.current, { width: "230px", height: "112px" }, "<")
+                .to([headerRef.current, footerRef.current], { opacity: 1, display: "flex", duration: 0.3 }, "-=0.1");
+        }
+
+    }, [isMinimized]);
+
+    // Border color animation
+    useGSAP(() => {
+        if (!containerRef.current) return;
+        gsap.to(containerRef.current, {
+            borderColor: isListening ? "rgba(255, 255, 255, 0.2)" : "rgba(255, 255, 255, 0.05)",
+            duration: 0.3
+        });
+    }, [isListening]);
+
     return (
         <div className="fixed right-spacing-07 bottom-spacing-07 z-hud flex flex-col gap-spacing-03 pointer-events-none">
             {/* Box 2: Audio Transmit */}
-            <motion.div
-                layout
-                initial={{ opacity: 0, y: 20 }}
-                animate={{
-                    opacity: isTransitioning ? 0 : 1,
-                    y: isTransitioning ? 20 : 0,
-                    width: isMinimized ? "40px" : "230px",
-                    height: isMinimized ? "40px" : "112px",
-                    borderColor: isListening ? "rgba(255, 255, 255, 0.2)" : "rgba(255, 255, 255, 0.05)"
-                }}
-                transition={{
-                    opacity: {
-                        duration: isTransitioning ? 0.3 : duration.medium,
-                        delay: isTransitioning ? 0 : 2.0,
-                        ease: easing.entrance,
-                    },
-                    y: {
-                        duration: isTransitioning ? 0.3 : duration.medium,
-                        delay: isTransitioning ? 0 : 2.0,
-                        ease: easing.entrance,
-                    },
-                    width: {
-                        duration: 0.4,
-                        ease: [0.4, 0, 0.2, 1],
-                        delay: 0
-                    },
-                    height: {
-                        duration: 0.4,
-                        ease: [0.4, 0, 0.2, 1],
-                        delay: 0
-                    },
-                    layout: {
-                        duration: 0.4,
-                        ease: [0.4, 0, 0.2, 1]
-                    },
-                    borderColor: {
-                        duration: 0.3
-                    }
-                }}
-                className={`pointer-events-auto backdrop-blur-md border flex flex-col group cursor-pointer bg-black/10 ${isMinimized ? "p-0 items-center justify-center min-w-0" : "p-2 min-w-[230px]"}`}
+            <div
+                ref={containerRef}
+                className={`pointer-events-auto backdrop-blur-md border flex flex-col group cursor-pointer bg-black/10 overflow-hidden opacity-0 translate-y-5 ${isMinimized ? "items-center justify-center p-0" : "p-2"}`}
+                style={{ width: isMinimized ? '40px' : '230px', height: isMinimized ? '40px' : '112px' }}
                 onClick={(e) => {
-                    // If clicking the container in minimized state, maximize it
                     if (isMinimized) {
                         setIsMinimized(false);
                     }
                 }}
             >
+                {/* Minimized Overlay Trigger (Invisible when expanded) */}
+                <button
+                    ref={minimizedButtonRef}
+                    className="absolute inset-0 z-20 items-center justify-center w-full h-full hidden opacity-0"
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        setIsMinimized(false);
+                    }}
+                >
+                    <div className={`w-1.5 h-1.5 rounded-full animate-pulse ${error ? "bg-vermelion" : isListening ? "bg-emerald-500/80" : "bg-vermelion/80"}`} />
+                </button>
+
+
                 {/* Header */}
-                <motion.div
-                    layout="position"
-                    className={`flex items-center justify-between ${isMinimized ? "h-0 opacity-0 overflow-hidden mb-0" : "mb-2"}`}
+                <div
+                    ref={headerRef}
+                    className={`flex items-center justify-between mb-2 w-full ${isMinimized ? "hidden opacity-0" : "flex opacity-100"}`}
                 >
                     <button
                         onClick={(e) => {
@@ -106,13 +151,13 @@ export function HUDBottomRight({ hoveredItem, setHoveredItem }: HUDBottomRightPr
                             <Minus size={10} />
                         </div>
                     </button>
-                </motion.div>
+                </div>
 
                 {/* Grid Sine Wave Visualizer */}
-                <motion.div
-                    layout
+                <div
+                    ref={audioVisualizerRef}
                     onClick={(e) => { e.stopPropagation(); if (isMinimized) setIsMinimized(false); else toggleAudio(); }}
-                    className={`relative overflow-hidden border ${isListening ? "border-white/10 bg-black/10" : "border-white/5 bg-black/5"} ${isMinimized ? "h-full w-full pointer-events-auto border-0" : "h-12 w-full"}`}
+                    className={`relative overflow-hidden border transition-colors duration-300 ${isListening ? "border-white/10 bg-black/10" : "border-white/5 bg-black/5"} ${isMinimized ? "absolute inset-0 border-0" : "h-12 w-full"}`}
                 >
                     {/* Grid Background */}
                     <div
@@ -135,32 +180,21 @@ export function HUDBottomRight({ hoveredItem, setHoveredItem }: HUDBottomRightPr
                             analyser={analyser}
                         />
                     </div>
-                </motion.div>
+                </div>
 
-                <AnimatePresence>
-                    {!isMinimized && (
-                        <motion.div
-                            initial={{ height: 0, opacity: 0, overflow: "hidden" }}
-                            animate={{ height: "auto", opacity: 1, overflow: "visible" }}
-                            exit={{ height: 0, opacity: 0, overflow: "hidden" }}
-                            transition={{
-                                height: { duration: 0.4, ease: [0.4, 0, 0.2, 1] },
-                                opacity: { duration: 0.2, delay: 0.1 }
-                            }}
-                        >
-                            {/* Status Footer */}
-                            <div className={`flex items-center justify-between pt-1 mt-1 border-t transition-colors ${isListening ? "border-white/10" : "border-white/5"}`}>
-                                <span className={`font-doto text-[10px] uppercase tracking-widest animate-pulse transition-colors ${isListening ? "text-white/60" : "text-white/40"}`}>
-                                    {error ? "CONNECTION ERROR" : isListening ? "MIC ACTIVE" : "STANDBY"}
-                                </span>
-                                <span className={`font-doto text-[10px] transition-colors ${isListening ? "text-white/80" : "text-white/40"}`}>
-                                    {isListening ? "TX-ON" : "TX-OFF"}
-                                </span>
-                            </div>
-                        </motion.div>
-                    )}
-                </AnimatePresence>
-            </motion.div>
+                {/* Status Footer */}
+                <div
+                    ref={footerRef}
+                    className={`flex items-center justify-between pt-1 mt-1 border-t transition-colors w-full ${isListening ? "border-white/10" : "border-white/5"} ${isMinimized ? "hidden opacity-0" : "flex opacity-100"}`}
+                >
+                    <span className={`font-doto text-[10px] uppercase tracking-widest animate-pulse transition-colors ${isListening ? "text-white/60" : "text-white/40"}`}>
+                        {error ? "CONNECTION ERROR" : isListening ? "MIC ACTIVE" : "STANDBY"}
+                    </span>
+                    <span className={`font-doto text-[10px] transition-colors ${isListening ? "text-white/80" : "text-white/40"}`}>
+                        {isListening ? "TX-ON" : "TX-OFF"}
+                    </span>
+                </div>
+            </div>
         </div>
     );
 }

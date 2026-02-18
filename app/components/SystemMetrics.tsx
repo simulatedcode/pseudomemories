@@ -1,7 +1,6 @@
 "use client";
 
 import React from "react";
-import { motion } from "framer-motion";
 import { useSystemMetrics } from "../hooks/useSystemMetrics";
 
 function MemoryIcon() {
@@ -27,7 +26,7 @@ export function SystemMetrics({ className }: { className?: string }) {
 
     return (
         <nav className={`flex items-center gap-spacing-02 sm:gap-spacing-04 md:gap-spacing-06 lg:gap-spacing-8 ${className}`}>
-            <motion.div
+            <div
                 className="flex items-center gap-spacing-02"
             >
                 <div className="p-2 sm:p-0">
@@ -36,8 +35,8 @@ export function SystemMetrics({ className }: { className?: string }) {
                 <span className="font-doto cursor-default text-micro uppercase tracking-[0.2em] hidden sm:inline" suppressHydrationWarning>
                     MEM: {memory}%
                 </span>
-            </motion.div>
-            <motion.div
+            </div>
+            <div
                 className="flex items-center gap-spacing-02"
             >
                 <div className="p-2 sm:p-0">
@@ -46,7 +45,7 @@ export function SystemMetrics({ className }: { className?: string }) {
                 <span className="font-doto cursor-default text-micro uppercase tracking-[0.2em] hidden sm:inline" suppressHydrationWarning>
                     GPU: {gpu}%
                 </span>
-            </motion.div>
+            </div>
         </nav>
     );
 };

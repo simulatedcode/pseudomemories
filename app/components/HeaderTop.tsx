@@ -1,11 +1,12 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
-import { motion } from "framer-motion";
+import React, { useState, useRef } from "react";
 import Link from "next/link";
 import { duration, easing } from "@/app/lib/motion-tokens";
 import { ScrambleText } from "./ui/ScrambleText";
 import pkg from "../../package.json";
+import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
 
 interface HeaderTopProps {
   hoveredItem: string | null;
@@ -14,21 +15,32 @@ interface HeaderTopProps {
 
 export function HeaderTop({ hoveredItem, setHoveredItem }: HeaderTopProps) {
   const [version] = useState(`v${pkg.version}`);
+  const logoRef = useRef<HTMLDivElement>(null);
+  const versionRef = useRef<HTMLDivElement>(null);
+
+  useGSAP(() => {
+    if (logoRef.current) {
+      gsap.fromTo(logoRef.current,
+        { opacity: 0, x: -20 },
+        { opacity: 1, x: 0, duration: duration.medium, ease: easing.entrance, delay: 0.2 }
+      );
+    }
+    if (versionRef.current) {
+      gsap.fromTo(versionRef.current,
+        { opacity: 0, x: -30 },
+        { opacity: 1, x: 0, duration: duration.medium, ease: easing.entrance, delay: 0.4 }
+      );
+    }
+  });
 
   return (
     <div
       className="fixed top-spacing-07 left-spacing-07 z-hud flex flex-col pointer-events-none"
     >
       {/* Logo/Title */}
-      <motion.div
-        initial={{ opacity: 0, x: -20 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{
-          duration: duration.medium,
-          ease: easing.entrance,
-          delay: 0.2
-        }}
-        className="pointer-events-auto"
+      <div
+        ref={logoRef}
+        className="pointer-events-auto opacity-0" // Initial opacity handled by GSAP from, but good to have class
         onMouseEnter={() => setHoveredItem("Logo")}
         onMouseLeave={() => setHoveredItem(null)}
       >
@@ -43,18 +55,12 @@ export function HeaderTop({ hoveredItem, setHoveredItem }: HeaderTopProps) {
             trigger={hoveredItem === "Logo"}
           />
         </Link>
-      </motion.div>
+      </div>
 
       {/* Version */}
-      <motion.div
-        initial={{ opacity: 0, x: -30 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{
-          duration: duration.medium,
-          ease: easing.entrance,
-          delay: 0.4
-        }}
-        className="pointer-events-auto font-doto text-micro uppercase tracking-widest text-white/80 hover:text-white/90 transition-opacity cursor-default"
+      <div
+        ref={versionRef}
+        className="pointer-events-auto font-doto text-micro uppercase tracking-widest text-white/80 hover:text-white/90 transition-opacity cursor-default opacity-0"
         onMouseEnter={() => setHoveredItem("Version")}
         onMouseLeave={() => setHoveredItem(null)}
       >
@@ -66,7 +72,7 @@ export function HeaderTop({ hoveredItem, setHoveredItem }: HeaderTopProps) {
             trigger={hoveredItem === "Version"}
           />
         </span>
-      </motion.div>
+      </div>
     </div>
   );
 }

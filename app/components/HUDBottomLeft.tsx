@@ -1,12 +1,13 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import React, { useState, useEffect, useRef } from "react";
 import { duration, easing } from "@/app/lib/motion-tokens";
 import { ScrambleText } from "./ui/ScrambleText";
 import { useGeo } from "../context/GeoContextCore";
 import { useTransition } from "../context/TransitionContextCore";
-import { Minus, Plus, MapPin } from "lucide-react";
+import { Minus, MapPin } from "lucide-react";
+import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
 
 interface HUDBottomLeftProps {
     hoveredItem: string | null;
@@ -19,6 +20,12 @@ export function HUDBottomLeft({ hoveredItem, setHoveredItem }: HUDBottomLeftProp
     const [currentTime, setCurrentTime] = useState("");
     const [timeZone, setTimeZone] = useState("");
     const [isMinimized, setIsMinimized] = useState(false);
+
+    // Refs
+    const containerRef = useRef<HTMLDivElement>(null);
+    const contentRef = useRef<HTMLDivElement>(null);
+    const minimizedIconRef = useRef<HTMLDivElement>(null);
+    const fullHeaderRef = useRef<HTMLDivElement>(null);
 
     const locationString = error || `${latitude.toFixed(4)}°N ${longitude.toFixed(4)}°E`;
 
@@ -56,144 +63,120 @@ export function HUDBottomLeft({ hoveredItem, setHoveredItem }: HUDBottomLeftProp
 
     const statusColor = error ? "bg-vermelion" : "bg-emerald-500/80";
 
+    // Animation Logic
+    useGSAP(() => {
+        if (!containerRef.current) return;
+
+        // Entrance / Exit
+        const targetOpacity = isTransitioning ? 0 : 1;
+        const targetY = isTransitioning ? 20 : 0;
+
+        gsap.to(containerRef.current, {
+            opacity: targetOpacity,
+            y: targetY,
+            duration: isTransitioning ? 0.3 : duration.medium,
+            delay: isTransitioning ? 0 : 1.8,
+            ease: easing.entrance
+        });
+
+    }, [isTransitioning]);
+
+    useGSAP(() => {
+        if (!containerRef.current) return;
+
+        const tl = gsap.timeline({
+            defaults: { ease: "power2.inOut", duration: 0.4 }
+        });
+
+        if (isMinimized) {
+            // Collapse Sequence
+            // 1. Fade out content & full header
+            tl.to([contentRef.current, fullHeaderRef.current], { opacity: 0, duration: 0.2, display: "none" })
+                // 2. Shrink Container
+                .to(containerRef.current, { width: "40px", height: "40px" }, "<")
+                // 3. Fade in Minimized Icon
+                .to(minimizedIconRef.current, { opacity: 1, scale: 1, display: "flex", duration: 0.3 }, "-=0.2");
+        } else {
+            // Expand Sequence
+            // 1. Fade out Minimized Icon
+            tl.to(minimizedIconRef.current, { opacity: 0, scale: 0.8, display: "none", duration: 0.2 })
+                // 2. Expand Container
+                .to(containerRef.current, { width: "230px", height: "112px" }, "<")
+                // 3. Fade in Content & Full Header
+                .to([contentRef.current, fullHeaderRef.current], { opacity: 1, display: "flex", duration: 0.3 }, "-=0.1");
+        }
+
+    }, [isMinimized]);
+
     return (
         <div className="fixed left-spacing-07 bottom-spacing-07 z-hud flex flex-col gap-spacing-03 pointer-events-none">
             {/* Box 1: Info Location */}
-            <motion.div
-                layout
-                initial={{ opacity: 0, y: 20 }}
-                animate={{
-                    opacity: isTransitioning ? 0 : 1,
-                    y: isTransitioning ? 20 : 0,
-                    width: isMinimized ? "40px" : "230px",
-                    height: isMinimized ? "40px" : "112px"
-                }}
-                transition={{
-                    opacity: {
-                        duration: isTransitioning ? 0.3 : duration.medium,
-                        delay: isTransitioning ? 0 : 1.8,
-                        ease: easing.entrance
-                    },
-                    y: {
-                        duration: isTransitioning ? 0.3 : duration.medium,
-                        delay: isTransitioning ? 0 : 1.8,
-                        ease: easing.entrance
-                    },
-                    width: {
-                        duration: 0.4,
-                        ease: [0.4, 0, 0.2, 1], // Standard easing for layout
-                        delay: 0 // No delay for width changes
-                    },
-                    height: {
-                        duration: 0.4,
-                        ease: [0.4, 0, 0.2, 1],
-                        delay: 0
-                    },
-                    layout: {
-                        duration: 0.4,
-                        ease: [0.4, 0, 0.2, 1]
-                    }
-                }}
-                className={`pointer-events-auto bg-black/10 backdrop-blur-md border border-white/10 flex flex-col ${isMinimized ? "p-0 items-center justify-center min-w-0" : "p-3 gap-spacing-03 min-w-[230px]"}`}
+            <div
+                ref={containerRef}
+                className={`pointer-events-auto bg-black/10 backdrop-blur-md border border-white/10 flex flex-col overflow-hidden opacity-0 translate-y-5 ${isMinimized ? "items-center justify-center p-0" : "p-3 gap-spacing-03"}`}
+                style={{ width: isMinimized ? '40px' : '230px', height: isMinimized ? '40px' : '112px' }}
             >
-                {/* Header */}
-                <motion.div
-                    layout="position"
-                    className={`flex items-center border-white/10 ${isMinimized ? "p-0 pb-0 border-b-0" : "pb-2 border-b"}`}
+                {/* Minimized Icon State */}
+                <div
+                    ref={minimizedIconRef}
+                    className="absolute inset-0 items-center justify-center hidden opacity-0"
                 >
                     <button
-                        onClick={() => setIsMinimized(!isMinimized)}
-                        className={`flex items-center group cursor-pointer outline-hidden ${isMinimized ? "justify-center" : "justify-between w-full"}`}
-                        aria-label={isMinimized ? "Maximize Info" : "Minimize Info"}
+                        onClick={() => setIsMinimized(false)}
+                        className="w-full h-full flex items-center justify-center group cursor-pointer outline-hidden"
+                        aria-label="Maximize Info"
                     >
-                        <div className="flex items-center gap-2">
-                            <AnimatePresence mode="wait">
-                                {isMinimized ? (
-                                    <motion.div
-                                        key="icon"
-                                        initial={{ opacity: 0, scale: 0.8 }}
-                                        animate={{ opacity: 1, scale: 1 }}
-                                        exit={{ opacity: 0, scale: 0.8 }}
-                                        transition={{ duration: 0.2 }}
-                                    >
-                                        <MapPin
-                                            size={14}
-                                            className={`transition-colors duration-300 ${error ? "text-vermelion" : "text-emerald-500/80"}`}
-                                        />
-                                    </motion.div>
-                                ) : (
-                                    <motion.div
-                                        key="dot"
-                                        initial={{ opacity: 0, scale: 0.8 }}
-                                        animate={{ opacity: 1, scale: 1 }}
-                                        exit={{ opacity: 0, scale: 0.8 }}
-                                        transition={{ duration: 0.2 }}
-                                        className={`w-1.5 h-1.5 rounded-full animate-pulse ${statusColor}`}
-                                    />
-                                )}
-                            </AnimatePresence>
-
-                            <AnimatePresence mode="wait">
-                                {!isMinimized && (
-                                    <motion.span
-                                        key="text"
-                                        initial={{ opacity: 0, x: -5 }}
-                                        animate={{ opacity: 1, x: 0 }}
-                                        exit={{ opacity: 0, x: -5 }}
-                                        transition={{ duration: 0.2 }}
-                                        className="font-doto text-micro uppercase tracking-widest text-white/60 whitespace-nowrap"
-                                    >
-                                        Info Location
-                                    </motion.span>
-                                )}
-                            </AnimatePresence>
-                        </div>
-
-                        {!isMinimized && (
-                            <div className="text-white/40 group-hover:text-white transition-colors ml-8">
-                                <Minus size={10} />
-                            </div>
-                        )}
+                        <MapPin
+                            size={14}
+                            className={`transition-colors duration-300 ${error ? "text-vermelion" : "text-emerald-500/80"}`}
+                        />
                     </button>
-                </motion.div>
+                </div>
+
+                {/* Expanded Header State */}
+                <div
+                    ref={fullHeaderRef}
+                    className={`items-center justify-between w-full pb-2 border-b border-white/10 cursor-pointer ${isMinimized ? "hidden opacity-0" : "flex opacity-100"}`}
+                    onClick={() => setIsMinimized(true)}
+                >
+                    <div className="flex items-center gap-2">
+                        <div className={`w-1.5 h-1.5 rounded-full animate-pulse ${statusColor}`} />
+                        <span className="font-doto text-micro uppercase tracking-widest text-white/60 whitespace-nowrap">
+                            Info Location
+                        </span>
+                    </div>
+                    <div className="text-white/40 hover:text-white transition-colors">
+                        <Minus size={10} />
+                    </div>
+                </div>
 
                 {/* Content */}
-                <AnimatePresence>
-                    {!isMinimized && (
-                        <motion.div
-                            initial={{ height: 0, opacity: 0, overflow: "hidden" }}
-                            animate={{ height: "auto", opacity: 1, overflow: "visible" }}
-                            exit={{ height: 0, opacity: 0, overflow: "hidden" }}
-                            transition={{
-                                height: { duration: 0.4, ease: [0.4, 0, 0.2, 1] },
-                                opacity: { duration: 0.2, delay: 0.1 }
-                            }}
-                            className="flex flex-col gap-spacing-02"
-                        >
-                            <div className="flex items-center justify-between gap-spacing-05">
-                                <span className="font-doto text-micro uppercase tracking-widest text-white/40">Timestamp</span>
-                                <span className="font-doto text-micro text-white" suppressHydrationWarning>
-                                    <ScrambleText text={currentTime} delay={0} />
-                                </span>
-                            </div>
+                <div
+                    ref={contentRef}
+                    className={`flex-col gap-spacing-02 w-full ${isMinimized ? "hidden opacity-0" : "flex opacity-100"}`}
+                >
+                    <div className="flex items-center justify-between gap-spacing-05">
+                        <span className="font-doto text-micro uppercase tracking-widest text-white/40">Timestamp</span>
+                        <span className="font-doto text-micro text-white" suppressHydrationWarning>
+                            <ScrambleText text={currentTime} delay={0} />
+                        </span>
+                    </div>
 
-                            <div className="flex items-center justify-between gap-spacing-05">
-                                <span className="font-doto text-micro uppercase tracking-widest text-white/40">Zone</span>
-                                <span className="font-doto text-micro text-white" suppressHydrationWarning>
-                                    <ScrambleText text={timeZone} delay={0.1} />
-                                </span>
-                            </div>
+                    <div className="flex items-center justify-between gap-spacing-05">
+                        <span className="font-doto text-micro uppercase tracking-widest text-white/40">Zone</span>
+                        <span className="font-doto text-micro text-white" suppressHydrationWarning>
+                            <ScrambleText text={timeZone} delay={0.1} />
+                        </span>
+                    </div>
 
-                            <div className="flex items-center justify-between gap-spacing-05">
-                                <span className="font-doto text-micro uppercase tracking-widest text-white/40">Coords</span>
-                                <span className="font-doto text-micro text-white" suppressHydrationWarning>
-                                    <ScrambleText text={locationString} delay={0.2} />
-                                </span>
-                            </div>
-                        </motion.div>
-                    )}
-                </AnimatePresence>
-            </motion.div>
+                    <div className="flex items-center justify-between gap-spacing-05">
+                        <span className="font-doto text-micro uppercase tracking-widest text-white/40">Coords</span>
+                        <span className="font-doto text-micro text-white" suppressHydrationWarning>
+                            <ScrambleText text={locationString} delay={0.2} />
+                        </span>
+                    </div>
+                </div>
+            </div>
         </div>
     );
 }

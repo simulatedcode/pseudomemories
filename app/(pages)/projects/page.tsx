@@ -1,6 +1,5 @@
 "use client";
 
-import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 import Link from "next/link";
 import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
@@ -10,14 +9,20 @@ import { ScrambleText } from "@/app/components/ui/ScrambleText";
 import { client } from "@/sanity/lib/client";
 import { ALL_CATEGORIES_QUERY } from "@/sanity/lib/queries";
 import { urlFor } from "@/sanity/lib/image";
+import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 export const dynamic = "force-dynamic";
 
 export default function ProjectsPage() {
     const [categories, setCategories] = useState<ImgCategory[]>([]);
-    const [xRange, setXRange] = useState(0);
     const containerRef = useRef<HTMLDivElement>(null);
     const contentRef = useRef<HTMLDivElement>(null);
+    const sidebarRef = useRef<HTMLDivElement>(null);
+    const scrollSectionRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         const fetchCategories = async () => {
@@ -27,60 +32,70 @@ export default function ProjectsPage() {
         fetchCategories();
     }, []);
 
-    // Calculate dynamic horizontal range (RTL)
-    useEffect(() => {
-        const calculateRange = () => {
-            if (contentRef.current) {
-                const contentWidth = contentRef.current.scrollWidth;
-                const windowWidth = window.innerWidth;
-                const sidebarWidth = windowWidth * 0.35; // md:w-[35%]
-                const horizontalViewportWidth = windowWidth - (windowWidth >= 768 ? sidebarWidth : 0);
+    useGSAP(() => {
+        if (!contentRef.current || !scrollSectionRef.current || categories.length === 0) return;
 
-                // We want to scroll such that the end of the content aligns with the right edge
-                // The container is md:w-[65%], so we calculate within that viewport
-                const range = contentWidth - horizontalViewportWidth;
-                setXRange(Math.max(0, range));
+        // Calculate scroll width
+        const getScrollAmount = () => {
+            // In horizontal scrolling, we want to move the content to the left.
+            // But since it is flex-row-reverse, the first item is on the right.
+            // We want to scroll to reveal the left items.
+            // So we translate the container to the RIGHT (positive x)?
+            // Or if we translate purely based on width:
+            return -(contentRef.current!.scrollWidth - scrollSectionRef.current!.offsetWidth);
+        };
+
+        const context = gsap.context(() => {
+            // Sidebar Entrance
+            if (sidebarRef.current) {
+                gsap.fromTo(sidebarRef.current,
+                    { opacity: 0, y: 30 },
+                    { opacity: 1, y: 0, duration: duration.slow, ease: easing.carbonExpressive }
+                );
             }
-        };
 
-        calculateRange();
-        window.addEventListener("resize", calculateRange);
+            // Cards Entrance
+            // We can animate them in one by one or all together.
+            const cards = gsap.utils.toArray(".project-card");
+            gsap.fromTo(cards,
+                { opacity: 0, scale: 0.95, x: -20 },
+                { opacity: 1, scale: 1, x: 0, duration: duration.slow, ease: easing.carbonExpressive, stagger: 0.1 }
+            );
 
-        // Timeout to ensure content is rendered
-        const timer = setTimeout(calculateRange, 500);
+            // Horizontal Scroll
+            const xMove = getScrollAmount();
 
-        return () => {
-            window.removeEventListener("resize", calculateRange);
-            clearTimeout(timer);
-        };
+            // We only enable horizontal scroll if there is overflow
+            if (contentRef.current && scrollSectionRef.current && contentRef.current.scrollWidth > scrollSectionRef.current.offsetWidth) {
+                gsap.to(contentRef.current, {
+                    x: () => -(contentRef.current!.scrollWidth - scrollSectionRef.current!.offsetWidth),
+                    ease: "none",
+                    scrollTrigger: {
+                        trigger: containerRef.current,
+                        start: "top top",
+                        end: "bottom bottom",
+                        scrub: 1, // Smooth interaction
+                        invalidateOnRefresh: true,
+                    }
+                });
+            }
+        });
+
+        return () => context.revert();
+
     }, [categories]);
 
-    const { scrollYProgress } = useScroll({
-        target: containerRef,
-    });
-
-    const smoothProgress = useSpring(scrollYProgress, {
-        stiffness: 100,
-        damping: 30,
-        restDelta: 0.001
-    });
-
-    // Map vertical scroll to DYNAMIC horizontal movement (RTL: Scroll Right to reveal Left content)
-    const x = useTransform(smoothProgress, [0, 1], [0, -xRange]);
-
     return (
-        <main ref={containerRef} className="relative z-content w-full bg-background" style={{ height: `${categories.length * 50 + 100}vh` }}>
+        <main ref={containerRef} className="relative z-content w-full bg-background" style={{ height: `${Math.max(200, categories.length * 50 + 100)}vh` }}>
 
             {/* Sticky Viewport */}
             <div className="fixed top-0 h-screen w-full overflow-hidden flex flex-col md:flex-row bg-background">
 
                 {/* Left: Sticky Sidebar */}
                 <aside className="w-full md:w-[35%] h-[30vh] md:h-full flex flex-col justify-center px-6 md:px-spacing-10 py-12 md:py-0 border-b md:border-b-0 md:border-r border-white/10 z-20 bg-background/80 backdrop-blur-sm">
-                    <motion.div
-                        initial={{ opacity: 0, y: 30 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: duration.slow, ease: easing.carbonExpressive }}
-                        className="flex flex-col gap-6"
+                    <div
+                        ref={sidebarRef}
+                        className="flex flex-col gap-6 opacity-0 translate-y-8"
                     >
                         <span className="font-doto text-micro uppercase tracking-widest text-cyan block items-center gap-2">
                             <span className="w-2 h-2 inline-block rounded-full bg-cyan mr-2 animate-pulse" />
@@ -96,31 +111,27 @@ export default function ProjectsPage() {
                         <p className="hidden md:block font-doto text-micro text-white/40">
                             Scroll to navigate <span className="animate-bounce inline-block ml-1">↓</span>
                         </p>
-                    </motion.div>
+                    </div>
                 </aside>
 
                 {/* Right: Horizontal Section */}
-                <section className="w-full md:w-[65%] h-[70vh] md:h-full flex items-center relative overflow-hidden">
+                <section ref={scrollSectionRef} className="w-full md:w-[65%] h-[70vh] md:h-full flex items-center relative overflow-hidden">
                     {/* HUD Grid Background */}
                     <div className="fixed inset-0 pointer-events-none z-0 opacity-10"
                         style={{ backgroundImage: 'radial-gradient(circle, #fff 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
-                    <motion.div
+                    <div
                         ref={contentRef}
-                        style={{ x }}
-                        className="flex flex-row-reverse items-center gap-spacing-08 px-spacing-10"
+                        className="flex flex-row-reverse items-center gap-spacing-08 px-spacing-10 w-max"
                     >
                         {categories.map((category, index) => (
                             <Link
                                 key={category.id}
                                 href={`/projects/${category.id}`}
-                                className="relative flex-none group w-[80vw] md:w-[45vw] lg:w-[35vw] aspect-4/5"
+                                className="relative flex-none group w-[80vw] md:w-[45vw] lg:w-[35vw] aspect-4/5 project-card"
                             >
                                 <div className="w-full h-full relative overflow-hidden bg-white/5 border border-white/10 transition-colors group-hover:border-cyan/40">
                                     {/* Image Holder */}
-                                    <motion.div
-                                        initial={{ opacity: 0, scale: 0.95, x: -20 }}
-                                        animate={{ opacity: 1, scale: 1, x: 0 }}
-                                        transition={{ duration: duration.slow, ease: easing.carbonExpressive, delay: index * 0.1 }}
+                                    <div
                                         className="w-full h-full relative overflow-hidden"
                                     >
                                         <Image
@@ -135,7 +146,7 @@ export default function ProjectsPage() {
                                         <div className="absolute top-0 right-0 w-4 h-4 border-r border-t border-white/20 group-hover:border-cyan/40 transition-colors" />
                                         <div className="absolute bottom-0 left-0 w-4 h-4 border-l border-b border-white/20 group-hover:border-cyan/40 transition-colors" />
                                         <div className="absolute bottom-0 right-0 w-4 h-4 border-r border-b border-white/20 group-hover:border-cyan/40 transition-colors" />
-                                    </motion.div>
+                                    </div>
 
                                     {/* Scanlines effect */}
                                     <div className="absolute inset-0 pointer-events-none opacity-[0.4] group-hover:opacity-[0.6] transition-opacity duration-300"
@@ -168,7 +179,7 @@ export default function ProjectsPage() {
                                 </div>
                             </Link>
                         ))}
-                    </motion.div>
+                    </div>
                 </section>
             </div>
         </main>

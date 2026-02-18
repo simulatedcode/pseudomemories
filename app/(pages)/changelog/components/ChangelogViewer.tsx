@@ -2,8 +2,9 @@
 
 import { useState, useEffect, useRef } from "react";
 import ReactMarkdown from "react-markdown";
-import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown, ChevronUp } from "lucide-react";
+import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
 
 interface ChangelogViewerProps {
     content: string;
@@ -13,6 +14,8 @@ export default function ChangelogViewer({ content }: ChangelogViewerProps) {
     const [isExpanded, setIsExpanded] = useState(false);
     const [isOverflowing, setIsOverflowing] = useState(false);
     const contentRef = useRef<HTMLDivElement>(null);
+    const containerRef = useRef<HTMLDivElement>(null);
+    const maskRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         if (contentRef.current) {
@@ -21,33 +24,46 @@ export default function ChangelogViewer({ content }: ChangelogViewerProps) {
         }
     }, [content]);
 
+    useGSAP(() => {
+        if (!containerRef.current) return;
+
+        const targetHeight = isExpanded ? "auto" : (isOverflowing ? 600 : "auto");
+
+        gsap.to(containerRef.current, {
+            height: targetHeight,
+            duration: 0.5,
+            ease: "power2.inOut"
+        });
+
+        if (maskRef.current && isOverflowing) {
+            gsap.to(maskRef.current, {
+                opacity: isExpanded ? 0 : 1,
+                duration: 0.3,
+                pointerEvents: isExpanded ? "none" : "auto"
+            });
+        }
+
+    }, [isExpanded, isOverflowing]);
+
     return (
         <div className="relative">
-            <motion.div
-                layout
-                initial={false}
-                animate={{
-                    height: isExpanded ? "auto" : isOverflowing ? 600 : "auto",
-                }}
-                transition={{ duration: 0.5, ease: [0.32, 0.72, 0, 1] }}
-                className={`overflow-hidden relative ${!isExpanded && isOverflowing ? "mask-gradient-b" : ""}`}
+            <div
+                ref={containerRef}
+                className={`overflow-hidden relative`}
+                style={{ height: isOverflowing && !isExpanded ? 600 : 'auto' }}
             >
                 <div ref={contentRef}>
                     <ReactMarkdown>{content}</ReactMarkdown>
                 </div>
 
                 {/* Gradient Mask for collapsed state */}
-                <AnimatePresence>
-                    {!isExpanded && isOverflowing && (
-                        <motion.div
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            exit={{ opacity: 0 }}
-                            className="absolute bottom-0 left-0 right-0 h-32 bg-linear-to-t from-background to-transparent pointer-events-none"
-                        />
-                    )}
-                </AnimatePresence>
-            </motion.div>
+                {isOverflowing && (
+                    <div
+                        ref={maskRef}
+                        className="absolute bottom-0 left-0 right-0 h-32 bg-linear-to-t from-background to-transparent pointer-events-none"
+                    />
+                )}
+            </div>
 
             {/* Expand/Collapse Button */}
             {isOverflowing && (
