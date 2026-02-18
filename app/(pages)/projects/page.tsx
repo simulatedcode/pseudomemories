@@ -27,7 +27,7 @@ export default function ProjectsPage() {
         fetchCategories();
     }, []);
 
-    // Calculate dynamic horizontal range
+    // Calculate dynamic horizontal range (RTL)
     useEffect(() => {
         const calculateRange = () => {
             if (contentRef.current) {
@@ -66,10 +66,10 @@ export default function ProjectsPage() {
     });
 
     // Map vertical scroll to DYNAMIC horizontal movement (RTL: Scroll Right to reveal Left content)
-    const x = useTransform(smoothProgress, [1, 0], [-xRange, 0]);
+    const x = useTransform(smoothProgress, [0, 1], [0, -xRange]);
 
     return (
-        <main ref={containerRef} className="relative z-content w-full bg-background" style={{ height: `${categories.length * 60 + 100}vh` }}>
+        <main ref={containerRef} className="relative z-content w-full bg-background" style={{ height: `${categories.length * 50 + 100}vh` }}>
 
             {/* Sticky Viewport */}
             <div className="fixed top-0 h-screen w-full overflow-hidden flex flex-col md:flex-row bg-background">
@@ -118,8 +118,8 @@ export default function ProjectsPage() {
                                 <div className="w-full h-full relative overflow-hidden bg-white/5 border border-white/10 transition-colors group-hover:border-cyan/40">
                                     {/* Image Holder */}
                                     <motion.div
-                                        initial={{ opacity: 0, scale: 0.95 }}
-                                        animate={{ opacity: 1, scale: 1 }}
+                                        initial={{ opacity: 0, scale: 0.95, x: -20 }}
+                                        animate={{ opacity: 1, scale: 1, x: 0 }}
                                         transition={{ duration: duration.slow, ease: easing.carbonExpressive, delay: index * 0.1 }}
                                         className="w-full h-full relative overflow-hidden"
                                     >
