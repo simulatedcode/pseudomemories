@@ -25,8 +25,8 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
                     <IntroProvider>
                         <GeoProvider>
                             {!isSystemPage && <Intro />}
-                            {!isSystemPage && <HUDTopRight />}
                             <LenisScroll>
+                                {!isSystemPage && <HUDTopRight />}
                                 {!isSystemPage && <Header />}
                                 <PageTransition>
                                     <div className="relative min-h-screen w-full flex flex-col">
@@ -38,7 +38,6 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
                                     <div className="absolute inset-0 pointer-events-none opacity-[0.64] transition-opacity duration-300"
                                         style={{ background: 'repeating-linear-gradient(0deg, transparent 0px, transparent 1px, rgba(0,0,0,0.5) 1px, rgba(0,0,0,0.5) 2px)' }} />
                                 </PageTransition>
-                                {!isSystemPage && <Footer />}
                             </LenisScroll>
                         </GeoProvider>
                     </IntroProvider>

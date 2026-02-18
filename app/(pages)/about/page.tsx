@@ -48,6 +48,9 @@ export default function AboutPage() {
 
                 {/* Right: Scrollable Content */}
                 <div className="w-full md:w-[68%] h-[70vh] md:h-full overflow-y-auto no-scrollbar flex flex-col justify-center px-spacing-08 md:px-spacing-12 py-8 md:py-0">
+                    {/* HUD Grid Background */}
+                    <div className="fixed inset-0 pointer-events-none z-0 opacity-10"
+                        style={{ backgroundImage: 'radial-gradient(circle, #fff 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
                     {/* header */}
                     <motion.div
                         initial={{ opacity: 0, y: 30 }}

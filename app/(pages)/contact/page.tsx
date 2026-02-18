@@ -232,8 +232,13 @@ export default function ContactPage() {
                             </form>
                         </section>
                     </motion.div>
+
                 </div>
+                {/* HUD Grid Background */}
+                <div className="fixed inset-0 pointer-events-none z-0 opacity-10"
+                    style={{ backgroundImage: 'radial-gradient(circle, #fff 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
             </div>
+
         </div>
     );
 }

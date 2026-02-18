@@ -31,8 +31,8 @@ export default function SectionProjects() {
     });
 
     const headerFade = useTransform(fadeProgress, [0, 0.6, 1], [1, 1, 0]);
-    const headerY = useTransform(fadeProgress, [0, 0.25, 1], [160, 0, -120]);
-    const gridY = useTransform(fadeProgress, [0, 0.15, 0.8, 1], [240, 180, 0, -100]);
+    const headerY = useTransform(fadeProgress, [0, 0.2, 1], [140, 0, -120]);
+    const gridY = useTransform(fadeProgress, [0, 0.1, 0.8, 1], [220, 120, 0, -100]);
     const textOpacity = headerFade;
 
     const selectedProject = projects.find((p: SelectedProject) => p.id === selectedId);

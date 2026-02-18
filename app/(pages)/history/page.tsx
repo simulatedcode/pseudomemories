@@ -34,7 +34,7 @@ export default function UpdatesPage() {
                             Here you can find the latest updates on my work and exhibitions.
                         </p>
                         <div className="hidden md:block w-12 h-px bg-white/20 mt-8 mb-8" />
-                        <p className="hidden md:block font-doto text-micro text-white/40">
+                        <p className="hidden md:block font-doto text-caption text-white/40">
                             the last update was on {updates[0].date}
                         </p>
                     </motion.div>
@@ -42,6 +42,9 @@ export default function UpdatesPage() {
 
                 {/* Right: Scrollable Content */}
                 <div className="w-full md:w-[65%] h-[70vh] md:h-full overflow-hidden flex flex-col px-spacing-08 md:px-spacing-10 py-12 md:py-24">
+                    {/* HUD Grid Background */}
+                    <div className="fixed inset-0 pointer-events-none z-0 opacity-10"
+                        style={{ backgroundImage: 'radial-gradient(circle, #fff 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
                     <motion.div style={{ y }} className="relative flex flex-col gap-6 w-full">
                         {/* header */}
                         <div className="mb-12">

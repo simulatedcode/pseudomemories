@@ -52,7 +52,7 @@ export default function Home() {
             transition={{ duration: duration.cinematic, ease: easing.entrance, delay: 1.4 }}
             className="fixed inset-0 z-10 pointer-events-none"
           >
-            <Hero x="62%" y="2%" mobileX="92%" mobileY="2%" anchor="bottom" />
+            <Hero x="64%" y="2%" mobileX="92%" mobileY="2%" anchor="bottom" />
           </motion.div>
         )}
       </AnimatePresence>

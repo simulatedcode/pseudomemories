@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 import Link from "next/link";
 import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
@@ -15,7 +15,9 @@ export const dynamic = "force-dynamic";
 
 export default function ProjectsPage() {
     const [categories, setCategories] = useState<ImgCategory[]>([]);
+    const [xRange, setXRange] = useState(0);
     const containerRef = useRef<HTMLDivElement>(null);
+    const contentRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         const fetchCategories = async () => {
@@ -25,12 +27,46 @@ export default function ProjectsPage() {
         fetchCategories();
     }, []);
 
+    // Calculate dynamic horizontal range
+    useEffect(() => {
+        const calculateRange = () => {
+            if (contentRef.current) {
+                const contentWidth = contentRef.current.scrollWidth;
+                const windowWidth = window.innerWidth;
+                const sidebarWidth = windowWidth * 0.35; // md:w-[35%]
+                const horizontalViewportWidth = windowWidth - (windowWidth >= 768 ? sidebarWidth : 0);
+
+                // We want to scroll such that the end of the content aligns with the right edge
+                // The container is md:w-[65%], so we calculate within that viewport
+                const range = contentWidth - horizontalViewportWidth;
+                setXRange(Math.max(0, range));
+            }
+        };
+
+        calculateRange();
+        window.addEventListener("resize", calculateRange);
+
+        // Timeout to ensure content is rendered
+        const timer = setTimeout(calculateRange, 500);
+
+        return () => {
+            window.removeEventListener("resize", calculateRange);
+            clearTimeout(timer);
+        };
+    }, [categories]);
+
     const { scrollYProgress } = useScroll({
         target: containerRef,
     });
 
-    // Map vertical scroll to horizontal movement
-    const x = useTransform(scrollYProgress, [0, 1], ["0%", "-50%"]);
+    const smoothProgress = useSpring(scrollYProgress, {
+        stiffness: 100,
+        damping: 30,
+        restDelta: 0.001
+    });
+
+    // Map vertical scroll to DYNAMIC horizontal movement (RTL: Scroll Right to reveal Left content)
+    const x = useTransform(smoothProgress, [1, 0], [-xRange, 0]);
 
     return (
         <main ref={containerRef} className="relative z-content w-full bg-background" style={{ height: `${categories.length * 60 + 100}vh` }}>
@@ -65,9 +101,13 @@ export default function ProjectsPage() {
 
                 {/* Right: Horizontal Section */}
                 <section className="w-full md:w-[65%] h-[70vh] md:h-full flex items-center relative overflow-hidden">
+                    {/* HUD Grid Background */}
+                    <div className="fixed inset-0 pointer-events-none z-0 opacity-10"
+                        style={{ backgroundImage: 'radial-gradient(circle, #fff 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
                     <motion.div
+                        ref={contentRef}
                         style={{ x }}
-                        className="flex items-center gap-spacing-08 px-spacing-10"
+                        className="flex flex-row-reverse items-center gap-spacing-08 px-spacing-10"
                     >
                         {categories.map((category, index) => (
                             <Link
@@ -121,7 +161,7 @@ export default function ProjectsPage() {
                                     </div>
 
                                     {/* HUD Decorative Data */}
-                                    <div className="absolute top-4 right-4 font-doto text-[10px] text-white/20 flex flex-col items-end opacity-0 group-hover:opacity-100 transition-opacity">
+                                    <div className="absolute bottom-4 right-4 font-doto text-[10px] text-white/60 flex flex-col items-end opacity-0 group-hover:opacity-100 transition-opacity">
                                         <span>STATUS: LOCALIZED</span>
                                         <span>FRAGMENT: {category.id.toUpperCase()}</span>
                                     </div>
@@ -133,4 +173,5 @@ export default function ProjectsPage() {
             </div>
         </main>
     );
+
 }

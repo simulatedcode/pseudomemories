@@ -91,17 +91,41 @@ export function HUDNavRight({ hoveredItem, setHoveredItem }: HUDNavRightProps) {
                             </motion.span>
                             <div className="relative">
                                 <div
-                                    className={`w-2 h-2 rounded-full transition-all duration-75 ease-out ${hoveredItem === item.label ? "bg-white" : "bg-white/40"
+                                    className={`w-2 h-2 rounded-full transition-all duration-75 ease-out ${hoveredItem === item.label ? "bg-white" : "bg-white/80"
                                         }`}
                                     style={{
-                                        transform: hoveredItem === item.label ? 'scale(1.25)' : `scale(${audioScale})`,
+                                        transform: hoveredItem === item.label ? 'scale(1.15)' : `scale(${audioScale})`,
                                         opacity: hoveredItem === item.label ? 1 : audioOpacity
                                     }}
                                 />
+
+                                {/* Animated Line Circle on Hover */}
+                                <svg className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-8 h-8 pointer-events-none overflow-visible">
+                                    <motion.circle
+                                        cx="16"
+                                        cy="16"
+                                        r="12"
+                                        fill="none"
+                                        stroke="white"
+                                        strokeWidth="0.8"
+                                        initial={{ pathLength: 0, opacity: 0, scale: 0.6 }}
+                                        animate={{
+                                            pathLength: hoveredItem === item.label ? 1 : 0,
+                                            opacity: hoveredItem === item.label ? 0.6 : 0,
+                                            scale: hoveredItem === item.label ? 1 : 0.6
+                                        }}
+                                        transition={{
+                                            duration: 0.8,
+                                            ease: easing.carbonExpressive,
+                                        }}
+                                        style={{ rotate: -90 }}
+                                    />
+                                </svg>
+
                                 {(hoveredItem === item.label || audioLevels[index] > 0.3) && (
                                     <motion.div
                                         layoutId={`nav-dot-glow-${index}`}
-                                        className="absolute inset-0 bg-white/40 rounded-full blur-xs"
+                                        className="absolute inset-0 bg-white/50 rounded-full blur-md"
                                         style={{
                                             opacity: hoveredItem === item.label ? 1 : audioLevels[index]
                                         }}

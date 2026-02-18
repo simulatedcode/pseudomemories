@@ -25,7 +25,7 @@ export default function SectionIntro() {
                         const end = start + 0.3;
 
                         // eslint-disable-next-line react-hooks/rules-of-hooks
-                        const opacity = useTransform(scrollYProgress, [start, start + 0.1], [0, 1]);
+                        const opacity = useTransform(scrollYProgress, [start, start + 0.1, end - 0.1, end], [0, 1, 1, 0]);
                         // eslint-disable-next-line react-hooks/rules-of-hooks
                         const y = useTransform(scrollYProgress, [start, end], [30, -30]);
 
