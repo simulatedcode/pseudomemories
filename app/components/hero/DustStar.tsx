@@ -2,12 +2,16 @@
 
 import { useRef, Suspense, useMemo, useEffect, useState } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { Points, PointMaterial, Html } from "@react-three/drei";
 import * as THREE from "three";
 import { useGeo } from "../../context/GeoContextCore";
 import { useSkyTime } from "../../hooks/useSkyTime";
-import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
 import Loader from "../ui/Loader";
+import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { Html } from "@react-three/drei";
+
+gsap.registerPlugin(ScrollTrigger);
 
 /* ================= STAR FIELD ================= */
 
@@ -216,9 +220,7 @@ const DustStar = ({
 }) => {
     const { latitude, longitude } = useGeo();
     const lst = useSkyTime(longitude);
-
-    const { scrollYProgress } = useScroll();
-    const yOffset = useTransform(scrollYProgress, [0, 1], [0, -50]); // Subtly move stars
+    const containerRef = useRef<HTMLDivElement>(null);
 
     const [eventSource, setEventSource] = useState<HTMLElement | undefined>(undefined);
 
@@ -228,12 +230,28 @@ const DustStar = ({
         }
     }, []);
 
+    useGSAP(() => {
+        if (containerRef.current) {
+            // Parallax effect: Subtly move stars up/down on scroll
+            gsap.to(containerRef.current, {
+                y: -50,
+                ease: "none",
+                scrollTrigger: {
+                    trigger: document.body,
+                    start: "top top",
+                    end: "bottom bottom", // Scroll across page
+                    scrub: true
+                }
+            });
+        }
+    });
+
     return (
         <>
-            <motion.div
+            <div
+                ref={containerRef}
                 className="fixed top-0 left-0 right-0 z-0 pointer-events-none bottom-[25vh] sm:bottom-[25vh] lg:bottom-[30vh] xl:bottom-[35vh]"
                 style={{
-                    y: yOffset,
                     background: "transparent",
                 }}
             >
@@ -299,7 +317,7 @@ const DustStar = ({
                         </SkyRotation>
                     </Suspense>
                 </Canvas>
-            </motion.div>
+            </div>
         </>
     );
 };

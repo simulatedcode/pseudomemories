@@ -5,8 +5,8 @@ import ClientLayout from "./components/ClientLayout";
 import { CustomCursor } from "./components/CustomCursor";
 import "./globals.css";
 import { Metadata } from "next";
-import { Analytics } from "@vercel/analytics/next";
-import { SpeedInsights } from "@vercel/speed-insights/next";
+import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/react";
 
 
 const electrolize = Electrolize({
@@ -57,7 +57,7 @@ export const metadata: Metadata = {
 
 import { HUDFrame } from "./components/ui/HUDFrame";
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
@@ -68,8 +68,6 @@ export default function RootLayout({
         className={`${electrolize.variable} ${doto.variable} ${ibmplexmono.variable} ${iawriter.variable} antialiased`}
       >
         <GoogleAnalytics />
-        <SpeedInsights />
-        <Analytics />
         <CustomCursor />
         <ClientLayout>
           <HUDFrame />
@@ -79,6 +77,6 @@ export default function RootLayout({
         <Analytics />
         <SpeedInsights />
       </body>
-    </html >
+    </html>
   );
 }

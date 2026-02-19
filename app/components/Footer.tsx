@@ -1,10 +1,14 @@
 "use client";
 
 import React, { useState, useRef } from "react";
-import { motion, useInView, AnimatePresence, easeOut } from "framer-motion";
 import { ScrambleText } from "./ui/ScrambleText"
 import { useIntro } from "../context/IntroContextCore";
 import pkg from "../../package.json";
+import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 type TechRowProps = {
     label: string;
@@ -12,20 +16,55 @@ type TechRowProps = {
     delay?: number;
 };
 
+// Simplified TechRow as animations will be handled by parent or simple refs if needed
+// Actually, GSAP batching is best done in parent.
+// But for simplicity, we can just use useGSAP in each row or parent. 
+// Given the original had useInView per row, we can just use ScrollTrigger per row.
+
 function TechRow({ label, value, delay = 0 }: TechRowProps) {
     const ref = useRef<HTMLTableRowElement | null>(null);
-    const isInView = useInView(ref, { once: false, amount: 0.4 });
     const [isHovered, setIsHovered] = useState(false);
 
+    useGSAP(() => {
+        if (!ref.current) return;
+
+        gsap.fromTo(ref.current,
+            { opacity: 0, y: 8 },
+            {
+                opacity: 1,
+                y: 0,
+                duration: 0.3,
+                ease: "power2.out", // easeOut equivalent
+                delay: delay,
+                scrollTrigger: {
+                    trigger: ref.current,
+                    start: "top 95%",
+                    toggleActions: "play none none reverse"
+                }
+            }
+        );
+    }, [delay]);
+
+    // Check visibility for ScrambleText trigger using ScrollTrigger's isActive or manually?
+    // ScrambleText uses a boolean trigger. 
+    // We can use a state that ScrollTrigger toggles.
+    const [isInView, setIsInView] = useState(false);
+
+    useGSAP(() => {
+        ScrollTrigger.create({
+            trigger: ref.current,
+            start: "top 95%",
+            onEnter: () => setIsInView(true),
+            onLeaveBack: () => setIsInView(false)
+        });
+    }, []);
+
     return (
-        <motion.tr
+        <tr
             ref={ref}
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
-            initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay, duration: 0.3, ease: "easeOut" }}
-            className="border-b border-white/10 hover:bg-white/5 transition"
+            className="border-b border-white/10 hover:bg-white/5 transition opacity-0 translate-y-2" // Initial state matching GSAP from
         >
             <td className="px-3 py-2 font-electrolize text-[10px] uppercase tracking-widest opacity-60">
                 {label}
@@ -38,29 +77,40 @@ function TechRow({ label, value, delay = 0 }: TechRowProps) {
                     trigger={isInView || isHovered}
                 />
             </td>
-        </motion.tr>
+        </tr>
     );
 }
 
 export function Footer() {
     const [isOpen, setIsOpen] = useState(false);
-
-    const handleToggle = (open: boolean) => {
-        setIsOpen(open);
-    };
-
     const [isCopyrightHovered, setIsCopyrightHovered] = useState(false);
     const [isGithubHovered, setIsGithubHovered] = useState(false);
     const { isComplete } = useIntro();
     const [refId, setRefId] = useState(`v${pkg.version}`);
+    const pulseRef = useRef<HTMLDivElement>(null);
 
     React.useEffect(() => {
         // Version is static for the session
     }, []);
 
+    useGSAP(() => {
+        if (pulseRef.current) {
+            gsap.to(pulseRef.current, {
+                opacity: 0.5,
+                duration: 2,
+                repeat: -1,
+                yoyo: true, // Animates back to original opacity (1) then to 0.5...
+                ease: "power1.inOut"
+            });
+            // Original FM: [0.5, 1, 0.5]
+            // GSAP pulse: from default (likely 1 or defined class) to 0.5 yoyo
+            // If starting opacity is 1, yoyo to 0.5 and back works.
+        }
+    }, []);
+
     return (
-        <footer className="relative hidden md:flex bottom-0 z-content w-full min-h-32 bg-background/80 backdrop-blur-lg flex-col justify-center items-center py-spacing-07">
-            <div className="w-full max-w-4xl px-spacing-04 flex flex-col gap-spacing-04 ">
+        <footer className="fixed hidden md:flex bottom-0 z-content w-full min-h-32 flex-col justify-center items-center py-spacing-07">
+            <div className="w-full max-w-4xl px-spacing-04 py-spacing-04 flex flex-col gap-spacing-04 border border-white/10 bg-background/5 backdrop-blur-md ">
 
                 {/* Header Section */}
                 <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-spacing-05 border-b border-white/10 pb-spacing-04">
@@ -77,10 +127,9 @@ export function Footer() {
                         <div className="flex justify-end gap-spacing-02 items-center bg-white/5 border border-white/10 backdrop-blur-md p-spacing-02 px-2">
                             <span className="font-electrolize text-micro uppercase text-white/50">Status</span>
                             <span className="flex items-center gap-spacing-01 font-doto text-micro uppercase text-white/50 tracking-widest">
-                                <motion.div
+                                <div
+                                    ref={pulseRef}
                                     className="w-2 h-2 rounded-full bg-green-600 mr-spacing-01"
-                                    animate={{ opacity: [0.5, 1, 0.5] }}
-                                    transition={{ duration: 2, repeat: Infinity }}
                                 />
                                 Online
                             </span>
@@ -100,7 +149,7 @@ export function Footer() {
                     </div>
                     <div>
                         <span className="font-doto text-[10px] uppercase tracking-widest text-white/80">
-                            REF: {refId}
+                            Last version: {refId}
                         </span>
                     </div>
                 </div>

@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.2.2](https://github.com/simulatedcode/pseudomemories/compare/v0.2.1...v0.2.2) (2026-02-19)
+
+
+### Features
+
+* Configure Google Analytics with `cookie_domain: 'none'` and update environment variable assertion to warn instead of throwing errors. ([39919d4](https://github.com/simulatedcode/pseudomemories/commit/39919d424d4749ab6e0262b4072bee80b007a1b9))
+* force dynamic rendering for the tool page ([6d869fe](https://github.com/simulatedcode/pseudomemories/commit/6d869fef49c61ea3949eecf6bb290dc8283880c0))
+* Implement dynamic horizontal scrolling for projects, refine hero and intro section animations, and enhance HUD navigation and backgrounds. ([a4e945e](https://github.com/simulatedcode/pseudomemories/commit/a4e945e80c087a9c39346daea8c718ff19b1d8f3))
+* Implement Next.js draft mode with API routes and Sanity preview client integration. ([89e8afc](https://github.com/simulatedcode/pseudomemories/commit/89e8afc31a5bdcb0241ca081b1994851387b2dcb))
+* Implement Sanity Visual Editing and new Draft Mode API with token-based authentication. ([8f32847](https://github.com/simulatedcode/pseudomemories/commit/8f3284765e158f2d1f8fec376a96e72c7f312f48))
+* Integrate Sanity CMS for dynamic project and category data management, replacing local data sources. ([b9d0f86](https://github.com/simulatedcode/pseudomemories/commit/b9d0f86bebcb122342d8bfb259d35757080cfab8))
+* introduce SectionIntro, refactor scroll animations, and update layout with fixed footer and removed project assets. ([c495f04](https://github.com/simulatedcode/pseudomemories/commit/c495f04bedd73a97735c24523c3c51669773f185))
+* Migrate animation system to GSAP, add HUD scanline, and update various UI components. ([d3a5a8f](https://github.com/simulatedcode/pseudomemories/commit/d3a5a8fe47c680652291ad42d111c23f347a8340))
+* refine project section animations and styling, adjust intro typing speed, update project modal layout, and remove Sanity presentation tool ([09129fe](https://github.com/simulatedcode/pseudomemories/commit/09129fea7af560efffc7df1133e6ec6871104704))
+* remove Sanity client configuration ([2d5c906](https://github.com/simulatedcode/pseudomemories/commit/2d5c9066e309c8f07072754d8b7420004fdc84e0))
+* Update Sanity environment configuration and projects page, triggering a full rebuild of static assets. ([27de899](https://github.com/simulatedcode/pseudomemories/commit/27de8991927cb1ea1e20e7ef08c70747de203899))
+
 ### [0.2.1](https://github.com/simulatedcode/pseudomemories/compare/v0.1.2...v0.2.1) (2026-02-16)
 
 

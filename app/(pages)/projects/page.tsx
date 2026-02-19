@@ -1,36 +1,101 @@
 "use client";
 
-import { motion, useScroll, useTransform } from "framer-motion";
 import Link from "next/link";
-import { useRef } from "react";
+import { useState, useEffect, useRef } from "react";
+import Image from "next/image";
 import { duration, easing } from "@/app/lib/motion-tokens";
-import { img_categories } from "@/app/data/img_category";
+import { ImgCategory } from "@/app/data/img_category";
 import { ScrambleText } from "@/app/components/ui/ScrambleText";
+import { client } from "@/sanity/lib/client";
+import { ALL_CATEGORIES_QUERY } from "@/sanity/lib/queries";
+import { urlFor } from "@/sanity/lib/image";
+import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
+
+export const dynamic = "force-dynamic";
 
 export default function ProjectsPage() {
+    const [categories, setCategories] = useState<ImgCategory[]>([]);
     const containerRef = useRef<HTMLDivElement>(null);
-    const { scrollYProgress } = useScroll({
-        target: containerRef,
-    });
+    const contentRef = useRef<HTMLDivElement>(null);
+    const sidebarRef = useRef<HTMLDivElement>(null);
+    const scrollSectionRef = useRef<HTMLDivElement>(null);
 
-    // Map vertical scroll to horizontal movement
-    // The content moves left as we scroll down
-    const x = useTransform(scrollYProgress, [0, 1], ["0%", "-43%"]);
+    useEffect(() => {
+        const fetchCategories = async () => {
+            const data = await client.fetch(ALL_CATEGORIES_QUERY);
+            setCategories(data);
+        };
+        fetchCategories();
+    }, []);
+
+    useGSAP(() => {
+        if (!contentRef.current || !scrollSectionRef.current || categories.length === 0) return;
+
+        // Calculate scroll width
+        const getScrollAmount = () => {
+            // In horizontal scrolling, we want to move the content to the left.
+            // But since it is flex-row-reverse, the first item is on the right.
+            // We want to scroll to reveal the left items.
+            // So we translate the container to the RIGHT (positive x)?
+            // Or if we translate purely based on width:
+            return -(contentRef.current!.scrollWidth - scrollSectionRef.current!.offsetWidth);
+        };
+
+        const context = gsap.context(() => {
+            // Sidebar Entrance
+            if (sidebarRef.current) {
+                gsap.fromTo(sidebarRef.current,
+                    { opacity: 0, y: 30 },
+                    { opacity: 1, y: 0, duration: duration.slow, ease: easing.carbonExpressive }
+                );
+            }
+
+            // Cards Entrance
+            // We can animate them in one by one or all together.
+            const cards = gsap.utils.toArray(".project-card");
+            gsap.fromTo(cards,
+                { opacity: 0, scale: 0.95, x: -20 },
+                { opacity: 1, scale: 1, x: 0, duration: duration.slow, ease: easing.carbonExpressive, stagger: 0.1 }
+            );
+
+            // Horizontal Scroll
+            const xMove = getScrollAmount();
+
+            // We only enable horizontal scroll if there is overflow
+            if (contentRef.current && scrollSectionRef.current && contentRef.current.scrollWidth > scrollSectionRef.current.offsetWidth) {
+                gsap.to(contentRef.current, {
+                    x: () => -(contentRef.current!.scrollWidth - scrollSectionRef.current!.offsetWidth),
+                    ease: "none",
+                    scrollTrigger: {
+                        trigger: containerRef.current,
+                        start: "top top",
+                        end: "bottom bottom",
+                        scrub: 1, // Smooth interaction
+                        invalidateOnRefresh: true,
+                    }
+                });
+            }
+        });
+
+        return () => context.revert();
+
+    }, [categories]);
 
     return (
-        // Outer container provides the scrollable height
-        <div ref={containerRef} className="relative z-content w-full" style={{ height: `${img_categories.length * 50 + 100}vh` }}>
+        <main ref={containerRef} className="relative z-content w-full bg-background" style={{ height: `${Math.max(200, categories.length * 50 + 100)}vh` }}>
 
             {/* Sticky Viewport */}
-            <div className="fixed top-0 h-screen w-full overflow-hidden flex flex-col md:flex-row bg-background px-3">
+            <div className="fixed top-0 h-screen w-full overflow-hidden flex flex-col md:flex-row bg-background">
 
-                {/* Left: Pinned Sidebar */}
-                <div className="w-full md:w-[35%] h-[30vh] md:h-full flex flex-col justify-center px-6 md:px-spacing-10 py-8 md:py-0 border-b md:border-b-0 md:border-r border-white/10 z-20 bg-background/80 backdrop-blur-sm">
-                    <motion.div
-                        initial={{ opacity: 0, y: 30 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: duration.slow, ease: easing.carbonExpressive }}
-                        className="flex flex-col gap-6"
+                {/* Left: Sticky Sidebar */}
+                <aside className="w-full md:w-[35%] h-[30vh] md:h-full flex flex-col justify-center px-6 md:px-spacing-10 py-12 md:py-0 border-b md:border-b-0 md:border-r border-white/10 z-20 bg-background/80 backdrop-blur-sm">
+                    <div
+                        ref={sidebarRef}
+                        className="flex flex-col gap-6 opacity-0 translate-y-8"
                     >
                         <span className="font-doto text-micro uppercase tracking-widest text-cyan block items-center gap-2">
                             <span className="w-2 h-2 inline-block rounded-full bg-cyan mr-2 animate-pulse" />
@@ -46,70 +111,78 @@ export default function ProjectsPage() {
                         <p className="hidden md:block font-doto text-micro text-white/40">
                             Scroll to navigate <span className="animate-bounce inline-block ml-1">↓</span>
                         </p>
-                    </motion.div>
-                </div>
+                    </div>
+                </aside>
 
-                {/* Right: Horizontal Scroll Section */}
-                <div className="w-screen md:w-[65%] h-[60vh] md:h-full overflow-hidden flex items-center relative bg-background">
-                    <motion.div
-                        style={{ x }}
-                        className="flex items-center gap-spacing-04 md:gap-spacing-06 pl-spacing-06 md:pl-spacing-08 pr-[230vw] md:pr-[50vw] mask-to-r"
+                {/* Right: Horizontal Section */}
+                <section ref={scrollSectionRef} className="w-full md:w-[65%] h-[70vh] md:h-full flex items-center relative overflow-hidden">
+                    {/* HUD Grid Background */}
+                    <div className="fixed inset-0 pointer-events-none z-0 opacity-10"
+                        style={{ backgroundImage: 'radial-gradient(circle, #fff 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
+                    <div
+                        ref={contentRef}
+                        className="flex flex-row-reverse items-center gap-spacing-08 px-spacing-10 w-max"
                     >
-                        {img_categories.map((category, index) => (
+                        {categories.map((category, index) => (
                             <Link
                                 key={category.id}
                                 href={`/projects/${category.id}`}
-                                className="relative flex-none group w-[82vw] md:w-[45vw] lg:w-[35vw] aspect-4/5 md:aspect-4/5"
+                                className="relative flex-none group w-[80vw] md:w-[45vw] lg:w-[35vw] aspect-4/5 project-card"
                             >
-                                <div className="w-full h-full relative overflow-hidden">
-                                    {/* Image Placeholder */}
-                                    <motion.div
-                                        initial={{ opacity: 0, x: -20 }}
-                                        animate={{ opacity: 1, x: 0 }}
-                                        transition={{ duration: duration.slow, ease: easing.carbonExpressive }}
-                                        className="w-full h-full relative bg-zinc-900 border border-white/10 overflow-hidden"
+                                <div className="w-full h-full relative overflow-hidden bg-white/5 border border-white/10 transition-colors group-hover:border-cyan/40">
+                                    {/* Image Holder */}
+                                    <div
+                                        className="w-full h-full relative overflow-hidden"
                                     >
-                                        <div className="absolute inset-0 flex items-center justify-center text-white/20 font-doto uppercase tracking-widest text-micro group-hover:text-white/40 transition-colors">
-                                            [ Portrait Placeholder ]
-                                        </div>
+                                        <Image
+                                            src={urlFor(category.image).url()}
+                                            alt={category.title}
+                                            fill
+                                            className="object-cover transition-all duration-700 ease-out grayscale group-hover:grayscale-0 scale-110 group-hover:scale-100 opacity-60 group-hover:opacity-100"
+                                        />
+
                                         {/* Decorative corners */}
-                                        <div className="absolute top-0 left-0 w-4 h-4 border-l border-t border-white/30" />
-                                        <div className="absolute top-0 right-0 w-4 h-4 border-r border-t border-white/30" />
-                                        <div className="absolute bottom-0 left-0 w-4 h-4 border-l border-b border-white/30" />
-                                        <div className="absolute bottom-0 right-0 w-4 h-4 border-r border-b border-white/30" />
-                                    </motion.div>
+                                        <div className="absolute top-0 left-0 w-4 h-4 border-l border-t border-white/20 group-hover:border-cyan/40 transition-colors" />
+                                        <div className="absolute top-0 right-0 w-4 h-4 border-r border-t border-white/20 group-hover:border-cyan/40 transition-colors" />
+                                        <div className="absolute bottom-0 left-0 w-4 h-4 border-l border-b border-white/20 group-hover:border-cyan/40 transition-colors" />
+                                        <div className="absolute bottom-0 right-0 w-4 h-4 border-r border-b border-white/20 group-hover:border-cyan/40 transition-colors" />
+                                    </div>
+
                                     {/* Scanlines effect */}
-                                    <div className="absolute inset-0 pointer-events-none opacity-[1.15] group-hover:opacity-[1.25] transition-opacity duration-300"
+                                    <div className="absolute inset-0 pointer-events-none opacity-[0.4] group-hover:opacity-[0.6] transition-opacity duration-300"
                                         style={{ background: 'repeating-linear-gradient(0deg, transparent 0px, transparent 1px, rgba(0,0,0,0.5) 1px, rgba(0,0,0,0.5) 2px)' }} />
 
-                                    {/* Cyan Hover Overlay & Border */}
-                                    <div className="absolute inset-0 border-[0.08px] border-transparent group-hover:border-cyan/40 bg-cyan/0 group-hover:bg-cyan/5 transition-all duration-300 pointer-events-none" />
+                                    {/* Overlay Gradient */}
+                                    <div className="absolute inset-0 bg-linear-to-t from-background/80 via-transparent to-transparent opacity-60 group-hover:opacity-100 transition-opacity" />
 
-                                    {/* Content Overlay */}
-                                    <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-500">
-                                        <div className="flex items-center justify-between mb-2">
+                                    {/* Content */}
+                                    <div className="absolute bottom-0 left-0 right-0 p-6 md:p-10 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-500">
+                                        <div className="flex items-center gap-2 mb-2">
                                             <span className="font-doto text-micro uppercase tracking-widest text-cyan">
-                                                CAT.{String(index + 1).padStart(2, '0')}
+                                                CAT_{String(index + 1).padStart(2, '0')}
                                             </span>
+                                            <div className="h-px flex-1 bg-cyan/20 group-hover:bg-cyan/40 transition-colors" />
                                         </div>
-                                        <h3 className="font-electrolize text-h4 md:text-h3 text-white mb-2">
+                                        <h3 className="font-electrolize text-h3 text-white">
                                             {category.title}
                                         </h3>
-                                        <p className="font-iawriter text-micro md:text-caption text-white/60 line-clamp-2 md:line-clamp-none opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100">
+                                        <p className="font-iawriter text-micro text-white/40 group-hover:text-white/60 transition-colors line-clamp-1 mt-1">
                                             {category.description}
                                         </p>
                                     </div>
 
-                                    {/* ID Number */}
-                                    <div className="absolute top-4 right-4 font-doto text-h2 md:text-h1 text-white/5 group-hover:text-white/10 transition-colors duration-500 leading-none select-none">
-                                        {String(index + 1).padStart(2, '0')}
+                                    {/* HUD Decorative Data */}
+                                    <div className="absolute bottom-4 right-4 font-doto text-[10px] text-white/60 flex flex-col items-end opacity-0 group-hover:opacity-100 transition-opacity">
+                                        <span>STATUS: LOCALIZED</span>
+                                        <span>FRAGMENT: {category.id.toUpperCase()}</span>
                                     </div>
                                 </div>
                             </Link>
                         ))}
-                    </motion.div>
-                </div>
+                    </div>
+                </section>
             </div>
-        </div>
+        </main>
     );
+
 }

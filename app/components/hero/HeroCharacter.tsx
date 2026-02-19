@@ -1,8 +1,7 @@
-import { useMemo, Suspense, useRef } from "react";
+import { useMemo, Suspense } from "react";
 import { Canvas, useThree } from "@react-three/fiber";
 import { useTexture, Html } from "@react-three/drei";
 import { EffectComposer, Bloom } from "@react-three/postprocessing";
-import { motion, useScroll, useTransform } from "framer-motion";
 import * as THREE from "three";
 import Loader from "../ui/Loader";
 
@@ -107,12 +106,9 @@ export function CharacterSprite({ x = 204, y = -540, mobileX, mobileY, anchor = 
 }
 
 export default function HeroCharacter(props: HeroCharacterProps) {
-    const { scrollYProgress } = useScroll();
-    const yOffset = useTransform(scrollYProgress, [0, 1], [0, -100]);
-
+    // Canvas independent of Framer Motion logic now
     return (
-        <motion.div
-            style={{ y: yOffset }}
+        <div
             className="fixed inset-0 z-10 pointer-events-none"
         >
             <Canvas
@@ -124,16 +120,16 @@ export default function HeroCharacter(props: HeroCharacterProps) {
                 <Suspense fallback={<Html center><Loader /></Html>}>
                     <CharacterSprite {...props} />
                     {/* Bloom disabled for performance */}
-                    {/* <EffectComposer enableNormalPass={false}>
+                    <EffectComposer enableNormalPass={false}>
                         <Bloom
                             luminanceThreshold={5.5}
                             mipmapBlur
                             intensity={1.2}
                             radius={0.5}
                         />
-                    </EffectComposer> */}
+                    </EffectComposer>
                 </Suspense>
             </Canvas>
-        </motion.div>
+        </div>
     );
 }

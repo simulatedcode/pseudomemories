@@ -15,36 +15,17 @@ export const duration = {
 
 export const easing = {
     // Custom cubic-bezier for "memory fade" - hesitant start, smooth end
-    memoryFade: [0.3, 0, 0.2, 1] as const,
+    memoryFade: "power2.inOut",
     // Soft ease for standard transitions
-    soft: [0.32, 0.72, 0, 1] as const,
+    soft: "power2.out",
     // Gentle entrance for content
-    entrance: [0.4, 0, 0.6, 1] as const,
+    entrance: "power3.out",
     // Carbon Design System - expressive entrance
-    carbonExpressive: [0, 0, 0.38, 0.9] as const,
+    carbonExpressive: "expo.out",
     // Carbon Design System - soft variant
-    carbonSoft: [0.2, 0, 0.38, 0.9] as const,
+    carbonSoft: "sine.out",
 };
 
-export const variants = {
-    // Fade only - strictly no layout shift
-    fade: {
-        hidden: { opacity: 0 },
-        visible: { opacity: 1 },
-    },
-    // Fade with subtle Y drift (20px) - safe for most containers
-    fadeDrift: {
-        hidden: { opacity: 0, y: 20 },
-        visible: { opacity: 1, y: 0 },
-    },
-    // Stagger children
-    staggerContainer: {
-        hidden: {},
-        visible: {
-            transition: {
-                staggerChildren: 0.15,
-                delayChildren: 0.3,
-            },
-        },
-    },
-};
+// GSAP doesn't use variants in the same way, but we can keep these as reference or remove them.
+// For now, removing them to avoid confusion and enforce direct GSAP usage.
+

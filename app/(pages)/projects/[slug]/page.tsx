@@ -1,40 +1,30 @@
-import { use } from "react";
-import { selectedProjects } from "@/app/data/selected_project";
-import { img_categories } from "@/app/data/img_category";
+"use client";
+
+import { use, useState, useEffect } from "react";
 import CategoryClient from "./CategoryClient";
-
-// Import category-specific data
-import { sketchProjects } from "@/app/data/gallery/sketch";
-import { watercolorProjects } from "@/app/data/gallery/watercolor";
-import { printingProjects } from "@/app/data/gallery/printing";
-import { otherProjects } from "@/app/data/gallery/other";
-
-const categoryDataMap: Record<string, any[]> = {
-    sketch: sketchProjects,
-    watercolor: watercolorProjects,
-    printing: printingProjects,
-    other: otherProjects,
-};
+import { client } from "@/sanity/lib/client";
+import { CATEGORY_BY_ID_QUERY, PROJECTS_BY_CATEGORY_QUERY } from "@/sanity/lib/queries";
 
 interface PageProps {
     params: Promise<{ slug: string }>;
 }
 
-export function generateStaticParams() {
-    return img_categories.map((category) => ({
-        slug: category.id,
-    }));
-}
-
 export default function CategoryPage({ params }: PageProps) {
     const { slug } = use(params);
-    const category = img_categories.find(c => c.id === slug);
+    const [category, setCategory] = useState<any>(null);
+    const [categoryProjects, setCategoryProjects] = useState<any[]>([]);
 
-    // Merge "selected" projects from projects.ts and specific category projects
-    const selectedProjectsInCategory = selectedProjects.filter(p => p.category === slug);
-    const specificCategoryProjects = categoryDataMap[slug] || [];
-
-    const categoryProjects = [...selectedProjectsInCategory, ...specificCategoryProjects];
+    useEffect(() => {
+        const fetchData = async () => {
+            const [catData, projectsData] = await Promise.all([
+                client.fetch(CATEGORY_BY_ID_QUERY, { id: slug }),
+                client.fetch(PROJECTS_BY_CATEGORY_QUERY, { categoryId: slug })
+            ]);
+            setCategory(catData);
+            setCategoryProjects(projectsData);
+        };
+        fetchData();
+    }, [slug]);
 
     if (!category) {
         return null;

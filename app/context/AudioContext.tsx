@@ -1,7 +1,6 @@
 "use client";
 
 import { useRef, useState, ReactNode, useEffect } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
 import { SineWaveform } from "../components/ui/SineWaveform";
 import { AudioContext } from "./AudioContextCore";
 
@@ -44,16 +43,6 @@ export function AudioProvider({ children }: { children: ReactNode }) {
 
         setPlaying(!playing);
     };
-
-    const { scrollYProgress } = useScroll();
-
-    // When scroll reaches the bottom (0.98 to 1.0), slide the player up
-    // -64px (approx gap-16) to clear the footer and add gap-6
-    const translateY = useTransform(
-        scrollYProgress,
-        [0.98, 1],
-        [0, -46]
-    );
 
     return (
         <AudioContext.Provider value={{ audioEnabled, setAudioEnabled, playing, togglePlay, playAudio }}>

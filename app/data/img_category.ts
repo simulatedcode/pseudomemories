@@ -2,7 +2,7 @@ export interface ImgCategory {
     id: string;
     title: string;
     description: string;
-    image: string;
+    image: any;
 }
 
 export const img_categories: ImgCategory[] = [
