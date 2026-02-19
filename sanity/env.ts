@@ -13,17 +13,23 @@ export const projectId = assertValue(
 
 export const token = process.env.SANITY_API_READ_TOKEN
 
+export const readToken = process.env.SANITY_API_READ_TOKEN
+export const revalidateSecret = process.env.SANITY_REVALIDATE_SECRET
+
 function assertValue<T>(v: T | undefined, errorMessage: string): T {
-  if (v === undefined) {
-    // Use a more prominent error message for production troubleshooting
-    console.error(
-      `🔴 Sanity Configuration Error: ${errorMessage}\n\n` +
-      `To fix this, please follow these steps:\n` +
-      `1. Go to your project settings in Sanity.io and get your Project ID.\n` +
-      `2. Go to your Vercel Dashboard -> Project Settings -> Environment Variables.\n` +
-      `3. Add 'NEXT_PUBLIC_SANITY_PROJECT_ID' and 'NEXT_PUBLIC_SANITY_DATASET'.\n` +
-      `4. Trigger a new deployment on Vercel.\n`
-    );
+  if (v === undefined || v === '') {
+    // Check if we're in a browser environment to avoid spamming server logs
+    // but still provide clear feedback where it's most needed.
+    const isBrowser = typeof window !== 'undefined';
+
+    const fullError = `🔴 Sanity Configuration Error: ${errorMessage}\n\n` +
+      `To fix this, ensure 'NEXT_PUBLIC_SANITY_PROJECT_ID' and 'NEXT_PUBLIC_SANITY_DATASET' \n` +
+      `are set in your .env.local (local) or Vercel Project Settings (production).`;
+
+    if (isBrowser) {
+      console.error(fullError);
+    }
+
     return 'build-time-placeholder' as unknown as T;
   }
 
