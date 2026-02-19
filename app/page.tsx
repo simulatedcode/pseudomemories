@@ -13,7 +13,6 @@ gsap.registerPlugin(ScrollTrigger);
 
 /* Effects */
 const DustStar = dynamic(() => import("@/app/components/hero/DustStar"), { ssr: false });
-const SectionIntro = dynamic(() => import("@/app/components/hero/SectionIntro"), { ssr: false });
 const SectionProjects = dynamic(() => import("@/app/components/hero/SectionProjects"), { ssr: false });
 
 /* Hero (Grid + Character merged) */
@@ -90,7 +89,6 @@ export default function Home() {
         {/* Sections: No delay/fade here to prevent gaps */}
         {isComplete && (
           <>
-            <SectionIntro />
             <SectionProjects />
           </>
         )}
