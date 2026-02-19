@@ -15,8 +15,8 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
-export default function SectionProjects() {
-    const [projects, setProjects] = useState<SelectedProject[]>([]);
+export default function SectionProjects({ initialProjects = [] }: { initialProjects?: SelectedProject[] }) {
+    const [projects, setProjects] = useState<SelectedProject[]>(initialProjects);
     const [selectedId, setSelectedId] = useState<number | null>(null);
     const containerRef = useRef<HTMLElement>(null);
     const headerRef = useRef<HTMLDivElement>(null);
@@ -24,12 +24,10 @@ export default function SectionProjects() {
     const lenis = useLenis();
 
     useEffect(() => {
-        const fetchProjects = async () => {
-            const data = await client.fetch(ALL_PROJECTS_QUERY);
-            setProjects(data);
-        };
-        fetchProjects();
-    }, []);
+        if (initialProjects.length > 0) {
+            setProjects(initialProjects);
+        }
+    }, [initialProjects]);
 
     const selectedProject = projects.find((p: SelectedProject) => p.id === selectedId);
 

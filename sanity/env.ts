@@ -13,6 +13,9 @@ export const projectId = assertValue(
 
 export const token = process.env.SANITY_API_READ_TOKEN
 
+export const readToken = process.env.SANITY_API_READ_TOKEN
+export const revalidateSecret = process.env.SANITY_REVALIDATE_SECRET
+
 function assertValue<T>(v: T | undefined, errorMessage: string): T {
   if (v === undefined || v === '') {
     // Check if we're in a browser environment to avoid spamming server logs
