@@ -12,10 +12,12 @@ export interface HeroCharacterProps {
     y?: PositionValue;
     mobileX?: PositionValue;
     mobileY?: PositionValue;
+    tabletX?: PositionValue;
+    tabletY?: PositionValue;
     anchor?: "center" | "bottom" | "top" | "left" | "right";
 }
 
-export function CharacterSprite({ x = 0, y = 0, mobileX, mobileY, anchor = "center" }: HeroCharacterProps) {
+export function CharacterSprite({ x = 0, y = 0, mobileX, mobileY, tabletX, tabletY, anchor = "center" }: HeroCharacterProps) {
     const texture = useTexture("/raden_.png");
     const { viewport, size } = useThree();
 
@@ -32,9 +34,9 @@ export function CharacterSprite({ x = 0, y = 0, mobileX, mobileY, anchor = "cent
     let characterHeight: number;
 
     if (isMobile) {
-        characterHeight = viewport.height * 0.65;
+        characterHeight = viewport.height * 0.75;
     } else if (isTablet) {
-        characterHeight = viewport.height * 0.9;
+        characterHeight = viewport.height * 0.85;
     } else {
         // Laptop / Monitor 1080p+
         characterHeight = viewport.height * 0.95;
@@ -56,13 +58,22 @@ export function CharacterSprite({ x = 0, y = 0, mobileX, mobileY, anchor = "cent
         return 0;
     };
 
-    const finalX = (isMobile && mobileX !== undefined) ? mobileX : x;
-    const finalY = (isMobile && mobileY !== undefined) ? mobileY : y;
+    // Three-tier position selection: mobile → tablet → desktop
+    const finalX = isMobile
+        ? (mobileX ?? x)
+        : isTablet
+            ? (tabletX ?? x)
+            : x;
+    const finalY = isMobile
+        ? (mobileY ?? y)
+        : isTablet
+            ? (tabletY ?? y)
+            : y;
 
     const posX = parseCoord(finalX, viewport.width, size.width);
     const horizonPercent = isMobile ? 0.40 : isTablet ? 0.50 : 0.60;
-    const horizonY = isMobile ? 80 : 112;
-    const horizonPos = (1 - (horizonY / 220)) * horizonPercent; // Horizon from bottom relative to screen height
+    const horizonY = isMobile ? 80 : 40;
+    const horizonPos = (1 - (horizonY / 540)) * horizonPercent; // Horizon from bottom relative to screen height
 
     // If y is provided as a number/string, use it, otherwise target the horizon
     const posY = finalY !== undefined

@@ -51,7 +51,12 @@ export default function HomeClient({ projects }: { projects: SelectedProject[] }
                     ref={heroContainerRef}
                     className="fixed inset-0 z-10 pointer-events-none opacity-0"
                 >
-                    <Hero x="70%" y="-4%" mobileX="85%" mobileY="4%" anchor="bottom" />
+                    <Hero
+                        x="62%" y="-4%"
+                        tabletX="72%" tabletY="-2%"
+                        mobileX="85%" mobileY="4%"
+                        anchor="bottom"
+                    />
                 </div>
             )}
 
