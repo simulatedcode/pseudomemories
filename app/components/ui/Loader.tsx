@@ -59,7 +59,7 @@ export default function Loader({ size = "md", className = "", text = "LOADING" }
                 {/* Outer Ring */}
                 <div
                     ref={outerRef}
-                    className="absolute inset-0 border-2 border-vermelion/20 rounded-full"
+                    className="absolute inset-0 border-2 border-vermilion/20 rounded-full"
                     style={{ borderTopColor: "transparent", borderBottomColor: "rgba(224, 73, 31, 1)" }}
                 />
 

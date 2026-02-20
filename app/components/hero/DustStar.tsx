@@ -10,6 +10,7 @@ import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Html } from "@react-three/drei";
+import { useSolarStarColor } from "../../hooks/useSolarColor";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -70,28 +71,35 @@ function StarLayer({
     depth = 1,
     movementSpeed = 0.5, // Factor for cursor-following parallax
     twinkleSharpness = 8.0, // Control curve of twinkle
-    color = "#F6CCC0", // Default white
+    color = "#A8C8F0", // Icy silver-blue default (night sky)
 }: any) {
     const matRef = useRef<THREE.ShaderMaterial>(null);
     const pointsRef = useRef<THREE.Points>(null);
     const { mouse } = useThree();
     const mousePos = useRef({ x: 0, y: 0 });
 
-    const colorUniform = useMemo(() => new THREE.Color(color), [color]);
+    // Keep the initial color as the GPU uniform; we'll lerp toward updates
+    const colorUniform = useMemo(() => new THREE.Color(color), []);  // eslint-disable-line react-hooks/exhaustive-deps
+    const targetColor = useRef(new THREE.Color(color));
+
+    // When the prop changes (every 10 s from the hook), update the lerp target
+    useEffect(() => {
+        targetColor.current.set(color);
+    }, [color]);
 
     const starTexture = useMemo(() => {
         const canvas = document.createElement("canvas");
-        canvas.width = 128;
-        canvas.height = 128;
+        canvas.width = 142;
+        canvas.height = 142;
         const ctx = canvas.getContext("2d");
         if (ctx) {
-            const gradient = ctx.createRadialGradient(64, 64, 0, 64, 64, 64);
+            const gradient = ctx.createRadialGradient(71, 71, 0, 71, 71, 71);
             gradient.addColorStop(0, "rgba(255, 255, 255, 1)");
             gradient.addColorStop(0.05, "rgba(255, 255, 255, 0.8)");
             gradient.addColorStop(0.1, "rgba(255, 255, 255, 0.0)");
             gradient.addColorStop(1, "rgba(255, 255, 255, 0)");
             ctx.fillStyle = gradient;
-            ctx.fillRect(0, 0, 128, 128);
+            ctx.fillRect(0, 0, 142, 142);
         }
         return new THREE.CanvasTexture(canvas);
     }, []);
@@ -125,11 +133,13 @@ function StarLayer({
     useFrame((state) => {
         if (matRef.current) {
             matRef.current.uniforms.uTime.value = state.clock.getElapsedTime();
+
+            // Smoothly lerp the GPU colour toward the target (very slow = imperceptible)
+            matRef.current.uniforms.uColor.value.lerp(targetColor.current, 0.002);
         }
 
         if (pointsRef.current) {
             // Parallax movement: inverse direction to mouse for depth feel
-            // Multiplier determines "distance" feel
             const targetX = -mouse.x * movementSpeed;
             const targetY = -mouse.y * movementSpeed;
 
@@ -212,12 +222,12 @@ const SkyRotation = ({ latitude, lst, children }: { latitude: number, lst: numbe
 const DustStar = ({
     twinkleSpeed,
     twinkleSharpness,
-    color
 }: {
     twinkleSpeed?: number;
     twinkleSharpness?: number;
-    color?: string;
 }) => {
+    // Live solar star colour — interpolated from the 9-keyframe table, updated every 10 s
+    const starColor = useSolarStarColor();
     const { latitude, longitude } = useGeo();
     const lst = useSkyTime(longitude);
     const containerRef = useRef<HTMLDivElement>(null);
@@ -250,7 +260,7 @@ const DustStar = ({
         <>
             <div
                 ref={containerRef}
-                className="fixed top-0 left-0 right-0 z-0 pointer-events-none bottom-[25vh] sm:bottom-[25vh] lg:bottom-[30vh] xl:bottom-[35vh]"
+                className="fixed top-0 left-0 right-0 z-0 pointer-events-none bottom-[30vh] sm:bottom-[20vh] lg:bottom-[20vh] xl:bottom-[30vh]"
                 style={{
                     background: "transparent",
                 }}
@@ -284,7 +294,7 @@ const DustStar = ({
                                 twinkleSpeed={twinkleSpeed ?? 0.8}
                                 twinkleSharpness={twinkleSharpness ?? 1.5}
                                 movementSpeed={0.05}
-                                color={color}
+                                color={starColor}
                             />
 
                             {/* Layer 2: Main sparkling stars - Medium movement */}
@@ -298,7 +308,7 @@ const DustStar = ({
                                 twinkleSpeed={twinkleSpeed ?? 1.0}
                                 twinkleSharpness={twinkleSharpness ?? 8.0}
                                 movementSpeed={0.15}
-                                color={color}
+                                color={starColor}
                             />
 
                             {/* Layer 3: Occasional bright hero stars - Fastest movement (Foreground) */}
@@ -312,7 +322,7 @@ const DustStar = ({
                                 twinkleSpeed={twinkleSpeed ?? 8.0}
                                 twinkleSharpness={twinkleSharpness ?? 12.0}
                                 movementSpeed={0.05}
-                                color={color}
+                                color={starColor}
                             />
                         </SkyRotation>
                     </Suspense>

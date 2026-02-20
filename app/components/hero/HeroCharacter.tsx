@@ -15,7 +15,7 @@ export interface HeroCharacterProps {
     anchor?: "center" | "bottom" | "top" | "left" | "right";
 }
 
-export function CharacterSprite({ x = 204, y = -540, mobileX, mobileY, anchor = "center" }: HeroCharacterProps) {
+export function CharacterSprite({ x = 0, y = 0, mobileX, mobileY, anchor = "center" }: HeroCharacterProps) {
     const texture = useTexture("/raden_.png");
     const { viewport, size } = useThree();
 
@@ -32,12 +32,12 @@ export function CharacterSprite({ x = 204, y = -540, mobileX, mobileY, anchor = 
     let characterHeight: number;
 
     if (isMobile) {
-        characterHeight = viewport.height * 1;
+        characterHeight = viewport.height * 0.65;
     } else if (isTablet) {
-        characterHeight = viewport.height * 0.85;
+        characterHeight = viewport.height * 0.9;
     } else {
         // Laptop / Monitor 1080p+
-        characterHeight = viewport.height * 0.9;
+        characterHeight = viewport.height * 0.95;
     }
 
     const characterWidth = characterHeight * aspect;

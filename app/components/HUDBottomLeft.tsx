@@ -61,7 +61,7 @@ export function HUDBottomLeft({ hoveredItem, setHoveredItem }: HUDBottomLeftProp
         };
     }, []);
 
-    const statusColor = error ? "bg-vermelion" : "bg-emerald-500/80";
+    const statusColor = error ? "bg-vermilion" : "bg-emerald-500/80";
 
     // Animation Logic
     useGSAP(() => {
@@ -128,7 +128,7 @@ export function HUDBottomLeft({ hoveredItem, setHoveredItem }: HUDBottomLeftProp
                     >
                         <MapPin
                             size={14}
-                            className={`transition-colors duration-300 ${error ? "text-vermelion" : "text-emerald-500/80"}`}
+                            className={`transition-colors duration-300 ${error ? "text-vermilion" : "text-emerald-500/80"}`}
                         />
                     </button>
                 </div>

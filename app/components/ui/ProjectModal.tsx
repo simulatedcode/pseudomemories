@@ -160,7 +160,7 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
                         <button
                             ref={el => { contentRefs.current[4] = el! }}
                             onClick={onClose}
-                            className="text-white hover:text-vermelion transition-all flex items-center gap-2 group"
+                            className="text-white hover:text-vermilion transition-all flex items-center gap-2 group"
                         >
                             <Plus className="h-12 w-12 transition-all hover:rotate-45 cursor-pointer" />
                         </button>

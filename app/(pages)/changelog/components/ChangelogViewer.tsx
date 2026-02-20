@@ -70,7 +70,7 @@ export default function ChangelogViewer({ content }: ChangelogViewerProps) {
                 <div className="flex justify-center mt-48">
                     <button
                         onClick={() => setIsExpanded(!isExpanded)}
-                        className="group flex items-center gap-2 px-6 py-3 rounded-full bg-vermelion-500/10 hover:bg-vermelion-500/20 text-vermelion-500 transition-all duration-300 backdrop-blur-sm border border-vermelion-500/20"
+                        className="group flex items-center gap-2 px-6 py-3 rounded-full bg-vermilion-500/10 hover:bg-vermilion-500/20 text-vermilion-500 transition-all duration-300 backdrop-blur-sm border border-vermilion-500/20"
                     >
                         <span className="font-electrolize text-micro tracking-wider uppercase">
                             {isExpanded ? "Show Less" : "Read Full Changelog"}

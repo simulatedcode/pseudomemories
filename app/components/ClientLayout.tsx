@@ -13,6 +13,7 @@ import { TransitionProvider } from "../context/TransitionContext";
 import { HUDTopRight } from "./HUDTopRight";
 import { AudioAnalysisProvider } from "../context/AudioAnalysisContext";
 import { usePathname } from "next/navigation";
+import { HUDScanline } from "./ui/HUDScanline";
 
 export default function ClientLayout({ children }: { children: React.ReactNode }) {
     const pathname = usePathname();
@@ -24,6 +25,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
                 <AudioAnalysisProvider>
                     <IntroProvider>
                         <GeoProvider>
+                            <HUDScanline />
                             {!isSystemPage && <Intro />}
                             <LenisScroll>
                                 {!isSystemPage && <HUDTopRight />}
@@ -34,9 +36,6 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
                                             {children}
                                         </main>
                                     </div>
-                                    {/* Scanlines effect */}
-                                    <div className="absolute inset-0 pointer-events-none opacity-[0.64] transition-opacity duration-300"
-                                        style={{ background: 'repeating-linear-gradient(0deg, transparent 0px, transparent 1px, rgba(0,0,0,0.5) 1px, rgba(0,0,0,0.5) 2px)' }} />
                                 </PageTransition>
                             </LenisScroll>
                         </GeoProvider>

@@ -124,7 +124,7 @@ export function HUDBottomRight({ hoveredItem, setHoveredItem }: HUDBottomRightPr
                         setIsMinimized(false);
                     }}
                 >
-                    <div className={`w-1.5 h-1.5 rounded-full animate-pulse ${error ? "bg-vermelion" : isListening ? "bg-emerald-500/80" : "bg-vermelion/80"}`} />
+                    <div className={`w-1.5 h-1.5 rounded-full animate-pulse ${error ? "bg-vermilion" : isListening ? "bg-emerald-500/80" : "bg-vermilion/80"}`} />
                 </button>
 
 
@@ -145,7 +145,7 @@ export function HUDBottomRight({ hoveredItem, setHoveredItem }: HUDBottomRightPr
                             <span className={`font-doto text-[10px] uppercase tracking-widest ${isListening ? "text-white/60" : "text-white/40"}`}>
                                 Audio Transmit
                             </span>
-                            <div className={`w-1.5 h-1.5 rounded-full animate-pulse ${error ? "bg-vermelion" : isListening ? "bg-emerald-500/80" : "bg-vermelion/80"}`} />
+                            <div className={`w-1.5 h-1.5 rounded-full animate-pulse ${error ? "bg-vermilion" : isListening ? "bg-emerald-500/80" : "bg-vermilion/80"}`} />
                         </div>
                         <div className="text-white/40 group-hover/btn:text-white transition-colors">
                             <Minus size={10} />

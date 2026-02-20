@@ -13,10 +13,10 @@ export default function DocumentationLayout({
                 }}
             />
 
-            {/* Ambient Vermelion Glow */}
+            {/* Ambient Vermilion Glow */}
             <div
                 className="absolute top-[-10%] right-[-5%] w-[60%] h-[40%] rounded-full blur-[120px] opacity-10 pointer-events-none"
-                style={{ background: 'var(--color-vermelion)' }}
+                style={{ background: 'var(--color-vermilion)' }}
             />
 
             <div className="relative z-10 max-w-4xl mx-auto px-spacing-08 py-spacing-10 pt-40">
@@ -33,7 +33,7 @@ export default function DocumentationLayout({
                     /* Lists */
                     prose-ul:list-none prose-ul:pl-0 prose-ul:mb-spacing-06
                     prose-li:font-iawriter prose-li:text-body prose-li:text-offwhite-100/50 prose-li:mb-spacing-03
-                    prose-li:before:content-['•'] prose-li:before:mr-4 prose-li:before:text-vermelion
+                    prose-li:before:content-['•'] prose-li:before:mr-4 prose-li:before:text-vermilion
                     
                     /* Hr & Spacing */
                     prose-hr:border-white/10 prose-hr:my-spacing-10

@@ -66,7 +66,7 @@ export function CustomCursor() {
         >
             <div
                 ref={dotRef}
-                className="square bg-vermelion opacity-0"
+                className="square bg-vermilion opacity-0"
                 style={{ width: 0, height: 0 }}
             />
         </div>

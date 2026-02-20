@@ -104,7 +104,7 @@ export default function ContactPage() {
     ];
 
     return (
-        <div ref={containerRef} style={{ height: "140vh" }} className="relative z-content w-full">
+        <div ref={containerRef} style={{ height: "100vh" }} className="relative z-content w-full">
             <div className="fixed top-0 h-screen w-full overflow-hidden flex flex-col md:flex-row bg-background">
                 {/* Left: Fixed Sidebar - Unchanged */}
                 <div className="w-full md:w-[35%] h-[30vh] md:h-full flex flex-col justify-center px-6 md:px-spacing-10 py-8 md:py-0 border-b md:border-b-0 md:border-r border-white/10 z-20 bg-background/80 backdrop-blur-sm relative">

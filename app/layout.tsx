@@ -57,6 +57,7 @@ export const metadata: Metadata = {
 };
 
 import { HUDFrame } from "./components/ui/HUDFrame";
+import { HUDScanline } from "./components/ui/HUDScanline";
 
 export default async function RootLayout({
   children,
@@ -78,6 +79,7 @@ export default async function RootLayout({
         <Analytics />
         <SpeedInsights />
         <SanityLive />
+        <HUDScanline />
       </body>
     </html>
   );

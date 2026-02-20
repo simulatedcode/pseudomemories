@@ -97,19 +97,19 @@ export default function PageTransition({ children }: { children: ReactNode }) {
                     style={{ opacity: 0 }} // Initial state handled by GSAP
                 >
                     <div className="flex flex-col items-center gap-spacing-03">
-                        <span className="font-doto text-micro tracking-[0.5em] text-vermelion opacity-60 uppercase mb-spacing-02">
+                        <span className="font-doto text-micro tracking-[0.5em] text-vermilion opacity-60 uppercase mb-spacing-02">
                             Accessing Segment
                         </span>
-                        <div className="h-[2px] w-24 bg-vermelion/20 overflow-hidden relative mb-spacing-04">
+                        <div className="h-[2px] w-24 bg-vermilion/20 overflow-hidden relative mb-spacing-04">
                             <div
                                 ref={overlayBarRef}
-                                className="absolute inset-0 bg-vermelion"
+                                className="absolute inset-0 bg-vermilion"
                             />
                         </div>
                         <h4 className="font-electrolize text-body sm:text-h4 tracking-[0.3em] text-offwhite-100 flex items-center gap-4">
-                            <span className="text-vermelion opacity-60">[</span>
+                            <span className="text-vermilion opacity-60">[</span>
                             <ScrambleText text={getRouteLabel(pathname)} duration={0.8} />
-                            <span className="text-vermelion opacity-60">]</span>
+                            <span className="text-vermilion opacity-60">]</span>
                         </h4>
                     </div>
                 </div>
