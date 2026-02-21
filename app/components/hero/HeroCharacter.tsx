@@ -37,8 +37,9 @@ export function CharacterSprite({ x = 0, y = 0, mobileX, mobileY, tabletX, table
         characterHeight = viewport.height * 0.75;
     } else if (isTablet) {
         characterHeight = viewport.height * 0.85;
+    } else if (isWide) {
+        characterHeight = viewport.height * 1.1; // bigger on 4K / ultrawide
     } else {
-        // Laptop / Monitor 1080p+
         characterHeight = viewport.height * 0.95;
     }
 
@@ -71,9 +72,9 @@ export function CharacterSprite({ x = 0, y = 0, mobileX, mobileY, tabletX, table
             : y;
 
     const posX = parseCoord(finalX, viewport.width, size.width);
-    const horizonPercent = isMobile ? 0.40 : isTablet ? 0.50 : 0.60;
-    const horizonY = isMobile ? 80 : 40;
-    const horizonPos = (1 - (horizonY / 540)) * horizonPercent; // Horizon from bottom relative to screen height
+    const horizonPercent = isMobile ? 0.08 : isTablet ? 0.06 : 0.04;
+    const horizonY = (isMobile ? 0.08 : 0.04) * size.height;
+    const horizonPos = (1 - (horizonY / viewport.height)) * horizonPercent; // Horizon from bottom relative to screen height
 
     // If y is provided as a number/string, use it, otherwise target the horizon
     const posY = finalY !== undefined
