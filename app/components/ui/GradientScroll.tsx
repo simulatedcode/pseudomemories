@@ -23,6 +23,8 @@ import {
     getStarColorForHour,
     lerpColor,
 } from "../../hooks/useSolarColor";
+import Helas from "../hero/Helas";
+import HeroGrid from "../hero/HeroGrid";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -54,6 +56,14 @@ function getInterpColors(p: number): string[] {
     const t = Math.max(0, Math.min(1, (p * NUM_TRANSITIONS) - idx));
     return from.colors.map((c, i) => lerpColor(c, to.colors[i], t));
 }
+
+const GRADIENT_SECTIONS = [
+    { title: "Dawn Ignition", desc: "The first light breaks, casting deep indigos and emerging warm vermilions across the horizon as solar radiation begins to scatter." },
+    { title: "Morning Ascent", desc: "Crisp cyan and peach hues dominate. The light temperature drops, cutting through the morning haze with soft luminous transitions." },
+    { title: "Solar Zenith", desc: "Maximum brightness at midday. Gradients flatten into piercing white and pale aqua, throwing sharp, high-contrast shadows directly downwards." },
+    { title: "Golden Hour", desc: "The atmosphere stretches the light into rich ambers and saturated gold tones. Shadows lengthen dramatically against the terrain." },
+    { title: "Dusk Transition", desc: "The sun plunges below the horizon. A fading trail of deep violet and twilight blue cools the environment rapidly into the night." }
+];
 
 // ─── Component ────────────────────────────────────────────────────────────────
 
@@ -110,11 +120,39 @@ export function GradientScroll() {
             },
         });
 
+        // ── Animate Gradient Strips ──
         SOLAR_KEYFRAMES.forEach((kf, idx) => {
             if (idx === 0) return;
             const pos = (idx - 1) * segDur;
             strips.forEach((strip, i) => {
                 tl.to(strip!, { backgroundColor: kf.colors[i], duration: segDur, ease: "none" }, pos);
+            });
+        });
+
+        // ── Content Sections Animations ──
+        const sections = gsap.utils.toArray('.content-section');
+        sections.forEach((sec: any) => {
+            const inner = sec.querySelector('.section-inner');
+            if (!inner) return;
+
+            gsap.fromTo(inner, { opacity: 0, y: window.innerHeight * 0.2 }, {
+                opacity: 1, y: 0, ease: "power2.out",
+                scrollTrigger: {
+                    trigger: sec,
+                    start: "top center",
+                    end: "center center",
+                    scrub: 1
+                }
+            });
+
+            gsap.fromTo(inner, { opacity: 1, y: 0 }, {
+                opacity: 0, y: -window.innerHeight * 0.2, ease: "power2.in",
+                scrollTrigger: {
+                    trigger: sec,
+                    start: "center center",
+                    end: "bottom center",
+                    scrub: 1
+                }
             });
         });
 
@@ -124,19 +162,36 @@ export function GradientScroll() {
     const activeIdx = Math.min(Math.round(progress * NUM_TRANSITIONS), NUM_TRANSITIONS - 1);
 
     return (
-        // Tall scroll spacer — gives the ScrollTrigger something to measure
-        <div
-            ref={scrollRef}
-            style={{ height: `${SECTION_VH * NUM_TRANSITIONS}vh` }}
-            className="relative"
-        >
-            {/* ── Fixed fullscreen display panel ──────────────────────────── */}
-            <div className="fixed inset-0 z-9999 overflow-hidden bg-black pointer-events-none">
+        <div ref={scrollRef} className="relative w-full z-10 text-white">
 
-                {/* Gradient strips */}
+            {/* ── 5 Scrolling Sections ── */}
+            <div className="relative z-50">
+                {GRADIENT_SECTIONS.map((sec, i) => (
+                    <section
+                        key={i}
+                        className="content-section relative w-full h-[150vh] pointer-events-none"
+                    >
+                        <div className="fixed inset-0 flex items-center justify-center pointer-events-none px-6 z-50">
+                            <div className="section-inner max-w-3xl text-center will-change-transform opacity-0">
+                                <h2 className="text-4xl md:text-7xl font-mono uppercase tracking-[0.2em] text-white/90 drop-shadow-[0_0_20px_rgba(255,255,255,0.4)] mb-8">
+                                    {sec.title}
+                                </h2>
+                                <p className="text-xl md:text-3xl text-white/80 font-light leading-relaxed tracking-wide drop-shadow-[0_4px_10px_rgba(0,0,0,0.5)]">
+                                    {sec.desc}
+                                </p>
+                            </div>
+                        </div>
+                    </section>
+                ))}
+            </div>
+
+            {/* ── Fixed fullscreen display panel ──────────────────────────── */}
+            <div className="fixed inset-0 z-0 overflow-hidden bg-black pointer-events-none">
+
+                {/* Gradient strips (Background layer) */}
                 <div
                     className="absolute inset-0 flex flex-col"
-                    style={{ filter: "blur(70px)", transform: "scale(1.15)" }}
+                    style={{ filter: "blur(80px)", transform: "scale(1.15)" }}
                 >
                     <div ref={s1} className="flex-1" />
                     <div ref={s2} className="flex-1" />
@@ -164,71 +219,24 @@ export function GradientScroll() {
                     }}
                 />
 
+                {/* Helas character — lighting driven by scroll hour */}
+                <Helas
+                    className="absolute inset-0 z-modal pointer-events-none"
+                    scrollHour={hour}
+                    x="center" y="center"
+                    tabletX="center" tabletY="center"
+                    mobileX="center" mobileY="center"
+                    anchor="center"
+                />
+                <HeroGrid />
                 {/* ── Centre HUD ─────────────────────────────────────────── */}
-                <div className="absolute inset-0 flex flex-col items-center justify-center select-none pointer-events-none">
+                <div className="absolute inset-0 flex flex-col items-center justify-center select-none pointer-events-none overflow-hidden">
 
-                    <p className="text-white/30 text-[10px] font-mono tracking-[0.4em] uppercase mb-5">
+                    <p className="absolute top-[10%] text-white/30 text-[10px] font-mono tracking-[0.4em] uppercase">
                         Solar Preview · Scroll to Simulate
                     </p>
 
-                    {/* Clock */}
-                    <div
-                        className="text-white font-mono font-extralight tracking-tight"
-                        style={{ fontSize: "clamp(4rem, 14vw, 10rem)", lineHeight: 1 }}
-                    >
-                        {fmtHour(hour)}
-                    </div>
-
-                    {/* Phase */}
-                    <p className="mt-5 text-white/80 font-mono tracking-[0.35em] uppercase text-sm">
-                        {SOLAR_KEYFRAMES[activeIdx]?.label ?? ""}
-                    </p>
-
-                    {/* Strip colour swatches */}
-                    <div className="mt-6 flex items-center gap-2">
-                        {colors.map((c, i) => (
-                            <div
-                                key={i}
-                                title={c}
-                                className="rounded-sm ring-1 ring-white/10"
-                                style={{ width: 28, height: 28, backgroundColor: c, transition: "background-color 0.8s ease" }}
-                            />
-                        ))}
-                    </div>
-
-                    {/* Star tint badge */}
-                    <div className="mt-4 flex items-center gap-2">
-                        <div
-                            className="w-3 h-3 rounded-full ring-1 ring-white/20"
-                            style={{ backgroundColor: starColor, transition: "background-color 0.8s ease" }}
-                        />
-                        <span className="text-white/35 text-[10px] font-mono tracking-widest">
-                            {starColor} · star tint
-                        </span>
-                    </div>
                 </div>
-
-                {/* ── Right rail ─────────────────────────────────────────── */}
-                <nav className="absolute right-8 top-1/2 -translate-y-1/2 flex flex-col gap-5 pointer-events-none select-none">
-                    {SOLAR_KEYFRAMES.slice(0, -1).map((kf, i) => {
-                        const isActive = i === activeIdx;
-                        const isPast = progress > i / NUM_TRANSITIONS + 0.01;
-                        return (
-                            <div key={kf.hour} className="flex items-center gap-2.5 justify-end">
-                                <span className={`text-[9px] font-mono uppercase tracking-widest transition-all duration-500 ${isActive ? "text-white" : isPast ? "text-white/35" : "text-white/15"
-                                    }`}>
-                                    {fmtHour(kf.hour)}
-                                </span>
-                                <div className={`rounded-full transition-all duration-500 ${isActive
-                                    ? "w-2 h-2 bg-white shadow-[0_0_8px_2px_rgba(255,255,255,0.5)]"
-                                    : isPast
-                                        ? "w-1.5 h-1.5 bg-white/40"
-                                        : "w-1 h-1 bg-white/15"
-                                    }`} />
-                            </div>
-                        );
-                    })}
-                </nav>
 
                 {/* ── Bottom 24h track ───────────────────────────────────── */}
                 <div className="absolute bottom-10 left-1/2 -translate-x-1/2 w-64">

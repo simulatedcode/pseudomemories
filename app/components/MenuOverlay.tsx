@@ -4,7 +4,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { Plus } from "lucide-react";
 import Link from "next/link";
 import { duration, easing } from "@/app/lib/motion-tokens";
-import { ScrambleText } from "./ui/ScrambleText";
+import { MenuLink } from "./MenuLink";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 
@@ -166,52 +166,15 @@ export function MenuOverlay({
                             {/* Navigation Grid */}
                             <nav className="grid grid-cols-1 gap-2">
                                 {menuLinks.map((link, index) => (
-                                    <div
+                                    <MenuLink
                                         key={link.label}
                                         ref={el => { linksRef.current[index] = el! }}
-                                        className="opacity-0"
-                                        onMouseEnter={() => setHoveredItem(link.label)}
-                                        onMouseLeave={() => setHoveredItem(null)}
-                                    >
-                                        <Link
-                                            href={link.href}
-                                            onClick={() => setIsMenuOpen(false)}
-                                            className="group relative block h-full p-4 border border-white/10 hover:border-cyan-100/20 bg-black/20 hover:bg-vermilion/5 transition-all duration-300"
-                                        >
-                                            {/* Number Indicator */}
-                                            <div className="absolute top-4 right-4 font-doto text-body text-white/10 group-hover:text-vermilion/20 transition-colors">
-                                                0{index + 1}
-                                            </div>
-
-                                            {/* Content */}
-                                            <div className="flex flex-col gap-2">
-                                                <div className="flex items-center gap-2">
-                                                    <div
-                                                        className={`w-2 h-2 rounded-full bg-vermilion/50 transition-all duration-700 ${hoveredItem === link.label ? 'scale-150 opacity-100 animate-pulse' : 'scale-100 opacity-50'}`}
-                                                    />
-                                                    <span className="font-doto text-micro uppercase tracking-widest text-vermilion/80">
-                                                        {link.desc}
-                                                    </span>
-                                                </div>
-
-                                                <h3 className="font-electrolize text-h5 uppercase tracking-wider text-white group-hover:text-vermilion transition-colors">
-                                                    <ScrambleText
-                                                        text={link.label}
-                                                        trigger={hoveredItem === link.label}
-                                                        duration={0.5}
-                                                    />
-                                                </h3>
-
-                                                {/* Animated Underline */}
-                                                <div className="h-px w-0 group-hover:w-full bg-linear-to-r from-vermilion to-transparent transition-all duration-500" />
-                                            </div>
-
-                                            {/* Hover Glow Effect */}
-                                            <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none">
-                                                <div className="absolute inset-0 bg-linear-to-br from-vermilion/10 via-transparent to-transparent" />
-                                            </div>
-                                        </Link>
-                                    </div>
+                                        link={link}
+                                        index={index}
+                                        hoveredItem={hoveredItem}
+                                        setHoveredItem={setHoveredItem}
+                                        setIsMenuOpen={setIsMenuOpen}
+                                    />
                                 ))}
                             </nav>
 

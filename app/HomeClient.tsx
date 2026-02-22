@@ -17,6 +17,12 @@ const DustStar = dynamic(() => import("@/app/components/hero/DustStar"), { ssr: 
 /* Hero (Grid + Character merged) */
 const Hero = dynamic(() => import("@/app/components/hero/Hero"), { ssr: false });
 
+/* Grid lines only */
+const HeroGrid = dynamic(() => import("@/app/components/hero/HeroGrid"), { ssr: false });
+
+/* 3D Cinematic Character */
+const Helas = dynamic(() => import("@/app/components/hero/Helas"), { ssr: false });
+
 /* Background */
 const GradientBackground = dynamic(() => import("@/app/components/ui/GradientBackground"), { ssr: false });
 
@@ -49,13 +55,15 @@ export default function HomeClient({ projects }: { projects: SelectedProject[] }
             {isComplete && (
                 <div
                     ref={heroContainerRef}
-                    className="fixed inset-0 z-10 pointer-events-none opacity-0"
+                    className="fixed inset-0 z-10"
+                    style={{ opacity: 0 }}
                 >
-                    <Hero
-                        x="62%" y="-4%"
-                        tabletX="72%" tabletY="-2%"
-                        mobileX="85%" mobileY="4%"
-                        anchor="bottom"
+                    <HeroGrid />
+                    <Helas
+                        x="center" y="center"
+                        tabletX="center" tabletY="center"
+                        mobileX="center" mobileY="center"
+                        anchor="center"
                     />
                 </div>
             )}
