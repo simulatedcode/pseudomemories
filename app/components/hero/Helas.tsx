@@ -2,7 +2,7 @@
 
 import { Suspense, useRef, useEffect, useMemo, useState } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { useGLTF, ContactShadows, Html, useTexture, Center } from "@react-three/drei";
+import { useGLTF, ContactShadows, Html, useTexture } from "@react-three/drei";
 import * as THREE from "three";
 import Loader from "../ui/Loader";
 import {
@@ -51,7 +51,9 @@ export interface HelasProps {
 function parseCoord(val: PV, vpDim: number, scrDim: number) {
     if (typeof val === "number") return (val / scrDim) * vpDim;
     if (typeof val === "string") {
-        if (val === "top") return 0;
+        if (val === "center") return 0;
+        if (val === "top") return vpDim / 2;
+        if (val === "bottom") return -vpDim / 2;
         if (val.endsWith("%")) return (parseFloat(val) / 100 - 0.5) * vpDim;
     }
     return 0;
@@ -98,7 +100,7 @@ function HelasScene({
     const mat = useMemo(
         () =>
             new THREE.MeshPhysicalMaterial({
-                color: new THREE.Color(pal.sky).lerp(new THREE.Color("#111111"), 0.6), // Bright solar base
+                color: new THREE.Color(pal.sky).lerp(new THREE.Color("#111111"), 0.2), // Bright solar base
                 specularColor: new THREE.Color(pal.sun), // Tint reflections to the sun color strongly
                 emissive: pal.sky,
                 emissiveIntensity: 0.095, // Very bright internal glow to match solar background
@@ -114,18 +116,18 @@ function HelasScene({
                 metalnessMap: texture, // Reflections heavily dependent on the texture contrast
 
                 // Holographic Chromatic Aberration / Rainbow Effect
-                iridescence: 2.84, // Extremely bright, pronounced iridescence
+                iridescence: 3.84, // Extremely bright, pronounced iridescence
                 iridescenceIOR: 1.96, // Natural IOR for stable bands
-                iridescenceThicknessRange: [400, 800], // Thickness range specifically targeted to produce green/teal dominance
+                iridescenceThicknessRange: [100, 600], // Thickness range specifically targeted to produce green/teal dominance
                 iridescenceMap: texture, // Break up the rainbow effect with noise
                 iridescenceThicknessMap: texture, // Vary the rainbow thickness with noise
 
                 // Volume and Refraction (Hologram body)
-                transmission: 0.85, // Highly transparent to let the gradient shine through directly
+                transmission: 0.99, // Highly transparent to let the gradient shine through directly
                 attenuationColor: new THREE.Color(pal.sky), // Tint fading internal light to sun
                 attenuationDistance: 1.50, // Causes light to get absorbed inside, emphasizing edges
                 thickness: 2.0, // Thickness of the "glass" volume
-                ior: 6.2, // Low refraction to minimize heavy glass distortion, more like a projection
+                ior: 2.4, // Low refraction to minimize heavy glass distortion, more like a projection
                 transparent: true,
                 opacity: 1, // Slightly less than fully opaque
                 side: THREE.DoubleSide, // Render both inside and outside for layered holographic depth
@@ -163,8 +165,10 @@ function HelasScene({
     const posY = parseCoord(fy, viewport.height, size.height);
 
     const halfH = modelH / 2;
+    // To securely center a bottom-pivot model visually at 'center':
+    // we must push it down by half its height.
     const anchorOffY =
-        anchor === "bottom" ? halfH : anchor === "center" ? 0 : -halfH;
+        anchor === "bottom" ? -halfH : anchor === "center" ? 0 : 0;
 
     const worldPos = useMemo(
         () => new THREE.Vector3(posX, posY + anchorOffY, 0),
@@ -219,7 +223,7 @@ function HelasScene({
                 shadow-camera-top={14}
                 shadow-camera-bottom={-0.5}
                 shadow-bias={-0.0002}
-                shadow-normalBias={0.06}
+                shadow-normalBias={0.006}
             />
 
             {/* fill */}
@@ -234,13 +238,11 @@ function HelasScene({
 
             {/* character */}
             <group ref={groupRef} position={worldPos}>
-                <Center>
-                    <primitive
-                        object={scene}
-                        scale={modelScale}
-                        rotation={[0, -Math.PI / 2, 0]}
-                    />
-                </Center>
+                <primitive
+                    object={scene}
+                    scale={modelScale}
+                    rotation={[0, -Math.PI / 2, 0]} // Reset to original rotation
+                />
             </group>
 
         </>
@@ -267,7 +269,7 @@ export default function Helas({ className, ...props }: HelasProps) {
                 gl={{
                     antialias: true,
                     toneMapping: THREE.ACESFilmicToneMapping,
-                    toneMappingExposure: 1.25,
+                    toneMappingExposure: 1.15,
                     outputColorSpace: THREE.SRGBColorSpace,
                 }}
                 dpr={[1, 1.5]}
